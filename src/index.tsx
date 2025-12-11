@@ -476,7 +476,7 @@ app.get('/', (c) => {
                     </a>
                     
                     <a href="/commitment" class="card-link">
-                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" 
+                        <img src="https://www.genspark.ai/api/files/s/g8geN7wA" 
                              alt="個室空間" 
                              class="card-image">
                         <div class="card-content">
@@ -583,12 +583,6 @@ app.get('/', (c) => {
                     <p class="text-sm text-gray-300 leading-loose">\${info.hours_weekday || ''}</p>
                     <p class="text-sm text-gray-300 leading-loose mt-2">\${info.hours_weekend || ''}</p>
                     <p class="text-sm text-gray-300 leading-loose mt-2">\${info.hours_tuesday || ''}</p>
-                  </div>
-                  
-                  <div class="border-l-2 border-yellow-700 pl-6">
-                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">BUDGET</h4>
-                    <p class="text-sm text-gray-300">ディナー: \${info.budget_dinner || ''}</p>
-                    <p class="text-sm text-gray-300 mt-1">ランチ: \${info.budget_lunch || ''}</p>
                   </div>
                   
                   <div class="border-l-2 border-yellow-700 pl-6">
@@ -1258,12 +1252,6 @@ app.get('/access', (c) => {
                   </div>
                   
                   <div class="border-l-2 border-yellow-700 pl-6">
-                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">BUDGET</h4>
-                    <p class="text-sm text-gray-300">ディナー: \${info.budget_dinner || ''}</p>
-                    <p class="text-sm text-gray-300 mt-1">ランチ: \${info.budget_lunch || ''}</p>
-                  </div>
-                  
-                  <div class="border-l-2 border-yellow-700 pl-6">
                     <h4 class="text-sm text-gray-500 mb-2 tracking-widest">SEATS</h4>
                     <p class="text-gray-300">\${info.seats || ''}</p>
                   </div>
@@ -1522,7 +1510,7 @@ app.get('/commitment', (c) => {
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80" 
+                        <img src="https://www.genspark.ai/api/files/s/g8geN7wA" 
                              alt="個室空間" 
                              class="commitment-image">
                     </div>
