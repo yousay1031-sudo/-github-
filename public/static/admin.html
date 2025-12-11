@@ -342,7 +342,7 @@
         }
         
         try {
-          await axios.put(\`/api/admin/menu-categories/\${currentEditingCategoryId}\`, data)
+          await axios.put(`/api/admin/menu-categories/${currentEditingCategoryId}`, data)
           alert('更新しました')
           closeCategoryModal()
           loadCategoryList()
