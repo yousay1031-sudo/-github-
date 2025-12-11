@@ -180,24 +180,27 @@ app.get('/', (c) => {
           
           .hero-section {
             position: relative;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            min-height: 100vh;
+            min-height: 95vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-top: 6rem;
           }
           
           .hero-title {
             writing-mode: vertical-rl;
             text-orientation: upright;
-            font-size: 3rem;
-            letter-spacing: 0.3em;
+            font-size: 2.8rem;
+            letter-spacing: 0.4em;
             color: white;
-            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.7);
             animation: fadeInUp 1.5s ease-out;
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
           }
           
           @keyframes fadeInUp {
@@ -221,10 +224,11 @@ app.get('/', (c) => {
           
           .section-subtitle {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #999;
             margin-bottom: 4rem;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
+            line-height: 1.9;
           }
           
           .card-link {
@@ -234,55 +238,60 @@ app.get('/', (c) => {
             border-radius: 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.05);
           }
           
           .card-link:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-color: rgba(212, 175, 55, 0.2);
           }
           
           .card-link:hover .card-image {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            filter: brightness(1.1);
           }
           
           .card-image {
             width: 100%;
-            height: 400px;
+            height: 320px;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.85);
           }
           
           .card-content {
-            padding: 2.5rem 2rem;
+            padding: 2rem 1.8rem;
             background: #1a1a1a;
           }
           
           .card-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            font-family: 'Noto Serif JP', serif;
           }
           
           .card-text {
-            color: #aaa;
-            font-size: 0.95rem;
+            color: #999;
+            font-size: 0.85rem;
             line-height: 1.9;
             margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
           }
           
           .card-arrow {
-            display: inline-flex;
-            align-items: center;
+            display: inline-block;
             color: #d4af37;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            transition: gap 0.3s ease;
-            gap: 0.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
           }
           
           .card-link:hover .card-arrow {
-            gap: 1rem;
+            letter-spacing: 0.2em;
+            padding-left: 0.5rem;
           }
           
           .bg-dark {
@@ -321,10 +330,10 @@ app.get('/', (c) => {
           }
           
           .message-box {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-left: 3px solid #d4af37;
-            padding: 3rem;
-            margin: 4rem 0;
+            background: rgba(26, 26, 26, 0.5);
+            border-left: 2px solid #d4af37;
+            padding: 2.5rem 2rem;
+            margin: 0;
           }
           
           .divider {
@@ -380,57 +389,73 @@ app.get('/', (c) => {
         <!-- こだわりセクション -->
         <section class="py-24 bg-dark-alt">
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="mb-20">
+                <div class="mb-16">
                     <h2 class="section-title text-white">KARINのこだわり</h2>
                     <div class="divider"></div>
                     <p class="section-subtitle">
-                      お肉を最もおいしい状態で食してほしい一心から生まれた<br>
-                      厳選素材と上質な空間でお迎えいたします
+                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。<br>
+                      「厳選素材」とくに数量限定の十勝若牛は当店の看板メニュー。<br>
+                      産地直送ならではの特別な味わいは驚くほど繊細。
                     </p>
                 </div>
                 
-                <div class="grid md:grid-cols-3 gap-12">
-                    <a href="/commitment" class="card-link">
-                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80" 
-                             alt="十勝若牛" 
+                <div class="grid md:grid-cols-2 gap-12">
+                    <a href="/course" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" 
+                             alt="コース" 
                              class="card-image">
                         <div class="card-content">
-                            <h3 class="card-title text-white">十勝若牛</h3>
+                            <h3 class="card-title text-white">コース</h3>
                             <p class="card-text">
-                              十勝清水町産の希少な「十勝若牛®」。柔らかな食感と赤身の深い旨み、ヘルシーさを兼ね備えた逸品です。
+                              各コースだけでなく、ご予算に合わせてお造りいたします。サプライズもお任せ。
                             </p>
                             <span class="card-arrow">
-                              詳しく見る <i class="fas fa-arrow-right text-xs"></i>
+                              → 詳しく見る
+                            </span>
+                        </div>
+                    </a>
+                    
+                    <a href="/menu" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80" 
+                             alt="メニュー" 
+                             class="card-image">
+                        <div class="card-content">
+                            <h3 class="card-title text-white">メニュー</h3>
+                            <p class="card-text">
+                              お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。
+                            </p>
+                            <span class="card-arrow">
+                              → 詳しく見る
                             </span>
                         </div>
                     </a>
                     
                     <a href="/commitment" class="card-link">
                         <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80" 
-                             alt="希少なアイスランドラム" 
+                             alt="厳選素材" 
                              class="card-image">
                         <div class="card-content">
-                            <h3 class="card-title text-white">希少なアイスランドラム</h3>
+                            <h3 class="card-title text-white">厳選素材</h3>
                             <p class="card-text">
-                              日本輸入量わずか1%の希少なアイスランド産ラム。1100年の純血が生み出す、繊細な肉質と甘い脂が特徴です。
+                              十勝若牛や希少なアイスランドラムなど、こだわりの食材を使用しております。
                             </p>
                             <span class="card-arrow">
-                              詳しく見る <i class="fas fa-arrow-right text-xs"></i>
+                              → 詳しく見る
                             </span>
                         </div>
                     </a>
                     
                     <a href="/commitment" class="card-link">
                         <img src="/static/private-room.jpg" 
-                             alt="個室空間" 
+                             alt="上質な個室空間" 
                              class="card-image">
                         <div class="card-content">
                             <h3 class="card-title text-white">上質な個室空間</h3>
                             <p class="card-text">
-                              2名様から26名様までご利用可能。接待やご宴会、特別な日のお食事に最適な空間をご用意しております。
+                              ご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
                             </p>
                             <span class="card-arrow">
-                              詳しく見る <i class="fas fa-arrow-right text-xs"></i>
+                              → 詳しく見る
                             </span>
                         </div>
                     </a>
@@ -438,19 +463,41 @@ app.get('/', (c) => {
             </div>
         </section>
 
-        <!-- Messageセクション -->
+        <!-- 店名の由来セクション -->
         <section class="py-24 bg-dark">
             <div class="max-w-4xl mx-auto px-6 lg:px-8">
                 <div class="message-box">
-                    <h3 class="text-2xl font-light tracking-widest mb-6 text-white" style="font-family: 'Noto Serif JP'">Message</h3>
+                    <h3 class="text-xl font-light tracking-widest mb-6 text-white" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h3>
                     <div class="divider mx-0"></div>
                     <p class="text-gray-300 leading-loose text-sm tracking-wide">
-                      TOKACHI YAKINIKU KARINでは、十勝産を中心とした厳選素材を使用しております。<br><br>
-                      お肉を最もおいしい状態で食してほしい一心から、一つ一つ丁寧に仕込みを行い、<br>
-                      炭火で焼き上げることで素材本来の旨みを最大限に引き出しています。<br><br>
-                      また空間にもこだわり、落ち着いた雰囲気の中、ご家族はもちろん<br>
-                      デートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときをお過ごしいただけます。
+                      「華麗（かりん）」という言葉には、美しく華やかという意味が込められています。<br><br>
+                      お肉の味はもちろん、見た目に美味しい料理でお客様が日々楽しんでいただけるよう<br>
+                      日々精進しております。
                     </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Messageセクション -->
+        <section class="py-24 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80" 
+                             alt="TOKACHI YAKINIKU KARIN" 
+                             class="w-full h-96 object-cover"
+                             style="filter: brightness(0.8) contrast(1.1);">
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-light tracking-widest mb-6 text-white" style="font-family: 'Noto Serif JP'">Message</h3>
+                        <div class="divider mx-0"></div>
+                        <p class="text-gray-300 leading-loose text-sm tracking-wide">
+                          TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。<br><br>
+                          老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。<br><br>
+                          また空間にもこだわり、落ち着いた雰囲気の個室などご家族はもちろんデートや接待、<br>
+                          ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
