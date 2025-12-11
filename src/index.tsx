@@ -720,21 +720,98 @@ app.get('/menu', (c) => {
             margin: 2rem auto;
           }
           
-          .menu-category {
-            border-left: 2px solid #d4af37;
-            padding-left: 1.5rem;
+          .category-header {
+            position: relative;
+            margin-bottom: 4rem;
+            overflow: hidden;
+          }
+          
+          .category-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: brightness(0.6) contrast(1.1);
+          }
+          
+          .category-title-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            z-index: 10;
+          }
+          
+          .category-title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: white;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+            margin-bottom: 0.5rem;
+          }
+          
+          .category-subtitle {
+            font-size: 0.9rem;
+            color: #d4af37;
+            letter-spacing: 0.15em;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+          }
+          
+          .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem 3rem;
+            margin-bottom: 5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .menu-grid {
+              grid-template-columns: 1fr;
+            }
           }
           
           .menu-item {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #2a2a2a;
             transition: all 0.3s ease;
           }
           
           .menu-item:hover {
-            background: #222;
-            border-color: #d4af37;
-            transform: translateX(5px);
+            border-bottom-color: #d4af37;
+            padding-left: 0.5rem;
+          }
+          
+          .menu-item-content {
+            flex: 1;
+            padding-right: 1.5rem;
+          }
+          
+          .menu-item-name {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #e0e0e0;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.05em;
+          }
+          
+          .menu-item-description {
+            font-size: 0.85rem;
+            color: #999;
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+          }
+          
+          .menu-item-price {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #d4af37;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
           }
         </style>
     </head>
@@ -818,26 +895,27 @@ app.get('/menu', (c) => {
               }))
               
               document.getElementById('menu-content').innerHTML = menuByCategory.map(category => \`
-                <div class="mb-20">
-                  <h2 class="text-2xl font-light tracking-wider mb-10 menu-category text-white">\${category.name}</h2>
-                  <div class="space-y-6">
+                <div class="mb-24">
+                  <!-- カテゴリーヘッダー画像 -->
+                  <div class="category-header">
+                    <img src="\${category.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80'}" 
+                         alt="\${category.name}" 
+                         class="category-image">
+                    <div class="category-title-overlay">
+                      <h2 class="category-title">\${category.name}</h2>
+                      <p class="category-subtitle">\${category.name.toUpperCase()}</p>
+                    </div>
+                  </div>
+                  
+                  <!-- メニューアイテム（2カラムグリッド） -->
+                  <div class="menu-grid">
                     \${category.items.map(item => \`
-                      <div class="menu-item flex overflow-hidden">
-                        <div class="w-40 h-32 flex-shrink-0 bg-gray-900 overflow-hidden">
-                          <img src="\${item.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=400'}" 
-                               alt="\${item.name}" 
-                               class="w-full h-full object-cover"
-                               style="filter: brightness(0.9) contrast(1.1);">
+                      <div class="menu-item">
+                        <div class="menu-item-content">
+                          <div class="menu-item-name">\${item.name}</div>
+                          <div class="menu-item-description">\${item.description || ''}</div>
                         </div>
-                        <div class="p-6 flex-1 flex justify-between items-start">
-                          <div class="flex-1">
-                            <h3 class="text-lg font-light tracking-wide text-white mb-2">\${item.name}</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">\${item.description || ''}</p>
-                          </div>
-                          <span class="text-yellow-600 font-light text-xl whitespace-nowrap ml-8">
-                            ¥\${(item.price || 0).toLocaleString()}
-                          </span>
-                        </div>
+                        <div class="menu-item-price">¥\${(item.price || 0).toLocaleString()}</div>
                       </div>
                     \`).join('')}
                   </div>
