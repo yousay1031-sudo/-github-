@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="p-8">
+        <h1 class="text-2xl font-bold">Test Page</h1>
+        <button onclick="testFunction()" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">
+            Click Me
+        </button>
+        <div id="output" class="mt-4"></div>
+    </div>
+
+    <script>
+        function testFunction() {
+            document.getElementById('output').innerHTML = 'Button clicked!';
+            console.log('Function called successfully');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded successfully');
+        });
+    </script>
+</body>
+</html>
