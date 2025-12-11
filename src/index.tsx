@@ -1074,37 +1074,96 @@ app.get('/access', (c) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           
           body {
             font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
           }
           
           h1, h2, h3, h4 {
             font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            letter-spacing: 0.1em;
           }
           
-          .bg-luxury {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+          .bg-dark {
+            background: #0a0a0a;
+          }
+          
+          .bg-dark-alt {
+            background: #141414;
+          }
+          
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+          
+          .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+          }
+          
+          .nav-link:hover:after {
+            width: 100%;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+          }
+          
+          .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 2rem auto;
           }
         </style>
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-dark">
         <!-- ナビゲーション -->
-        <nav class="bg-luxury text-white shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="text-2xl font-bold tracking-wider">TOKACHI YAKINIKU KARIN</a>
-                        <div class="text-xs text-gray-300 mt-1">トカチ ヤキニク カリン</div>
+                        <a href="/" class="block">
+                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
+                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
+                        </a>
                     </div>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="/" class="hover:text-amber-500 transition">ホーム</a>
-                        <a href="/menu" class="hover:text-amber-500 transition">メニュー</a>
-                        <a href="/gallery" class="hover:text-amber-500 transition">ギャラリー</a>
-                        <a href="/access" class="text-amber-500">アクセス</a>
-                        <a href="/admin" class="hover:text-amber-500 transition">
-                          <i class="fas fa-cog"></i> 管理画面
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
+                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/access" class="nav-link text-yellow-500">アクセス</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
                 </div>
@@ -1112,30 +1171,30 @@ app.get('/access', (c) => {
         </nav>
 
         <!-- ヘッダー -->
-        <div class="bg-gradient-to-r from-amber-800 to-amber-600 text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-5xl font-bold mb-4">Access</h1>
-                <p class="text-xl">店舗情報・アクセス</p>
+        <div class="pt-40 pb-20 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <h1 class="section-title text-white text-4xl mb-6">Access</h1>
+                <div class="divider"></div>
+                <p class="text-gray-400 text-sm tracking-wider">店舗情報・アクセス</p>
             </div>
         </div>
 
         <!-- アクセス情報 -->
-        <section class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div id="store-info" class="bg-white p-8 rounded-lg shadow-lg">
+        <section class="py-24 bg-dark">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-16">
+                    <div id="store-info" class="space-y-8 text-gray-300">
                         <!-- JavaScript で動的に読み込まれます -->
                     </div>
                     
-                    <div>
+                    <div class="relative overflow-hidden" style="height: 500px;">
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.7741!2d143.2042831!3d42.9228212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5f72d1d1d1d1d1d1%3A0x1d1d1d1d1d1d1d1d!2z5YyX5rW36YGT5biv5biC6KW_5LiA5p2h5Y2X77yY5LiB55uu77yS77yQ4oiS77yV!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp"
                             width="100%" 
-                            height="500" 
-                            style="border:0;" 
+                            height="100%" 
+                            style="border:0; filter: grayscale(30%) contrast(90%);" 
                             allowfullscreen="" 
-                            loading="lazy"
-                            class="rounded-lg shadow-lg">
+                            loading="lazy">
                         </iframe>
                     </div>
                 </div>
@@ -1143,14 +1202,20 @@ app.get('/access', (c) => {
         </section>
 
         <!-- フッター -->
-        <footer class="bg-luxury text-white py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer class="bg-dark text-white py-16 border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-4">TOKACHI YAKINIKU KARIN</h3>
-                    <p class="text-gray-300 mb-2">トカチ ヤキニク カリン</p>
-                    <p class="text-gray-400 mb-4">北海道帯広市西一条南8-20-5</p>
-                    <p class="text-gray-400 mb-4">TEL: 050-8883-6929</p>
-                    <p class="text-gray-500 mt-8 text-sm">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
+                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
+                    <div class="divider"></div>
+                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
+                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
+                    <div class="flex justify-center space-x-8 mt-8">
+                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
                 </div>
             </div>
         </footer>
@@ -1163,82 +1228,52 @@ app.get('/access', (c) => {
               const info = response.data
               
               document.getElementById('store-info').innerHTML = \`
-                <div class="space-y-6">
-                  <div>
-                    <h2 class="text-3xl font-bold mb-6 border-b-2 border-amber-600 pb-2">店舗情報</h2>
+                <div class="space-y-8">
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">STORE NAME</h4>
+                    <p class="text-gray-200 mb-1">\${info.store_name || ''}</p>
+                    <p class="text-sm text-gray-400">\${info.store_name_ja || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-store text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">店名</h4>
-                      <p class="text-gray-700">\${info.store_name || ''}</p>
-                      <p class="text-gray-600 text-sm">\${info.store_name_ja || ''}</p>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">ADDRESS</h4>
+                    <p class="text-gray-200 mb-1">\${info.address || ''}</p>
+                    <p class="text-sm text-gray-400">\${info.access || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-map-marker-alt text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">住所</h4>
-                      <p class="text-gray-700">\${info.address || ''}</p>
-                      <p class="text-gray-600 text-sm mt-1">\${info.access || ''}</p>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">PHONE</h4>
+                    <p class="text-gray-200">\${info.phone || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-phone text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">電話</h4>
-                      <p class="text-gray-700">\${info.phone || ''}</p>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">HOURS</h4>
+                    <p class="text-sm text-gray-300 leading-loose">\${info.hours_weekday || ''}</p>
+                    <p class="text-sm text-gray-300 leading-loose mt-2">\${info.hours_weekend || ''}</p>
+                    <p class="text-sm text-gray-300 leading-loose mt-2">\${info.hours_tuesday || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-clock text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-2">営業時間</h4>
-                      <div class="space-y-1 text-sm">
-                        <p class="text-gray-700">\${info.hours_weekday || ''}</p>
-                        <p class="text-gray-700">\${info.hours_weekend || ''}</p>
-                        <p class="text-gray-700">\${info.hours_tuesday || ''}</p>
-                      </div>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">BUDGET</h4>
+                    <p class="text-sm text-gray-300">ディナー: \${info.budget_dinner || ''}</p>
+                    <p class="text-sm text-gray-300 mt-1">ランチ: \${info.budget_lunch || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-yen-sign text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">予算</h4>
-                      <p class="text-gray-700 text-sm">ディナー: \${info.budget_dinner || ''}</p>
-                      <p class="text-gray-700 text-sm">ランチ: \${info.budget_lunch || ''}</p>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">SEATS</h4>
+                    <p class="text-gray-300">\${info.seats || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-chair text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">座席数</h4>
-                      <p class="text-gray-700">\${info.seats || ''}</p>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">PARKING</h4>
+                    <p class="text-gray-300">\${info.parking || ''}</p>
                   </div>
                   
-                  <div class="flex items-start">
-                    <i class="fas fa-parking text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">駐車場</h4>
-                      <p class="text-gray-700">\${info.parking || ''}</p>
-                    </div>
-                  </div>
-                  
-                  <div class="flex items-start">
-                    <i class="fab fa-instagram text-amber-600 text-2xl mt-1 mr-4 w-8"></i>
-                    <div>
-                      <h4 class="font-bold text-lg mb-1">Instagram</h4>
-                      <a href="\${info.instagram || ''}" target="_blank" class="text-amber-600 hover:text-amber-700 text-sm">
-                        @tokachi_yakiniku_karin
-                      </a>
-                    </div>
+                  <div class="border-l-2 border-yellow-700 pl-6">
+                    <h4 class="text-sm text-gray-500 mb-2 tracking-widest">INSTAGRAM</h4>
+                    <a href="\${info.instagram || ''}" target="_blank" class="text-yellow-600 hover:text-yellow-500 text-sm transition">
+                      @tokachi_yakiniku_karin
+                    </a>
                   </div>
                 </div>
               \`
