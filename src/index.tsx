@@ -1135,6 +1135,14 @@ app.get('/menu', (c) => {
           }
           
           document.addEventListener('DOMContentLoaded', loadMenu)
+          
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
         </script>
     </body>
     </html>
