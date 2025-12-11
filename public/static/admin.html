@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 | TOKACHI YAKINIKU KARIN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+      
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+      }
+      
+      h1, h2, h3, h4 {
+        font-family: 'Noto Serif JP', serif;
+      }
+      
+      .bg-luxury {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      }
+      
+      .modal {
+        display: none;
+      }
+      
+      .modal.active {
+        display: flex;
+      }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- ナビゲーション -->
+    <nav class="bg-luxury text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-2xl font-bold tracking-wider">TOKACHI YAKINIKU KARIN</a>
+                    <div class="text-xs text-gray-300 mt-1">管理画面</div>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="/" class="hover:text-amber-500 transition">
+                      <i class="fas fa-home"></i> サイトに戻る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- タブナビゲーション -->
+        <div class="flex space-x-4 mb-8 border-b border-gray-300">
+            <button onclick="switchTab('menu')" id="tab-menu" class="px-6 py-3 font-bold border-b-4 border-amber-600 text-amber-600">
+                <i class="fas fa-utensils"></i> メニュー管理
+            </button>
+            <button onclick="switchTab('gallery')" id="tab-gallery" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
+                <i class="fas fa-images"></i> ギャラリー管理
+            </button>
+        </div>
+
+        <!-- メニュー管理セクション -->
+        <div id="section-menu" class="tab-section">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">メニュー一覧</h2>
+                    <button onclick="openMenuModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                        <i class="fas fa-plus"></i> 新規追加
+                    </button>
+                </div>
+                
+                <div id="menu-list" class="space-y-4">
+                    <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ギャラリー管理セクション -->
+        <div id="section-gallery" class="tab-section hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">ギャラリー一覧</h2>
+                    <button onclick="openGalleryModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                        <i class="fas fa-plus"></i> 新規追加
+                    </button>
+                </div>
+                
+                <div id="gallery-list" class="grid md:grid-cols-3 gap-6">
+                    <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- メニュー編集モーダル -->
+    <div id="menu-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold" id="menu-modal-title">メニュー追加</h3>
+                    <button onclick="closeMenuModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form id="menu-form" class="space-y-4">
+                    <input type="hidden" id="menu-id">
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">カテゴリー</label>
+                        <select id="menu-category" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                            <option value="">選択してください</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">商品名</label>
+                        <input type="text" id="menu-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">説明</label>
+                        <textarea id="menu-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">価格（円）</label>
+                        <input type="number" id="menu-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">画像URL</label>
+                        <input type="url" id="menu-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="https://example.com/image.jpg">
+                        <p class="text-xs text-gray-500 mt-1">Unsplash、Pixabay などの画像URLを入力</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">表示順</label>
+                        <input type="number" id="menu-display-order" value="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="menu-visible" checked class="w-5 h-5 text-amber-600">
+                        <label class="ml-2 font-bold">表示する</label>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeMenuModal()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                            キャンセル
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ギャラリー編集モーダル -->
+    <div id="gallery-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold" id="gallery-modal-title">画像追加</h3>
+                    <button onclick="closeGalleryModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form id="gallery-form" class="space-y-4">
+                    <input type="hidden" id="gallery-id">
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">タイトル</label>
+                        <input type="text" id="gallery-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">説明</label>
+                        <textarea id="gallery-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">画像URL</label>
+                        <input type="url" id="gallery-image-url" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="https://example.com/image.jpg">
+                        <p class="text-xs text-gray-500 mt-1">Unsplash、Pixabay などの画像URLを入力</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">表示順</label>
+                        <input type="number" id="gallery-display-order" value="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="gallery-visible" checked class="w-5 h-5 text-amber-600">
+                        <label class="ml-2 font-bold">表示する</label>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeGalleryModal()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                            キャンセル
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+      let categories = []
+      let currentEditingMenuId = null
+      let currentEditingGalleryId = null
+      
+      // タブ切り替え
+      function switchTab(tab) {
+        document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'))
+        document.querySelectorAll('[id^="tab-"]').forEach(el => {
+          el.classList.remove('border-amber-600', 'text-amber-600')
+          el.classList.add('border-transparent')
+        })
+        
+        document.getElementById(`section-${tab}`).classList.remove('hidden')
+        document.getElementById(`tab-${tab}`).classList.add('border-amber-600', 'text-amber-600')
+      }
+      
+      // メニューカテゴリーの読み込み
+      async function loadCategories() {
+        try {
+          const response = await axios.get('/api/menu-categories')
+          categories = response.data
+          
+          const select = document.getElementById('menu-category')
+          select.innerHTML = '<option value="">選択してください</option>' +
+            categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('')
+        } catch (error) {
+          console.error('Failed to load categories:', error)
+        }
+      }
+      
+      // メニュー一覧の読み込み
+      async function loadMenuItems() {
+        try {
+          const response = await axios.get('/api/admin/menu-items')
+          const items = response.data
+          
+          const groupedByCategory = {}
+          items.forEach(item => {
+            if (!groupedByCategory[item.category_name]) {
+              groupedByCategory[item.category_name] = []
+            }
+            groupedByCategory[item.category_name].push(item)
+          })
+          
+          document.getElementById('menu-list').innerHTML = Object.keys(groupedByCategory).map(categoryName => `
+            <div class="border-l-4 border-amber-600 pl-4 mb-6">
+              <h3 class="text-xl font-bold mb-4">${categoryName}</h3>
+              <div class="space-y-2">
+                ${groupedByCategory[categoryName].map(item => `
+                  <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center space-x-4 flex-1">
+                      <img src="${item.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=100'}" 
+                           alt="${item.name}" 
+                           class="w-16 h-16 object-cover rounded">
+                      <div class="flex-1">
+                        <div class="font-bold">${item.name}</div>
+                        <div class="text-sm text-gray-600">${item.description || ''}</div>
+                        <div class="text-amber-600 font-bold">¥${(item.price || 0).toLocaleString()}</div>
+                      </div>
+                      <div class="text-sm text-gray-500">
+                        ${item.is_visible ? '<span class="text-green-600">✓ 表示中</span>' : '<span class="text-gray-400">非表示</span>'}
+                      </div>
+                    </div>
+                    <div class="flex space-x-2">
+                      <button onclick="editMenuItem(${item.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button onclick="deleteMenuItem(${item.id})" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')
+        } catch (error) {
+          console.error('Failed to load menu items:', error)
+        }
+      }
+      
+      // メニュー編集モーダルを開く
+      function openMenuModal(item = null) {
+        currentEditingMenuId = item ? item.id : null
+        document.getElementById('menu-modal-title').textContent = item ? 'メニュー編集' : 'メニュー追加'
+        
+        if (item) {
+          document.getElementById('menu-id').value = item.id
+          document.getElementById('menu-category').value = item.category_id
+          document.getElementById('menu-name').value = item.name
+          document.getElementById('menu-description').value = item.description || ''
+          document.getElementById('menu-price').value = item.price || ''
+          document.getElementById('menu-image-url').value = item.image_url || ''
+          document.getElementById('menu-display-order').value = item.display_order || 0
+          document.getElementById('menu-visible').checked = item.is_visible === 1
+        } else {
+          document.getElementById('menu-form').reset()
+        }
+        
+        document.getElementById('menu-modal').classList.add('active')
+      }
+      
+      function closeMenuModal() {
+        document.getElementById('menu-modal').classList.remove('active')
+      }
+      
+      // メニュー編集
+      async function editMenuItem(id) {
+        try {
+          const response = await axios.get('/api/admin/menu-items')
+          const item = response.data.find(i => i.id === id)
+          if (item) {
+            openMenuModal(item)
+          }
+        } catch (error) {
+          console.error('Failed to load menu item:', error)
+        }
+      }
+      
+      // メニュー削除
+      async function deleteMenuItem(id) {
+        if (!confirm('本当に削除しますか？')) return
+        
+        try {
+          await axios.delete(`/api/admin/menu-items/${id}`)
+          alert('削除しました')
+          loadMenuItems()
+        } catch (error) {
+          console.error('Failed to delete menu item:', error)
+          alert('削除に失敗しました')
+        }
+      }
+      
+      // メニューフォーム送信
+      document.getElementById('menu-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        
+        const data = {
+          category_id: parseInt(document.getElementById('menu-category').value),
+          name: document.getElementById('menu-name').value,
+          description: document.getElementById('menu-description').value,
+          price: parseInt(document.getElementById('menu-price').value) || null,
+          image_url: document.getElementById('menu-image-url').value || null,
+          display_order: parseInt(document.getElementById('menu-display-order').value) || 0,
+          is_visible: document.getElementById('menu-visible').checked ? 1 : 0
+        }
+        
+        try {
+          if (currentEditingMenuId) {
+            await axios.put(`/api/admin/menu-items/${currentEditingMenuId}`, data)
+            alert('更新しました')
+          } else {
+            await axios.post('/api/admin/menu-items', data)
+            alert('追加しました')
+          }
+          
+          closeMenuModal()
+          loadMenuItems()
+        } catch (error) {
+          console.error('Failed to save menu item:', error)
+          alert('保存に失敗しました')
+        }
+      })
+      
+      // ギャラリー一覧の読み込み
+      async function loadGalleryImages() {
+        try {
+          const response = await axios.get('/api/admin/gallery-images')
+          const images = response.data
+          
+          document.getElementById('gallery-list').innerHTML = images.map(image => `
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div class="h-48 bg-gray-200">
+                <img src="${image.image_url}" alt="${image.title || ''}" class="w-full h-full object-cover">
+              </div>
+              <div class="p-4">
+                <h3 class="font-bold mb-2">${image.title || '無題'}</h3>
+                <p class="text-sm text-gray-600 mb-4">${image.description || ''}</p>
+                <div class="text-sm text-gray-500 mb-4">
+                  ${image.is_visible ? '<span class="text-green-600">✓ 表示中</span>' : '<span class="text-gray-400">非表示</span>'}
+                </div>
+                <div class="flex space-x-2">
+                  <button onclick="editGalleryImage(${image.id})" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition">
+                    <i class="fas fa-edit"></i> 編集
+                  </button>
+                  <button onclick="deleteGalleryImage(${image.id})" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition">
+                    <i class="fas fa-trash"></i> 削除
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('')
+        } catch (error) {
+          console.error('Failed to load gallery images:', error)
+        }
+      }
+      
+      // ギャラリー編集モーダルを開く
+      function openGalleryModal(image = null) {
+        currentEditingGalleryId = image ? image.id : null
+        document.getElementById('gallery-modal-title').textContent = image ? '画像編集' : '画像追加'
+        
+        if (image) {
+          document.getElementById('gallery-id').value = image.id
+          document.getElementById('gallery-title').value = image.title || ''
+          document.getElementById('gallery-description').value = image.description || ''
+          document.getElementById('gallery-image-url').value = image.image_url
+          document.getElementById('gallery-display-order').value = image.display_order || 0
+          document.getElementById('gallery-visible').checked = image.is_visible === 1
+        } else {
+          document.getElementById('gallery-form').reset()
+        }
+        
+        document.getElementById('gallery-modal').classList.add('active')
+      }
+      
+      function closeGalleryModal() {
+        document.getElementById('gallery-modal').classList.remove('active')
+      }
+      
+      // ギャラリー編集
+      async function editGalleryImage(id) {
+        try {
+          const response = await axios.get('/api/admin/gallery-images')
+          const image = response.data.find(i => i.id === id)
+          if (image) {
+            openGalleryModal(image)
+          }
+        } catch (error) {
+          console.error('Failed to load gallery image:', error)
+        }
+      }
+      
+      // ギャラリー削除
+      async function deleteGalleryImage(id) {
+        if (!confirm('本当に削除しますか？')) return
+        
+        try {
+          await axios.delete(`/api/admin/gallery-images/${id}`)
+          alert('削除しました')
+          loadGalleryImages()
+        } catch (error) {
+          console.error('Failed to delete gallery image:', error)
+          alert('削除に失敗しました')
+        }
+      }
+      
+      // ギャラリーフォーム送信
+      document.getElementById('gallery-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        
+        const data = {
+          title: document.getElementById('gallery-title').value,
+          description: document.getElementById('gallery-description').value,
+          image_url: document.getElementById('gallery-image-url').value,
+          display_order: parseInt(document.getElementById('gallery-display-order').value) || 0,
+          is_visible: document.getElementById('gallery-visible').checked ? 1 : 0
+        }
+        
+        try {
+          if (currentEditingGalleryId) {
+            await axios.put(`/api/admin/gallery-images/${currentEditingGalleryId}`, data)
+            alert('更新しました')
+          } else {
+            await axios.post('/api/admin/gallery-images', data)
+            alert('追加しました')
+          }
+          
+          closeGalleryModal()
+          loadGalleryImages()
+        } catch (error) {
+          console.error('Failed to save gallery image:', error)
+          alert('保存に失敗しました')
+        }
+      })
+      
+      // 初期化
+      document.addEventListener('DOMContentLoaded', () => {
+        loadCategories()
+        loadMenuItems()
+        loadGalleryImages()
+      })
+    </script>
+</body>
+</html>
