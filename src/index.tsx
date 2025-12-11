@@ -476,7 +476,7 @@ app.get('/', (c) => {
                     </a>
                     
                     <a href="/commitment" class="card-link">
-                        <img src="https://www.genspark.ai/api/files/s/g8geN7wA" 
+                        <img src="/static/private-room.jpg" 
                              alt="個室空間" 
                              class="card-image">
                         <div class="card-content">
@@ -1510,7 +1510,7 @@ app.get('/commitment', (c) => {
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="https://www.genspark.ai/api/files/s/g8geN7wA" 
+                        <img src="/static/private-room.jpg" 
                              alt="個室空間" 
                              class="commitment-image">
                     </div>
