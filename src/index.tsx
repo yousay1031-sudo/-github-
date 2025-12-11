@@ -342,6 +342,89 @@ app.get('/', (c) => {
             background: #d4af37;
             margin: 2rem auto;
           }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
+          }
         </style>
     </head>
     <body class="bg-dark">
@@ -355,6 +438,7 @@ app.get('/', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
@@ -366,9 +450,26 @@ app.get('/', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヒーローセクション -->
         <div class="hero-section">
@@ -551,6 +652,14 @@ app.get('/', (c) => {
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script>
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
+          
           // 店舗情報の読み込み
           async function loadStoreInfo() {
             try {
@@ -712,6 +821,89 @@ app.get('/menu', (c) => {
             margin: 2rem auto;
           }
           
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
+          }
+          
           .category-header {
             position: relative;
             margin-bottom: 4rem;
@@ -818,6 +1010,7 @@ app.get('/menu', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
@@ -829,9 +1022,26 @@ app.get('/menu', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヘッダー -->
         <div class="pt-40 pb-20 bg-dark-alt">
@@ -1027,6 +1237,7 @@ app.get('/access', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
@@ -1038,9 +1249,26 @@ app.get('/access', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヘッダー -->
         <div class="pt-40 pb-20 bg-dark-alt">
@@ -1149,6 +1377,14 @@ app.get('/access', (c) => {
           }
           
           document.addEventListener('DOMContentLoaded', loadStoreInfo)
+          
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
         </script>
     </body>
     </html>
@@ -1287,6 +1523,7 @@ app.get('/commitment', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-yellow-500">こだわり</a>
@@ -1298,9 +1535,26 @@ app.get('/commitment', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヘッダー -->
         <div class="pt-40 pb-20 bg-dark-alt">
@@ -1435,6 +1689,16 @@ app.get('/commitment', (c) => {
                 </div>
             </div>
         </footer>
+        
+        <script>
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
+        </script>
     </body>
     </html>
   `)
@@ -1613,6 +1877,7 @@ app.get('/drink', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
@@ -1624,9 +1889,26 @@ app.get('/drink', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヘッダー -->
         <div class="pt-40 pb-20 bg-dark-alt">
@@ -2279,6 +2561,16 @@ app.get('/drink', (c) => {
                 </div>
             </div>
         </footer>
+        
+        <script>
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
+        </script>
     </body>
     </html>
   `)
@@ -2463,6 +2755,7 @@ app.get('/course', (c) => {
                           <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
                         </a>
                     </div>
+                    <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
@@ -2474,9 +2767,26 @@ app.get('/course', (c) => {
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">ホーム</a>
+            <a href="/commitment">こだわり</a>
+            <a href="/menu">メニュー</a>
+            <a href="/drink">ドリンク</a>
+            <a href="/course">コース</a>
+            <a href="/access">アクセス</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
 
         <!-- ヘッダー -->
         <div class="pt-40 pb-20 bg-dark-alt">
@@ -2728,6 +3038,16 @@ app.get('/course', (c) => {
                 </div>
             </div>
         </footer>
+        
+        <script>
+          // ハンバーガーメニューの切り替え
+          function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            const hamburger = document.querySelector('.hamburger')
+            menu.classList.toggle('active')
+            hamburger.classList.toggle('active')
+          }
+        </script>
     </body>
     </html>
   `)
