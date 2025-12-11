@@ -115,6 +115,21 @@ app.delete('/api/admin/menu-items/:id', async (c) => {
   return c.json({ success: true })
 })
 
+// カテゴリー画像更新
+app.put('/api/admin/menu-categories/:id', async (c) => {
+  const { DB } = c.env
+  const id = c.req.param('id')
+  const data = await c.req.json()
+  
+  await DB.prepare(`
+    UPDATE menu_categories 
+    SET image_url = ?
+    WHERE id = ?
+  `).bind(data.image_url || null, id).run()
+  
+  return c.json({ success: true })
+})
+
 // ギャラリー画像一覧取得
 app.get('/api/gallery-images', async (c) => {
   const { DB } = c.env
