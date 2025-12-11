@@ -130,77 +130,6 @@ app.put('/api/admin/menu-categories/:id', async (c) => {
   return c.json({ success: true })
 })
 
-// ギャラリー画像一覧取得
-app.get('/api/gallery-images', async (c) => {
-  const { DB } = c.env
-  const { results } = await DB.prepare(`
-    SELECT * FROM gallery_images 
-    WHERE is_visible = 1 
-    ORDER BY display_order ASC
-  `).all()
-  return c.json(results)
-})
-
-// 全ギャラリー画像取得（管理画面用）
-app.get('/api/admin/gallery-images', async (c) => {
-  const { DB } = c.env
-  const { results } = await DB.prepare(`
-    SELECT * FROM gallery_images 
-    ORDER BY display_order ASC
-  `).all()
-  return c.json(results)
-})
-
-// ギャラリー画像作成
-app.post('/api/admin/gallery-images', async (c) => {
-  const { DB } = c.env
-  const data = await c.req.json()
-  
-  const result = await DB.prepare(`
-    INSERT INTO gallery_images (title, description, image_url, display_order, is_visible)
-    VALUES (?, ?, ?, ?, ?)
-  `).bind(
-    data.title || null,
-    data.description || null,
-    data.image_url,
-    data.display_order || 0,
-    data.is_visible !== undefined ? data.is_visible : 1
-  ).run()
-  
-  return c.json({ success: true, id: result.meta.last_row_id })
-})
-
-// ギャラリー画像更新
-app.put('/api/admin/gallery-images/:id', async (c) => {
-  const { DB } = c.env
-  const id = c.req.param('id')
-  const data = await c.req.json()
-  
-  await DB.prepare(`
-    UPDATE gallery_images 
-    SET title = ?, description = ?, image_url = ?, display_order = ?, is_visible = ?
-    WHERE id = ?
-  `).bind(
-    data.title || null,
-    data.description || null,
-    data.image_url,
-    data.display_order || 0,
-    data.is_visible !== undefined ? data.is_visible : 1,
-    id
-  ).run()
-  
-  return c.json({ success: true })
-})
-
-// ギャラリー画像削除
-app.delete('/api/admin/gallery-images/:id', async (c) => {
-  const { DB } = c.env
-  const id = c.req.param('id')
-  
-  await DB.prepare(`DELETE FROM gallery_images WHERE id = ?`).bind(id).run()
-  return c.json({ success: true })
-})
-
 // 店舗情報取得
 app.get('/api/store-info', async (c) => {
   const { DB } = c.env
@@ -421,7 +350,8 @@ app.get('/', (c) => {
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -845,7 +775,8 @@ app.get('/menu', (c) => {
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
                         <a href="/menu" class="nav-link text-yellow-500">メニュー</a>
-                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -953,205 +884,7 @@ app.get('/menu', (c) => {
   `)
 })
 
-// ギャラリーページ
-app.get('/gallery', (c) => {
-  return c.html(`
-    <!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ギャラリー | TOKACHI YAKINIKU KARIN</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.8;
-          }
-          
-          h1, h2, h3, h4 {
-            font-family: 'Noto Serif JP', serif;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-          }
-          
-          .bg-dark {
-            background: #0a0a0a;
-          }
-          
-          .bg-dark-alt {
-            background: #141414;
-          }
-          
-          nav {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-          }
-          
-          .nav-link {
-            position: relative;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            transition: color 0.3s ease;
-          }
-          
-          .nav-link:after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #d4af37;
-            transition: width 0.3s ease;
-          }
-          
-          .nav-link:hover:after {
-            width: 100%;
-          }
-          
-          .section-title {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-          }
-          
-          .divider {
-            width: 60px;
-            height: 1px;
-            background: #d4af37;
-            margin: 2rem auto;
-          }
-          
-          .gallery-item {
-            position: relative;
-            overflow: hidden;
-            background: #1a1a1a;
-            transition: all 0.4s ease;
-          }
-          
-          .gallery-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-          }
-          
-          .gallery-item:hover img {
-            transform: scale(1.1);
-          }
-          
-          .gallery-item img {
-            transition: transform 0.6s ease;
-          }
-        </style>
-    </head>
-    <body class="bg-dark">
-        <!-- ナビゲーション -->
-        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="flex justify-between items-center h-24">
-                    <div class="flex-shrink-0">
-                        <a href="/" class="block">
-                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
-                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
-                        </a>
-                    </div>
-                    <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/gallery" class="nav-link text-yellow-500">ギャラリー</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
-                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
-                          <i class="fas fa-cog text-sm"></i> 管理
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- ヘッダー -->
-        <div class="pt-40 pb-20 bg-dark-alt">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
-                <h1 class="section-title text-white text-4xl mb-6">Gallery</h1>
-                <div class="divider"></div>
-                <p class="text-gray-400 text-sm tracking-wider">当店の雰囲気とお料理</p>
-            </div>
-        </div>
-
-        <!-- ギャラリー -->
-        <section class="py-20 bg-dark">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div id="gallery-content" class="grid md:grid-cols-3 gap-8">
-                    <!-- JavaScript で動的に読み込まれます -->
-                </div>
-            </div>
-        </section>
-
-        <!-- フッター -->
-        <footer class="bg-dark text-white py-16 border-t border-gray-800">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="text-center">
-                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
-                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
-                    <div class="divider"></div>
-                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
-                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
-                    <div class="flex justify-center space-x-8 mt-8">
-                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script>
-          async function loadGallery() {
-            try {
-              const response = await axios.get('/api/gallery-images')
-              const images = response.data
-              
-              document.getElementById('gallery-content').innerHTML = images.map(image => \`
-                <div class="gallery-item">
-                  <div class="h-80 overflow-hidden">
-                    <img src="\${image.image_url}" 
-                         alt="\${image.title || ''}" 
-                         class="w-full h-full object-cover"
-                         style="filter: brightness(0.9) contrast(1.1);">
-                  </div>
-                  <div class="p-6">
-                    <h3 class="text-lg font-light tracking-wide text-white mb-2">\${image.title || ''}</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">\${image.description || ''}</p>
-                  </div>
-                </div>
-              \`).join('')
-            } catch (error) {
-              console.error('Failed to load gallery:', error)
-            }
-          }
-          
-          document.addEventListener('DOMContentLoaded', loadGallery)
-        </script>
-    </body>
-    </html>
-  `)
-})
-
+// アクセスページ
 // アクセスページ
 app.get('/access', (c) => {
   return c.html(`
@@ -1251,7 +984,8 @@ app.get('/access', (c) => {
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
                         <a href="/access" class="nav-link text-yellow-500">アクセス</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -1510,7 +1244,8 @@ app.get('/commitment', (c) => {
                         <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
                         <a href="/commitment" class="nav-link text-yellow-500">こだわり</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -1634,6 +1369,1299 @@ app.get('/commitment', (c) => {
                 </div>
             </div>
         </section>
+
+        <!-- フッター -->
+        <footer class="bg-dark text-white py-16 border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
+                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
+                    <div class="divider"></div>
+                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
+                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
+                    <div class="flex justify-center space-x-8 mt-8">
+                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+    </html>
+  `)
+})
+
+// ドリンクページ
+app.get('/drink', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ドリンク | TOKACHI YAKINIKU KARIN</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
+          }
+          
+          .bg-dark {
+            background: #0a0a0a;
+          }
+          
+          .bg-dark-alt {
+            background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+          }
+          
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+          }
+          
+          .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 2rem auto;
+          }
+          
+          .drink-category {
+            margin-bottom: 4rem;
+          }
+          
+          .category-header {
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            position: relative;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+          }
+          
+          .category-header h2 {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-align: center;
+          }
+          
+          .category-header .subtitle {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+          }
+          
+          .drink-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+          }
+          
+          @media (max-width: 768px) {
+            .drink-grid {
+              grid-template-columns: 1fr;
+            }
+          }
+          
+          .drink-item {
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 1.5rem;
+          }
+          
+          .drink-name {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+          }
+          
+          .drink-name-en {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+          }
+          
+          .drink-price {
+            color: #d4af37;
+            font-weight: 500;
+            font-size: 1.1rem;
+          }
+          
+          .subcategory-title {
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+          }
+          
+          .note-text {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 2px solid #d4af37;
+          }
+        </style>
+    </head>
+    <body class="bg-dark">
+        <!-- ナビゲーション -->
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="block">
+                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
+                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
+                        </a>
+                    </div>
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
+                        <a href="/drink" class="nav-link text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ヘッダー -->
+        <div class="pt-40 pb-20 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <h1 class="section-title text-white text-4xl mb-6">Drink</h1>
+                <div class="divider"></div>
+                <p class="text-gray-400 text-sm tracking-wider">ドリンクメニュー</p>
+            </div>
+        </div>
+
+        <!-- ドリンクメニュー -->
+        <div class="py-16">
+            <!-- おすすめ -->
+            <div class="drink-category">
+                <div class="category-header" style="background-image: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200');">
+                    <div>
+                        <h2>おすすめ</h2>
+                        <div class="subtitle">RECOMMENDED</div>
+                    </div>
+                </div>
+                <h3 class="subcategory-title text-center">美炙樂おすすめ</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">琉球の酒 ハブ源酒（1杯）</div>
+                        <div class="drink-name-en">Habu gensyu (glass)</div>
+                        <div class="drink-price">550円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">獺祭 磨き三割九部（グラス）</div>
+                        <div class="drink-name-en">Dassai migaki 39% (glass)</div>
+                        <div class="drink-price">1,100円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">獺祭 磨き50%（グラス）</div>
+                        <div class="drink-name-en">Dassai migaki 50% (glass)</div>
+                        <div class="drink-price">880円</div>
+                    </div>
+                </div>
+                <div class="note-text max-w-1200px mx-auto">
+                    ※その他、各地の地酒、月替りのおすすめの地酒もございます。詳しくは店内メニューをご覧ください。
+                </div>
+            </div>
+
+            <!-- ビール・ウイスキー -->
+            <div class="drink-category">
+                <div class="category-header" style="background-image: url('https://images.unsplash.com/photo-1608270586620-248524c67de9?w=1200');">
+                    <div>
+                        <h2>ビール・ウイスキー</h2>
+                        <div class="subtitle">BEER & WHISKY</div>
+                    </div>
+                </div>
+                
+                <h3 class="subcategory-title text-center">ビール</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">アサヒスーパードライ（中ジョッキ）</div>
+                        <div class="drink-name-en">Asahi draft beer</div>
+                        <div class="drink-price">693円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">アサヒスーパードライ（グラス）</div>
+                        <div class="drink-name-en">Asahi draft beer glass</div>
+                        <div class="drink-price">572円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">キリンクラシックラガー（中瓶）</div>
+                        <div class="drink-name-en">Kirin bottled beer</div>
+                        <div class="drink-price">715円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">アサヒスーパードライ（中瓶）</div>
+                        <div class="drink-name-en">Asahi bottled beer</div>
+                        <div class="drink-price">715円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">アサヒドライゼロ（Alc0.00％）（小瓶）</div>
+                        <div class="drink-name-en">Non-alcohol beer</div>
+                        <div class="drink-price">550円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">ウイスキー</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">知多（グラス）</div>
+                        <div class="drink-name-en">Chita glass</div>
+                        <div class="drink-price">858円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">知多（700mlボトル）</div>
+                        <div class="drink-name-en">Chita 700ml bottle</div>
+                        <div class="drink-price">9,680円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">余市（グラス）</div>
+                        <div class="drink-name-en">Yoichi glass</div>
+                        <div class="drink-price">858円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">余市（700mlボトル）</div>
+                        <div class="drink-name-en">Yoichi 700ml bottle</div>
+                        <div class="drink-price">9,680円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">ハイボール</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">余市スタイリッシュハイボール</div>
+                        <div class="drink-name-en">Yoichi stylish highball</div>
+                        <div class="drink-price">638円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">（氷点下）ブラックニッカフリージングハイボール</div>
+                        <div class="drink-name-en">Black Nikka highball</div>
+                        <div class="drink-price">550円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">余市ハイボール</div>
+                        <div class="drink-name-en">Yoichi highball</div>
+                        <div class="drink-price">858円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">コーラハイボール</div>
+                        <div class="drink-name-en">Coke highball</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">トニックハイボール</div>
+                        <div class="drink-name-en">Tonic highball</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ジンジャーハイボール</div>
+                        <div class="drink-name-en">Ginger highball</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">柚子ハイボール</div>
+                        <div class="drink-name-en">Yuzu highball</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日本酒・焼酎 -->
+            <div class="drink-category">
+                <div class="category-header" style="background-image: url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200');">
+                    <div>
+                        <h2>日本酒・焼酎</h2>
+                        <div class="subtitle">JAPANESE SAKE & SHOCHU</div>
+                    </div>
+                </div>
+                
+                <h3 class="subcategory-title text-center">焼酎（麦）</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">百年の孤独（宮崎）（グラス）</div>
+                        <div class="drink-name-en">Hyakune-no-kodoku glass</div>
+                        <div class="drink-price">1,320円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">耶馬美人（大分）（グラス）</div>
+                        <div class="drink-name-en">Yaba-bijin glass</div>
+                        <div class="drink-price">858円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">山猿（宮崎）（グラス）</div>
+                        <div class="drink-name-en">Yama-zaru glass</div>
+                        <div class="drink-price">638円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">白水 度数25°（グラス）</div>
+                        <div class="drink-name-en">Haku-sui glass</div>
+                        <div class="drink-price">495円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">白水 度数25°（900mlボトル）</div>
+                        <div class="drink-name-en">Haku-sui 900ml bottle</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">栗野屋 度数25°（グラス）</div>
+                        <div class="drink-name-en">Kuri-no-ya glass</div>
+                        <div class="drink-price">495円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">栗野屋 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Kuri-no-ya 720ml bottle</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">中々 度数25°（グラス）</div>
+                        <div class="drink-name-en">Naka-naka glass</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">中々 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Naka-naka 720ml bottle</div>
+                        <div class="drink-price">3,300円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">焼酎（芋）</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">魔王（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Maou glass</div>
+                        <div class="drink-price">1,320円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">伊佐美（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Isami glass</div>
+                        <div class="drink-price">968円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">佐藤 黒ラベル（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Sato glass</div>
+                        <div class="drink-price">968円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">茜 霧島（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Akane-kirisima glass</div>
+                        <div class="drink-price">748円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">海（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Umi glass</div>
+                        <div class="drink-price">638円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">池の露（熊本）（グラス）</div>
+                        <div class="drink-name-en">Ike-no-kiri glass</div>
+                        <div class="drink-price">660円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">もぐら（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Mogura glass</div>
+                        <div class="drink-price">638円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">㐂六（宮崎）（グラス）</div>
+                        <div class="drink-name-en">Kiroku glass</div>
+                        <div class="drink-price">572円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">黒霧島 度数25°（グラス）</div>
+                        <div class="drink-name-en">Kuro-kirishima glass</div>
+                        <div class="drink-price">495円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">黒霧島 度数25°（900mlボトル）</div>
+                        <div class="drink-name-en">Kuro-kirishima 900ml bottle</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">千亀女 度数25°（グラス）</div>
+                        <div class="drink-name-en">Sen-kame-jo glass</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">千亀女 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Sen-kame-jo 720ml bottle</div>
+                        <div class="drink-price">3,300円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">山ねこ 度数25°（グラス）</div>
+                        <div class="drink-name-en">Yama-neko glass</div>
+                        <div class="drink-price">572円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">山ねこ 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Yama-neko 720ml bottle</div>
+                        <div class="drink-price">3,850円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">焼酎（米・そば・黒糖）</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">吟球麿 堤 度数25°（グラス）</div>
+                        <div class="drink-name-en">Gin-ku-ma glass</div>
+                        <div class="drink-price">495円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">吟球麿 堤 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Gin-ku-ma 720ml bottle</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">金砂郷 度数25°（グラス）</div>
+                        <div class="drink-name-en">Kana-sago glass</div>
+                        <div class="drink-price">495円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">金砂郷 度数25°（720mlボトル）</div>
+                        <div class="drink-name-en">Kana-sago 720ml bottle</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">竜宮（鹿児島）（グラス）</div>
+                        <div class="drink-name-en">Ryu-gyu glass</div>
+                        <div class="drink-price">858円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">日本酒</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">水戸 からくち一品【冷・燗】（辛口）（一合）</div>
+                        <div class="drink-name-en">Karakuchi-ippin 180ml</div>
+                        <div class="drink-price">550円</div>
+                    </div>
+                </div>
+                <div class="note-text max-w-1200px mx-auto">
+                    ※本日のオススメ地酒　店内にて別紙参照してください。全国各地のレア日本酒もあり！
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">果実酒</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">永昌源 杏露酒</div>
+                        <div class="drink-name-en">Anzu wine</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">茨城 合わせ柚子酒</div>
+                        <div class="drink-name-en">Yuzu wine</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">茨城 水戸梅酒</div>
+                        <div class="drink-name-en">Mito plum wine</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">茨城 百年梅酒</div>
+                        <div class="drink-name-en">100years plum wine</div>
+                        <div class="drink-price">528円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">栃木 鳳凰美田秘蔵梅酒</div>
+                        <div class="drink-name-en">Houou-biden plum wine</div>
+                        <div class="drink-price">605円</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ワイン・シャンパーニュ -->
+            <div class="drink-category">
+                <div class="category-header" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200');">
+                    <div>
+                        <h2>ワイン・シャンパーニュ</h2>
+                        <div class="subtitle">WINE & CHAMPAGNE</div>
+                    </div>
+                </div>
+                
+                <h3 class="subcategory-title text-center">ワイン</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">グラスワイン（赤・白）</div>
+                        <div class="drink-name-en">Glass wine</div>
+                        <div class="drink-price">550円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ドゥルト・ボワ・ミライユ ルージュ</div>
+                        <div class="drink-name-en">Bois mirail rouge</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ドゥルト・ボワ・ミライユ ブラン</div>
+                        <div class="drink-name-en">Bois mirail blanc</div>
+                        <div class="drink-price">2,750円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">トラピチェ オークカスク マルベック2012</div>
+                        <div class="drink-name-en">Trapiche oak cask malbec2012</div>
+                        <div class="drink-price">4,950円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">トラピチェ オークカスク シャルドネ2012</div>
+                        <div class="drink-name-en">Trapiche oak cask Chardonnay2012</div>
+                        <div class="drink-price">4,950円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">バルターリ キャンティ</div>
+                        <div class="drink-name-en">Barutari chianti</div>
+                        <div class="drink-price">5,280円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">シャトー・メルシャン 山梨勝沼甲州2013</div>
+                        <div class="drink-name-en">Chateau Mercian yamanashi-katsunuma-kousyu2013</div>
+                        <div class="drink-price">5,280円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">マルティーニ・アスティ・スプマンテ（ハーフボトル）</div>
+                        <div class="drink-name-en">Martini asti spumante half</div>
+                        <div class="drink-price">2,079円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">マルティーニ・アスティ・スプマンテ（フルボトル）</div>
+                        <div class="drink-name-en">Martini asti spumante bottle</div>
+                        <div class="drink-price">3,300円</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">シャンパーニュ</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">コント・レミィ・ヴァリクール ブリュット【フランス】（フルボトル）</div>
+                        <div class="drink-name-en">Comte remy de valicourt brut</div>
+                        <div class="drink-price">11,000円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">モエ・エ・シャンドン（白）【フランス】（フルボトル）</div>
+                        <div class="drink-name-en">Moët & Chandon</div>
+                        <div class="drink-price">16,500円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ヴーヴ クリコ イエローラベル ブリュット【フランス】（フルボトル）</div>
+                        <div class="drink-name-en">Veuve clicquot yellow label brut</div>
+                        <div class="drink-price">22,000円</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ドン・ペリニヨン（白）【フランス】（フルボトル）</div>
+                        <div class="drink-name-en">Dom pérignon</div>
+                        <div class="drink-price">44,000円</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- カクテル・サワー -->
+            <div class="drink-category">
+                <div class="category-header" style="background-image: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200');">
+                    <div>
+                        <h2>カクテル・サワー</h2>
+                        <div class="subtitle">COCKTAIL & SOUR</div>
+                    </div>
+                </div>
+                
+                <h3 class="subcategory-title text-center">カクテル</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">モスコミュール</div>
+                        <div class="drink-name-en">Moscow Mule</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">スクリュードライバー</div>
+                        <div class="drink-name-en">Screwdriver</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ソルティドック</div>
+                        <div class="drink-name-en">Salty dog</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ジントニック</div>
+                        <div class="drink-name-en">Gin and tonic</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ピーチソーダ</div>
+                        <div class="drink-name-en">Peach and soda</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ファジーネーブル</div>
+                        <div class="drink-name-en">Fuzzy navel</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カシスソーダ</div>
+                        <div class="drink-name-en">Cassis and soda</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カシスオレンジ</div>
+                        <div class="drink-name-en">Cassis and orange</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カシスウーロン</div>
+                        <div class="drink-name-en">Cassis and oolong tea</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">レゲエパンチ</div>
+                        <div class="drink-name-en">Reggae punch</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">サワー</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">生レモンサワー</div>
+                        <div class="drink-name-en">Fresh lemon sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">生グレープフルーツサワー</div>
+                        <div class="drink-name-en">Fresh grapefruit sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ライムサワー</div>
+                        <div class="drink-name-en">Rhyme sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">シークヮーサーサワー</div>
+                        <div class="drink-name-en">Shikuwasa sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カシスサワー</div>
+                        <div class="drink-name-en">Cassis sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">レモンサワー</div>
+                        <div class="drink-name-en">Lemon sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">グレープフルーツサワー</div>
+                        <div class="drink-name-en">Grapefruit sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">梅サワー</div>
+                        <div class="drink-name-en">Ume sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">柚子サワー</div>
+                        <div class="drink-name-en">Yuzu sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">巨峰サワー</div>
+                        <div class="drink-name-en">Gigantic peak sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カルピスサワー</div>
+                        <div class="drink-name-en">Calpis sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">緑茶ハイ</div>
+                        <div class="drink-name-en">Japanese tea sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ウーロンハイ</div>
+                        <div class="drink-name-en">Oolong tea sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">黒ウーロンハイ</div>
+                        <div class="drink-name-en">Black oolong tea sour</div>
+                        <div class="drink-price">550円～</div>
+                    </div>
+                </div>
+
+                <h3 class="subcategory-title text-center mt-16">ソフトドリンク</h3>
+                <div class="drink-grid">
+                    <div class="drink-item">
+                        <div class="drink-name">コカ・コーラ</div>
+                        <div class="drink-name-en">Coca cola</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">メロンソーダ</div>
+                        <div class="drink-name-en">Melon soda</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ジンジャーエール</div>
+                        <div class="drink-name-en">Ginger ale</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">オレンジ100％ジュース</div>
+                        <div class="drink-name-en">Orange juice</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">グレープフルーツ100％ジュース</div>
+                        <div class="drink-name-en">Grapefruit juice</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カルピス</div>
+                        <div class="drink-name-en">Calpis</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">カルピスソーダ</div>
+                        <div class="drink-name-en">Calpis soda</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">アイスウーロン茶</div>
+                        <div class="drink-name-en">Oolong tea</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ホットウーロン茶</div>
+                        <div class="drink-name-en">Hot oolong tea</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">アイスコーヒー</div>
+                        <div class="drink-name-en">Ice coffee</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">ホットコーヒー</div>
+                        <div class="drink-name-en">Hot coffee</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-name">黒ウーロン茶</div>
+                        <div class="drink-name-en">Black oolong tea</div>
+                        <div class="drink-price">352円～</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer class="bg-dark text-white py-16 border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
+                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
+                    <div class="divider"></div>
+                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
+                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
+                    <div class="flex justify-center space-x-8 mt-8">
+                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+    </html>
+  `)
+})
+
+// コースページ
+app.get('/course', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>コース | TOKACHI YAKINIKU KARIN</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
+          }
+          
+          .bg-dark {
+            background: #0a0a0a;
+          }
+          
+          .bg-dark-alt {
+            background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+          }
+          
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+          }
+          
+          .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 2rem auto;
+          }
+          
+          .course-card {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+          }
+          
+          .course-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-5px);
+          }
+          
+          .course-title {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-align: center;
+          }
+          
+          .course-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 2rem;
+            text-align: center;
+          }
+          
+          .course-price {
+            font-size: 1.8rem;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 500;
+          }
+          
+          .course-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .course-menu {
+              grid-template-columns: 1fr;
+            }
+          }
+          
+          .menu-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+          }
+          
+          .menu-item-bullet {
+            color: #d4af37;
+            margin-right: 0.8rem;
+            margin-top: 0.3rem;
+          }
+          
+          .menu-item-content {
+            flex: 1;
+          }
+          
+          .menu-item-name {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 0.3rem;
+          }
+          
+          .menu-item-name-en {
+            font-size: 0.85rem;
+            color: #888;
+          }
+          
+          .note-text {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 2px solid #d4af37;
+            text-align: center;
+          }
+          
+          .special-course {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 26, 26, 0.9) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+          }
+          
+          .special-course:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+          }
+          
+          .course-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+          }
+        </style>
+    </head>
+    <body class="bg-dark">
+        <!-- ナビゲーション -->
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="block">
+                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
+                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
+                        </a>
+                    </div>
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
+                        <a href="/course" class="nav-link text-yellow-500">コース</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ヘッダー -->
+        <div class="pt-40 pb-20 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <h1 class="section-title text-white text-4xl mb-6">Course</h1>
+                <div class="divider"></div>
+                <p class="text-gray-400 text-sm tracking-wider">コースメニュー</p>
+            </div>
+        </div>
+
+        <!-- コースメニュー -->
+        <div class="py-16 max-w-5xl mx-auto px-6 lg:px-8">
+            <!-- 匠コース -->
+            <div class="course-card">
+                <h2 class="course-title">匠コース</h2>
+                <p class="course-subtitle">ご宴会向けプラン　3名様〜承ります</p>
+                <div class="course-price">お一人様 7,500円（税込）</div>
+                
+                <div class="course-menu">
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">キムチ盛り</div>
+                            <div class="menu-item-name-en">Kimuchi</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">ナムル盛り</div>
+                            <div class="menu-item-name-en">Namuru</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">美炙樂サラダ</div>
+                            <div class="menu-item-name-en">Bishara salad</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">常陸牛の握り2種</div>
+                            <div class="menu-item-name-en">Hitachi-beef sushi (2pcs./set)</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上タン塩</div>
+                            <div class="menu-item-name-en">Prime beef tongue</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">車海老</div>
+                            <div class="menu-item-name-en">Japanese tiger prawn</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上カルビ</div>
+                            <div class="menu-item-name-en">Prime kalbi</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上ロース</div>
+                            <div class="menu-item-name-en">Prime loin</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">おまかせホルモンミックス</div>
+                            <div class="menu-item-name-en">Mix horumon</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">本日の究極素材3点盛り</div>
+                            <div class="menu-item-name-en">Assortment of prime 3 kinds</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">幸せの茶漬け</div>
+                            <div class="menu-item-name-en">Ochazuke</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">本日のデザート</div>
+                            <div class="menu-item-name-en">Dessert</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 極コース -->
+            <div class="course-card">
+                <h2 class="course-title">極コース</h2>
+                <p class="course-subtitle">ご宴会向けプラン　3名様〜承ります</p>
+                <div class="course-price">お一人様 9,500円（税込）</div>
+                
+                <div class="course-menu">
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">本日のオードブル</div>
+                            <div class="menu-item-name-en">Hors d'oeuvre</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">キムチ盛り</div>
+                            <div class="menu-item-name-en">Kimuchi</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">美炙樂サラダ</div>
+                            <div class="menu-item-name-en">Bishara salad</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">常陸牛の握り2種</div>
+                            <div class="menu-item-name-en">Hitachi-beef sushi (2pcs./set)</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上タン塩</div>
+                            <div class="menu-item-name-en">Prime beef tongue</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上ハラミ</div>
+                            <div class="menu-item-name-en">Prime harami</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">車海老</div>
+                            <div class="menu-item-name-en">Japanese tiger prawn</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上カルビ</div>
+                            <div class="menu-item-name-en">Prime kalbi</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">上ロース</div>
+                            <div class="menu-item-name-en">Prime loin</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">おまかせホルモンミックス</div>
+                            <div class="menu-item-name-en">Mix horumon</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">本日の究極素材5点盛り</div>
+                            <div class="menu-item-name-en">Assortment of prime 5 kinds</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">お食事</div>
+                            <div class="menu-item-name-en">Meal</div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-bullet">●</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">本日のデザート</div>
+                            <div class="menu-item-name-en">Dessert</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note-text">
+                    ※ご宴会は3名様より承ります。<br>
+                    ※季節や仕入れ状況により内容が異なる場合がございます。<br>
+                    ※宴会ご予約当時のキャンセルにつきましては、お受けできない場合もございます。
+                </div>
+            </div>
+
+            <!-- 2名様限定ディナーコース -->
+            <div class="course-card special-course">
+                <h2 class="course-title">2名様限定ディナーコース</h2>
+                <p class="course-subtitle">クリスマスや誕生日、二人にとっての大切な日をもっと素敵に演出いたします</p>
+                
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1200" alt="Special Dinner" class="course-image">
+                
+                <div class="course-price">
+                    お一人様 10,000円（税込）<br>
+                    <span class="text-xl">または</span><br>
+                    お一人様 15,000円（税込）
+                </div>
+                
+                <div class="note-text">
+                    個室対応。お気軽にお問い合わせください。<br>
+                    ※コースの内容についてはお任せになります。
+                </div>
+            </div>
+        </div>
 
         <!-- フッター -->
         <footer class="bg-dark text-white py-16 border-t border-gray-800">
