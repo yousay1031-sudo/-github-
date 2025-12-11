@@ -654,42 +654,113 @@ app.get('/menu', (c) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           
           body {
             font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
           }
           
           h1, h2, h3, h4 {
             font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            letter-spacing: 0.1em;
           }
           
-          .bg-luxury {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+          .bg-dark {
+            background: #0a0a0a;
+          }
+          
+          .bg-dark-alt {
+            background: #141414;
+          }
+          
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+          
+          .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+          }
+          
+          .nav-link:hover:after {
+            width: 100%;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+          }
+          
+          .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 2rem auto;
           }
           
           .menu-category {
-            border-left: 4px solid #8B4513;
+            border-left: 2px solid #d4af37;
             padding-left: 1.5rem;
+          }
+          
+          .menu-item {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+          }
+          
+          .menu-item:hover {
+            background: #222;
+            border-color: #d4af37;
+            transform: translateX(5px);
           }
         </style>
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-dark">
         <!-- ナビゲーション -->
-        <nav class="bg-luxury text-white shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="text-2xl font-bold tracking-wider">TOKACHI YAKINIKU KARIN</a>
-                        <div class="text-xs text-gray-300 mt-1">トカチ ヤキニク カリン</div>
+                        <a href="/" class="block">
+                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
+                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
+                        </a>
                     </div>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="/" class="hover:text-amber-500 transition">ホーム</a>
-                        <a href="/menu" class="text-amber-500">メニュー</a>
-                        <a href="/gallery" class="hover:text-amber-500 transition">ギャラリー</a>
-                        <a href="/access" class="hover:text-amber-500 transition">アクセス</a>
-                        <a href="/admin" class="hover:text-amber-500 transition">
-                          <i class="fas fa-cog"></i> 管理画面
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
+                        <a href="/menu" class="nav-link text-yellow-500">メニュー</a>
+                        <a href="/gallery" class="nav-link text-white hover:text-yellow-500">ギャラリー</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
                 </div>
@@ -697,16 +768,17 @@ app.get('/menu', (c) => {
         </nav>
 
         <!-- ヘッダー -->
-        <div class="bg-gradient-to-r from-amber-800 to-amber-600 text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-5xl font-bold mb-4">Menu</h1>
-                <p class="text-xl">十勝産の厳選素材を使用した極上の焼肉</p>
+        <div class="pt-40 pb-20 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <h1 class="section-title text-white text-4xl mb-6">Menu</h1>
+                <div class="divider"></div>
+                <p class="text-gray-400 text-sm tracking-wider">十勝産の厳選素材を使用した極上の焼肉</p>
             </div>
         </div>
 
         <!-- メニューコンテンツ -->
-        <section class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="py-20 bg-dark">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div id="menu-content">
                     <!-- JavaScript で動的に読み込まれます -->
                 </div>
@@ -714,14 +786,20 @@ app.get('/menu', (c) => {
         </section>
 
         <!-- フッター -->
-        <footer class="bg-luxury text-white py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer class="bg-dark text-white py-16 border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-4">TOKACHI YAKINIKU KARIN</h3>
-                    <p class="text-gray-300 mb-2">トカチ ヤキニク カリン</p>
-                    <p class="text-gray-400 mb-4">北海道帯広市西一条南8-20-5</p>
-                    <p class="text-gray-400 mb-4">TEL: 050-8883-6929</p>
-                    <p class="text-gray-500 mt-8 text-sm">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
+                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
+                    <div class="divider"></div>
+                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
+                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
+                    <div class="flex justify-center space-x-8 mt-8">
+                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
                 </div>
             </div>
         </footer>
@@ -744,24 +822,25 @@ app.get('/menu', (c) => {
               }))
               
               document.getElementById('menu-content').innerHTML = menuByCategory.map(category => \`
-                <div class="mb-16">
-                  <h2 class="text-3xl font-bold mb-8 menu-category">\${category.name}</h2>
-                  <div class="grid md:grid-cols-2 gap-8">
+                <div class="mb-20">
+                  <h2 class="text-2xl font-light tracking-wider mb-10 menu-category text-white">\${category.name}</h2>
+                  <div class="space-y-6">
                     \${category.items.map(item => \`
-                      <div class="flex bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="w-32 h-32 flex-shrink-0 bg-gray-200">
+                      <div class="menu-item flex overflow-hidden">
+                        <div class="w-40 h-32 flex-shrink-0 bg-gray-900 overflow-hidden">
                           <img src="\${item.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=400'}" 
                                alt="\${item.name}" 
-                               class="w-full h-full object-cover">
+                               class="w-full h-full object-cover"
+                               style="filter: brightness(0.9) contrast(1.1);">
                         </div>
-                        <div class="p-4 flex-1">
-                          <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold">\${item.name}</h3>
-                            <span class="text-amber-600 font-bold text-lg whitespace-nowrap ml-4">
-                              ¥\${(item.price || 0).toLocaleString()}
-                            </span>
+                        <div class="p-6 flex-1 flex justify-between items-start">
+                          <div class="flex-1">
+                            <h3 class="text-lg font-light tracking-wide text-white mb-2">\${item.name}</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">\${item.description || ''}</p>
                           </div>
-                          <p class="text-gray-600 text-sm">\${item.description || ''}</p>
+                          <span class="text-yellow-600 font-light text-xl whitespace-nowrap ml-8">
+                            ¥\${(item.price || 0).toLocaleString()}
+                          </span>
                         </div>
                       </div>
                     \`).join('')}
@@ -797,45 +876,116 @@ app.get('/gallery', (c) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           
           body {
             font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
           }
           
           h1, h2, h3, h4 {
             font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            letter-spacing: 0.1em;
           }
           
-          .bg-luxury {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+          .bg-dark {
+            background: #0a0a0a;
           }
           
-          .hover-scale {
-            transition: transform 0.3s ease;
+          .bg-dark-alt {
+            background: #141414;
           }
           
-          .hover-scale:hover {
-            transform: scale(1.05);
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+          
+          .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+          }
+          
+          .nav-link:hover:after {
+            width: 100%;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+          }
+          
+          .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 2rem auto;
+          }
+          
+          .gallery-item {
+            position: relative;
+            overflow: hidden;
+            background: #1a1a1a;
+            transition: all 0.4s ease;
+          }
+          
+          .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+          }
+          
+          .gallery-item:hover img {
+            transform: scale(1.1);
+          }
+          
+          .gallery-item img {
+            transition: transform 0.6s ease;
           }
         </style>
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-dark">
         <!-- ナビゲーション -->
-        <nav class="bg-luxury text-white shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="text-2xl font-bold tracking-wider">TOKACHI YAKINIKU KARIN</a>
-                        <div class="text-xs text-gray-300 mt-1">トカチ ヤキニク カリン</div>
+                        <a href="/" class="block">
+                          <div class="text-xl tracking-widest font-light">TOKACHI YAKINIKU KARIN</div>
+                          <div class="text-xs text-gray-400 mt-1 tracking-wider">トカチ ヤキニク カリン</div>
+                        </a>
                     </div>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="/" class="hover:text-amber-500 transition">ホーム</a>
-                        <a href="/menu" class="hover:text-amber-500 transition">メニュー</a>
-                        <a href="/gallery" class="text-amber-500">ギャラリー</a>
-                        <a href="/access" class="hover:text-amber-500 transition">アクセス</a>
-                        <a href="/admin" class="hover:text-amber-500 transition">
-                          <i class="fas fa-cog"></i> 管理画面
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
+                        <a href="/gallery" class="nav-link text-yellow-500">ギャラリー</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
                         </a>
                     </div>
                 </div>
@@ -843,16 +993,17 @@ app.get('/gallery', (c) => {
         </nav>
 
         <!-- ヘッダー -->
-        <div class="bg-gradient-to-r from-amber-800 to-amber-600 text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-5xl font-bold mb-4">Gallery</h1>
-                <p class="text-xl">当店の雰囲気とお料理</p>
+        <div class="pt-40 pb-20 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <h1 class="section-title text-white text-4xl mb-6">Gallery</h1>
+                <div class="divider"></div>
+                <p class="text-gray-400 text-sm tracking-wider">当店の雰囲気とお料理</p>
             </div>
         </div>
 
         <!-- ギャラリー -->
-        <section class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="py-20 bg-dark">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div id="gallery-content" class="grid md:grid-cols-3 gap-8">
                     <!-- JavaScript で動的に読み込まれます -->
                 </div>
@@ -860,14 +1011,20 @@ app.get('/gallery', (c) => {
         </section>
 
         <!-- フッター -->
-        <footer class="bg-luxury text-white py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer class="bg-dark text-white py-16 border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-4">TOKACHI YAKINIKU KARIN</h3>
-                    <p class="text-gray-300 mb-2">トカチ ヤキニク カリン</p>
-                    <p class="text-gray-400 mb-4">北海道帯広市西一条南8-20-5</p>
-                    <p class="text-gray-400 mb-4">TEL: 050-8883-6929</p>
-                    <p class="text-gray-500 mt-8 text-sm">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
+                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
+                    <div class="divider"></div>
+                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
+                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
+                    <div class="flex justify-center space-x-8 mt-8">
+                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
                 </div>
             </div>
         </footer>
@@ -880,15 +1037,16 @@ app.get('/gallery', (c) => {
               const images = response.data
               
               document.getElementById('gallery-content').innerHTML = images.map(image => \`
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
-                  <div class="h-64 bg-gray-200">
+                <div class="gallery-item">
+                  <div class="h-80 overflow-hidden">
                     <img src="\${image.image_url}" 
                          alt="\${image.title || ''}" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         style="filter: brightness(0.9) contrast(1.1);">
                   </div>
-                  <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">\${image.title || ''}</h3>
-                    <p class="text-gray-600 text-sm">\${image.description || ''}</p>
+                  <div class="p-6">
+                    <h3 class="text-lg font-light tracking-wide text-white mb-2">\${image.title || ''}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">\${image.description || ''}</p>
                   </div>
                 </div>
               \`).join('')
