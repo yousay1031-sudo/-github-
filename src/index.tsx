@@ -1224,6 +1224,89 @@ app.get('/access', (c) => {
             background: #d4af37;
             margin: 2rem auto;
           }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
+          }
         </style>
     </head>
     <body class="bg-dark">
@@ -1764,6 +1847,89 @@ app.get('/drink', (c) => {
             height: 1px;
             background: #d4af37;
             margin: 2rem auto;
+          }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
           }
           
           .drink-category {
@@ -2636,6 +2802,89 @@ app.get('/course', (c) => {
             height: 1px;
             background: #d4af37;
             margin: 2rem auto;
+          }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
           }
           
           .course-card {
