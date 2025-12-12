@@ -180,27 +180,14 @@ app.get('/', (c) => {
           
           .hero-section {
             position: relative;
-            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            min-height: 95vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-top: 6rem;
-          }
-          
-          .hero-title {
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-            font-size: 2.8rem;
-            letter-spacing: 0.4em;
-            color: white;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.7);
-            animation: fadeInUp 1.5s ease-out;
-            font-family: 'Noto Serif JP', serif;
-            font-weight: 300;
           }
           
           @keyframes fadeInUp {
@@ -473,30 +460,22 @@ app.get('/', (c) => {
 
         <!-- ヒーローセクション -->
         <div class="hero-section">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-16 px-4">
-                <h1 class="hero-title text-white">十勝焼肉かりん</h1>
-                <div class="text-white text-center md:text-left" style="animation: fadeInUp 1.8s ease-out">
-                    <p class="text-sm tracking-widest mb-4 text-gray-300">TOKACHI YAKINIKU</p>
-                    <p class="text-6xl font-light tracking-wider mb-6" style="font-family: 'Noto Serif JP'">KARIN</p>
-                    <div class="divider mx-0"></div>
-                    <p class="text-sm tracking-wide text-gray-300 leading-relaxed">
-                      十勝産の厳選素材で<br>
-                      味わう極上の焼肉体験
-                    </p>
-                </div>
+            <div class="flex flex-col items-center justify-center px-4">
+                <h1 class="text-white text-center" style="animation: fadeInUp 1.5s ease-out">
+                    <div class="text-5xl md:text-7xl font-light tracking-wider mb-4" style="font-family: 'Noto Serif JP'">十勝焼肉かりん</div>
+                    <div class="text-base md:text-lg tracking-widest text-gray-300 mt-8">TOKACHI YAKINIKU KARIN</div>
+                </h1>
             </div>
         </div>
 
         <!-- こだわりセクション -->
-        <section class="py-24 bg-dark-alt">
+        <section class="py-20 bg-dark-alt">
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="mb-16">
-                    <h2 class="section-title text-white">KARINのこだわり</h2>
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl text-center text-white mb-4 font-light tracking-wider" style="font-family: 'Noto Serif JP'">KARINのこだわり</h2>
                     <div class="divider"></div>
-                    <p class="section-subtitle">
-                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。<br>
-                      「厳選素材」とくに数量限定の十勝若牛は当店の看板メニュー。<br>
-                      産地直送ならではの特別な味わいは驚くほど繊細。
+                    <p class="text-center text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
+                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。「厳選素材」とくに数量限定の十勝若牛は当店の看板メニュー。産地直送ならではの特別な味わいは驚くほど繊細。
                     </p>
                 </div>
                 
@@ -565,38 +544,31 @@ app.get('/', (c) => {
         </section>
 
         <!-- 店名の由来セクション -->
-        <section class="py-24 bg-dark">
+        <section class="py-16 bg-dark">
             <div class="max-w-4xl mx-auto px-6 lg:px-8">
-                <div class="message-box">
-                    <h3 class="text-xl font-light tracking-widest mb-6 text-white" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h3>
-                    <div class="divider mx-0"></div>
-                    <p class="text-gray-300 leading-loose text-sm tracking-wide">
-                      「華麗（かりん）」という言葉には、美しく華やかという意味が込められています。<br><br>
-                      お肉の味はもちろん、見た目に美味しい料理でお客様が日々楽しんでいただけるよう<br>
-                      日々精進しております。
+                <div class="bg-gradient-to-br from-gray-900 to-black border-l-2 border-yellow-600 p-8">
+                    <h4 class="text-lg font-light mb-4 text-white tracking-wider" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                      「華麗（かりん）」という言葉には、美しく華やかという意味が込められています。お肉の味はもちろん、見た目に美味しい料理でお客様が日々楽しんでいただけるよう日々精進しております。
                     </p>
                 </div>
             </div>
         </section>
 
         <!-- Messageセクション -->
-        <section class="py-24 bg-dark-alt">
+        <section class="py-20 bg-dark-alt">
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div>
+                <div class="grid md:grid-cols-5 gap-8 items-start">
+                    <div class="md:col-span-2">
                         <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80" 
                              alt="TOKACHI YAKINIKU KARIN" 
-                             class="w-full h-96 object-cover"
+                             class="w-full h-80 object-cover"
                              style="filter: brightness(0.8) contrast(1.1);">
                     </div>
-                    <div>
-                        <h3 class="text-2xl font-light tracking-widest mb-6 text-white" style="font-family: 'Noto Serif JP'">Message</h3>
-                        <div class="divider mx-0"></div>
-                        <p class="text-gray-300 leading-loose text-sm tracking-wide">
-                          TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。<br><br>
-                          老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。<br><br>
-                          また空間にもこだわり、落ち着いた雰囲気の個室などご家族はもちろんデートや接待、<br>
-                          ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                    <div class="md:col-span-3">
+                        <h3 class="text-2xl font-light mb-6 text-white tracking-wider" style="font-family: 'Noto Serif JP'">Message</h3>
+                        <p class="text-gray-400 text-sm leading-loose">
+                          TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。また空間にもこだわり、落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
                         </p>
                     </div>
                 </div>
