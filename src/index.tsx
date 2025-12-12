@@ -254,11 +254,7 @@ app.get('/', (c) => {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('/ground-menu-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: #000000;
           }
           
           .ground-menu-btn {
@@ -594,7 +590,7 @@ app.get('/', (c) => {
             <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 py-20">
                 <div class="text-center mb-12">
                     <h2 class="text-5xl md:text-6xl lg:text-7xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;">GROUND MENU</h2>
-                    <div class="max-w-4xl mx-auto mb-16">
+                    <div class="max-w-4xl mx-auto mb-12">
                         <p class="text-gray-100 text-sm md:text-base leading-relaxed" style="line-height: 2.2;">
                           本物の食作法で選りすぐりのときをる。<br>
                           ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>
@@ -602,6 +598,11 @@ app.get('/', (c) => {
                           ファカが付き続きうろん、ご堪念、まだ引用付のコーテブランとなる実営業り時をますます。
                         </p>
                     </div>
+                </div>
+                
+                <!-- 肉の写真 -->
+                <div class="flex justify-center mb-12">
+                    <img src="/ground-menu-bg.jpg" alt="十勝焼肉" class="w-full max-w-5xl h-auto object-cover" style="max-height: 500px;">
                 </div>
                 
                 <!-- 3つのボタン -->
