@@ -255,7 +255,7 @@ app.get('/', (c) => {
             display: flex;
             align-items: center;
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('/ground-menu-bg-new.jpg');
+                        url('/ground-menu-bg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
