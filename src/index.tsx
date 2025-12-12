@@ -213,9 +213,34 @@ app.get('/', (c) => {
           }
           
           .ground-menu-section {
-            background: linear-gradient(rgba(20, 15, 10, 0.95), rgba(30, 20, 15, 0.95)), 
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23221811" width="100" height="100"/><path d="M0 0 L100 0 L100 100 Z" fill="%231a1108" opacity="0.3"/></svg>');
-            background-size: 200px 200px;
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('/ground-menu-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+          }
+          
+          .ground-menu-btn {
+            background: rgba(139, 115, 85, 0.8);
+            border: none;
+            color: #1a1108;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 400;
+          }
+          
+          .ground-menu-btn:hover {
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
           }
           
           @keyframes fadeInUp {
@@ -515,33 +540,31 @@ app.get('/', (c) => {
         </div>
 
         <!-- Ground Menu Section -->
-        <section class="ground-menu-section py-24">
-            <div class="max-w-5xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl text-white mb-6 font-light tracking-wider" style="font-family: 'Noto Serif JP'">GROUND MENU</h2>
-                    <div class="divider"></div>
-                    <p class="text-gray-400 text-base max-w-3xl mx-auto leading-loose">
-                      十勝産の厳選素材を使用した、こだわりのメニューをご用意しております
-                    </p>
+        <section class="ground-menu-section py-32">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl md:text-6xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'">GROUND MENU</h2>
+                    <div class="max-w-3xl mx-auto mb-12">
+                        <p class="text-gray-200 text-sm md:text-base leading-loose" style="line-height: 2.2;">
+                          本物の食作法で選りすぐりのときをる。<br>
+                          ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>
+                          ～時間中の全ての食、お飲、デザートまでここならではKARINの宴。<br>
+                          ファカが付き続きうろん、ご堪念、まだ引用付のコーテブランとなる実営業り時をますます。
+                        </p>
+                    </div>
                 </div>
                 
-                <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                    <a href="/menu" class="group block bg-gradient-to-br from-gray-900 to-gray-950 border-2 border-gray-800 hover:border-yellow-700 p-8 text-center transition-all duration-300 hover:shadow-2xl">
-                        <i class="fas fa-utensils text-4xl text-yellow-600 mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">DINNER</h3>
-                        <p class="text-gray-500 text-sm">ディナーメニュー</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6 max-w-2xl mx-auto">
+                    <a href="/menu" class="ground-menu-btn w-full md:w-auto">
+                        dinner
                     </a>
                     
-                    <a href="/course" class="group block bg-gradient-to-br from-yellow-900 to-yellow-950 border-2 border-yellow-800 hover:border-yellow-600 p-8 text-center transition-all duration-300 hover:shadow-2xl">
-                        <i class="fas fa-award text-4xl text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">COURSE</h3>
-                        <p class="text-yellow-300 text-sm">コースメニュー</p>
+                    <a href="/course" class="ground-menu-btn w-full md:w-auto">
+                        course
                     </a>
                     
-                    <a href="/drink" class="group block bg-gradient-to-br from-gray-900 to-gray-950 border-2 border-gray-800 hover:border-yellow-700 p-8 text-center transition-all duration-300 hover:shadow-2xl">
-                        <i class="fas fa-wine-glass-alt text-4xl text-yellow-600 mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">DRINK</h3>
-                        <p class="text-gray-500 text-sm">ドリンクメニュー</p>
+                    <a href="/drink" class="ground-menu-btn w-full md:w-auto">
+                        drink
                     </a>
                 </div>
             </div>
