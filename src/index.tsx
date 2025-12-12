@@ -251,16 +251,14 @@ app.get('/', (c) => {
           
           .ground-menu-section {
             position: relative;
-            background: #1a1410;
-            background-image: 
-              linear-gradient(rgba(26, 20, 16, 0.3), rgba(26, 20, 16, 0.3)),
-              repeating-linear-gradient(
-                90deg,
-                rgba(60, 40, 20, 0.1) 0px,
-                rgba(40, 30, 20, 0.1) 2px,
-                transparent 2px,
-                transparent 10px
-              );
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('/ground-menu-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
           }
           
           .ground-menu-btn {
@@ -592,12 +590,12 @@ app.get('/', (c) => {
         </div>
 
         <!-- Ground Menu Section -->
-        <section class="ground-menu-section py-20">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-8">
-                    <h2 class="text-5xl md:text-6xl text-white mb-6 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;">GROUND MENU</h2>
-                    <div class="max-w-4xl mx-auto mb-8">
-                        <p class="text-gray-200 text-xs md:text-sm leading-relaxed" style="line-height: 2;">
+        <section class="ground-menu-section">
+            <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 py-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl md:text-6xl lg:text-7xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;">GROUND MENU</h2>
+                    <div class="max-w-4xl mx-auto mb-16">
+                        <p class="text-gray-100 text-sm md:text-base leading-relaxed" style="line-height: 2.2;">
                           本物の食作法で選りすぐりのときをる。<br>
                           ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>
                           ～時間中の全ての食、お飲、デザートまでここならではKARINの宴。<br>
@@ -606,13 +604,8 @@ app.get('/', (c) => {
                     </div>
                 </div>
                 
-                <!-- メインコンテンツエリア（画像表示） -->
-                <div class="relative mb-8 flex justify-center">
-                    <img src="/ground-menu-bg.jpg" alt="Ground Menu" class="w-full max-w-5xl object-cover" style="height: auto; filter: brightness(0.9) contrast(1.1);">
-                </div>
-                
                 <!-- 3つのボタン -->
-                <div class="flex flex-col md:flex-row justify-center items-center gap-4 max-w-xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-center items-center gap-5 max-w-2xl mx-auto">
                     <a href="/menu" class="ground-menu-btn w-full md:w-auto">
                         dinner
                     </a>
