@@ -180,7 +180,7 @@ app.get('/', (c) => {
           
           .hero-section {
             position: relative;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -188,6 +188,34 @@ app.get('/', (c) => {
             display: flex;
             align-items: center;
             justify-content: center;
+          }
+          
+          .news-panel {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            background: rgba(40, 30, 20, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 2.5rem;
+            max-width: 400px;
+            border-left: 3px solid #c9a961;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+          }
+          
+          @media (max-width: 768px) {
+            .news-panel {
+              bottom: 30px;
+              right: 20px;
+              left: 20px;
+              max-width: none;
+              padding: 1.5rem;
+            }
+          }
+          
+          .ground-menu-section {
+            background: linear-gradient(rgba(20, 15, 10, 0.95), rgba(30, 20, 15, 0.95)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23221811" width="100" height="100"/><path d="M0 0 L100 0 L100 100 Z" fill="%231a1108" opacity="0.3"/></svg>');
+            background-size: 200px 200px;
           }
           
           @keyframes fadeInUp {
@@ -458,7 +486,7 @@ app.get('/', (c) => {
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
-        <!-- ヒーローセクション -->
+        <!-- ヒーローセクション with News Overlay -->
         <div class="hero-section">
             <div class="flex flex-col items-center justify-center px-4">
                 <h1 class="text-white text-center" style="animation: fadeInUp 1.5s ease-out">
@@ -466,28 +494,86 @@ app.get('/', (c) => {
                     <div class="text-base md:text-lg tracking-widest text-gray-300 mt-8">TOKACHI YAKINIKU KARIN</div>
                 </h1>
             </div>
+            
+            <!-- News Panel -->
+            <div class="news-panel">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-bullhorn text-yellow-600 mr-3"></i>
+                    <h3 class="text-yellow-600 text-sm tracking-widest" style="font-family: 'Noto Serif JP'">NEWS</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="border-l-2 border-gray-700 pl-3">
+                        <p class="text-gray-400 text-xs mb-1">2024.12.12</p>
+                        <p class="text-gray-200 text-sm leading-relaxed">年末年始の営業時間のお知らせ</p>
+                    </div>
+                    <div class="border-l-2 border-gray-700 pl-3">
+                        <p class="text-gray-400 text-xs mb-1">2024.12.01</p>
+                        <p class="text-gray-200 text-sm leading-relaxed">冬の特別コース始まりました</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- こだわりセクション -->
-        <section class="py-20 bg-dark-alt">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="mb-12">
-                    <h2 class="text-3xl md:text-4xl text-center text-white mb-4 font-light tracking-wider" style="font-family: 'Noto Serif JP'">KARINのこだわり</h2>
+        <!-- Ground Menu Section -->
+        <section class="ground-menu-section py-24">
+            <div class="max-w-5xl mx-auto px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl text-white mb-6 font-light tracking-wider" style="font-family: 'Noto Serif JP'">GROUND MENU</h2>
                     <div class="divider"></div>
-                    <p class="text-center text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
-                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。「厳選素材」とくに数量限定の十勝若牛は当店の看板メニュー。産地直送ならではの特別な味わいは驚くほど繊細。
+                    <p class="text-gray-400 text-base max-w-3xl mx-auto leading-loose">
+                      十勝産の厳選素材を使用した、こだわりのメニューをご用意しております
                     </p>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-12">
-                    <a href="/course" class="card-link">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" 
-                             alt="コース" 
-                             class="card-image">
+                <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <a href="/menu" class="group block bg-gradient-to-br from-gray-900 to-gray-950 border-2 border-gray-800 hover:border-yellow-700 p-8 text-center transition-all duration-300 hover:shadow-2xl">
+                        <i class="fas fa-utensils text-4xl text-yellow-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">DINNER</h3>
+                        <p class="text-gray-500 text-sm">ディナーメニュー</p>
+                    </a>
+                    
+                    <a href="/course" class="group block bg-gradient-to-br from-yellow-900 to-yellow-950 border-2 border-yellow-800 hover:border-yellow-600 p-8 text-center transition-all duration-300 hover:shadow-2xl">
+                        <i class="fas fa-award text-4xl text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">COURSE</h3>
+                        <p class="text-yellow-300 text-sm">コースメニュー</p>
+                    </a>
+                    
+                    <a href="/drink" class="group block bg-gradient-to-br from-gray-900 to-gray-950 border-2 border-gray-800 hover:border-yellow-700 p-8 text-center transition-all duration-300 hover:shadow-2xl">
+                        <i class="fas fa-wine-glass-alt text-4xl text-yellow-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-white text-xl mb-2 tracking-wider" style="font-family: 'Noto Serif JP'">DRINK</h3>
+                        <p class="text-gray-500 text-sm">ドリンクメニュー</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- こだわりセクション (Features) -->
+        <section class="py-24 bg-dark-alt">
+            <div class="max-w-6xl mx-auto px-6 lg:px-8">
+                <div class="mb-16 text-center">
+                    <h2 class="text-4xl md:text-5xl text-white mb-6 font-light tracking-widest" style="font-family: 'Noto Serif JP'">
+                      KARINの<br class="md:hidden">こだわり
+                    </h2>
+                    <div class="divider" style="background: linear-gradient(to right, transparent, #c9a961, transparent);"></div>
+                    <p class="text-gray-300 text-base md:text-lg leading-loose max-w-4xl mx-auto px-4">
+                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。<br>
+                      「厳選素材厚切り」とくに数量限定の十勝若牛は当店の看板メニュー。<br>
+                      産地直送ならではの特別な味わいは驚くほど繊細。
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <a href="/course" class="card-link group">
+                        <div class="relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" 
+                                 alt="宴会プラン" 
+                                 class="card-image">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                        </div>
                         <div class="card-content">
-                            <h3 class="card-title text-white">コース</h3>
-                            <p class="card-text">
-                              各コースだけでなく、ご予算に合わせてお造りいたします。サプライズもお任せ。
+                            <h3 class="card-title text-white mb-3">宴会プラン</h3>
+                            <p class="card-text mb-4">
+                              各コースだけでなく、ご予算に合わせてお造りいたします。サプライズもお任せください。
                             </p>
                             <span class="card-arrow">
                               → 詳しく見る
@@ -495,13 +581,16 @@ app.get('/', (c) => {
                         </div>
                     </a>
                     
-                    <a href="/menu" class="card-link">
-                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80" 
-                             alt="メニュー" 
-                             class="card-image">
+                    <a href="/menu" class="card-link group">
+                        <div class="relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80" 
+                                 alt="ディナーコース" 
+                                 class="card-image">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                        </div>
                         <div class="card-content">
-                            <h3 class="card-title text-white">メニュー</h3>
-                            <p class="card-text">
+                            <h3 class="card-title text-white mb-3">ディナーコース</h3>
+                            <p class="card-text mb-4">
                               お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。
                             </p>
                             <span class="card-arrow">
@@ -510,14 +599,17 @@ app.get('/', (c) => {
                         </div>
                     </a>
                     
-                    <a href="/commitment" class="card-link">
-                        <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80" 
-                             alt="厳選素材" 
-                             class="card-image">
+                    <a href="/commitment" class="card-link group">
+                        <div class="relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80" 
+                                 alt="厳選十勝若牛" 
+                                 class="card-image">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                        </div>
                         <div class="card-content">
-                            <h3 class="card-title text-white">厳選素材</h3>
-                            <p class="card-text">
-                              十勝若牛や希少なアイスランドラムなど、こだわりの食材を使用しております。
+                            <h3 class="card-title text-white mb-3">厳選十勝若牛</h3>
+                            <p class="card-text mb-4">
+                              十勝若牛や希少なアイスランドラムなど、最高級の食材を使用しております。
                             </p>
                             <span class="card-arrow">
                               → 詳しく見る
@@ -525,14 +617,17 @@ app.get('/', (c) => {
                         </div>
                     </a>
                     
-                    <a href="/commitment" class="card-link">
-                        <img src="/static/private-room.jpg" 
-                             alt="上質な個室空間" 
-                             class="card-image">
+                    <a href="/commitment" class="card-link group">
+                        <div class="relative overflow-hidden">
+                            <img src="/static/private-room.jpg" 
+                                 alt="美味しいお肉の焼き方" 
+                                 class="card-image">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                        </div>
                         <div class="card-content">
-                            <h3 class="card-title text-white">上質な個室空間</h3>
-                            <p class="card-text">
-                              ご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                            <h3 class="card-title text-white mb-3">美味しい<br>お肉の焼き方</h3>
+                            <p class="card-text mb-4">
+                              美味しいお肉だからこそ、美味しく食べてもらいたい。各種焼き方のコツをご紹介。
                             </p>
                             <span class="card-arrow">
                               → 詳しく見る
@@ -544,11 +639,11 @@ app.get('/', (c) => {
         </section>
 
         <!-- 店名の由来セクション -->
-        <section class="py-16 bg-dark">
-            <div class="max-w-4xl mx-auto px-6 lg:px-8">
-                <div class="bg-gradient-to-br from-gray-900 to-black border-l-2 border-yellow-600 p-8">
-                    <h4 class="text-lg font-light mb-4 text-white tracking-wider" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">
+        <section class="py-20 bg-dark">
+            <div class="max-w-5xl mx-auto px-6 lg:px-8">
+                <div class="bg-gradient-to-br from-yellow-950 to-gray-950 border-l-4 border-yellow-700 p-10 shadow-2xl">
+                    <h4 class="text-2xl font-light mb-6 text-yellow-600 tracking-wider" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h4>
+                    <p class="text-gray-300 text-base leading-loose">
                       「華麗（かりん）」という言葉には、美しく華やかという意味が込められています。お肉の味はもちろん、見た目に美味しい料理でお客様が日々楽しんでいただけるよう日々精進しております。
                     </p>
                 </div>
@@ -556,20 +651,26 @@ app.get('/', (c) => {
         </section>
 
         <!-- Messageセクション -->
-        <section class="py-20 bg-dark-alt">
+        <section class="py-24 bg-dark-alt">
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="grid md:grid-cols-5 gap-8 items-start">
-                    <div class="md:col-span-2">
-                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80" 
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80" 
                              alt="TOKACHI YAKINIKU KARIN" 
-                             class="w-full h-80 object-cover"
-                             style="filter: brightness(0.8) contrast(1.1);">
+                             class="w-full h-96 md:h-[500px] object-cover shadow-2xl"
+                             style="filter: brightness(0.75) contrast(1.15) saturate(1.1);">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-black opacity-30"></div>
                     </div>
-                    <div class="md:col-span-3">
-                        <h3 class="text-2xl font-light mb-6 text-white tracking-wider" style="font-family: 'Noto Serif JP'">Message</h3>
-                        <p class="text-gray-400 text-sm leading-loose">
-                          TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。また空間にもこだわり、落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
-                        </p>
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-light mb-8 text-yellow-600 tracking-wider" style="font-family: 'Noto Serif JP'">Message</h3>
+                        <div class="space-y-6">
+                            <p class="text-gray-300 text-base leading-loose border-l-3 border-yellow-700 pl-6">
+                              TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。
+                            </p>
+                            <p class="text-gray-300 text-base leading-loose">
+                              老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
