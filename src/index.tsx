@@ -180,14 +180,51 @@ app.get('/', (c) => {
           
           .hero-section {
             position: relative;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+          }
+          
+          .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+          }
+          
+          .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+          }
+          
+          .hero-slide.active {
+            opacity: 1;
+          }
+          
+          .hero-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4));
+          }
+          
+          .hero-content {
+            position: relative;
+            z-index: 10;
           }
           
           .news-panel {
@@ -511,9 +548,18 @@ app.get('/', (c) => {
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
-        <!-- ヒーローセクション with News Overlay -->
+        <!-- ヒーローセクション with Slideshow & News Overlay -->
         <div class="hero-section">
-            <div class="flex flex-col items-center justify-center px-4">
+            <!-- Slider Background -->
+            <div class="hero-slider">
+                <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80')"></div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1558030006-450675393462?w=1920&q=80')"></div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&q=80')"></div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1920&q=80')"></div>
+            </div>
+            
+            <!-- Hero Content -->
+            <div class="hero-content flex flex-col items-center justify-center px-4">
                 <h1 class="text-white text-center" style="animation: fadeInUp 1.5s ease-out">
                     <div class="text-5xl md:text-7xl font-light tracking-wider mb-4" style="font-family: 'Noto Serif JP'">十勝焼肉かりん</div>
                     <div class="text-base md:text-lg tracking-widest text-gray-300 mt-8">TOKACHI YAKINIKU KARIN</div>
@@ -755,6 +801,24 @@ app.get('/', (c) => {
             menu.classList.toggle('active')
             hamburger.classList.toggle('active')
           }
+          
+          // ヒーロースライドショー
+          function initHeroSlider() {
+            const slides = document.querySelectorAll('.hero-slide')
+            let currentSlide = 0
+            
+            function showNextSlide() {
+              slides[currentSlide].classList.remove('active')
+              currentSlide = (currentSlide + 1) % slides.length
+              slides[currentSlide].classList.add('active')
+            }
+            
+            // 5秒ごとにスライドを切り替え
+            setInterval(showNextSlide, 5000)
+          }
+          
+          // ページ読み込み時にスライダーを初期化
+          document.addEventListener('DOMContentLoaded', initHeroSlider)
           
           // 店舗情報の読み込み
           async function loadStoreInfo() {
