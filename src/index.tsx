@@ -659,17 +659,17 @@ app.get('/', (c) => {
         <section class="relative" style="height: 100vh; background: #000;">
             <!-- 上半分: 50vh -->
             <div class="relative" style="height: 50vh;">
-                <!-- 和牛の写真（左側、45vh） -->
-                <div class="absolute top-0 left-0" style="width: 50%; height: 45vh;">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80" 
+                <!-- レイヤー1: 和牛の写真（全幅1920px、45vh） z-index: 1 -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2" style="width: 1920px; max-width: 100%; height: 45vh; z-index: 1;">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80" 
                          alt="和牛" 
                          class="w-full h-full object-cover"
                          style="filter: brightness(1.1) contrast(1.05) saturate(1.1);">
                 </div>
                 
-                <!-- 黒透過ボックス（右側、W500 H350、透過率60%） -->
+                <!-- レイヤー2: 黒透過ボックス（右側、W500 H350、透過率60%） z-index: 2 -->
                 <div class="absolute" 
-                     style="top: 50%; right: 10%; transform: translateY(-50%); width: 500px; height: 350px; max-width: 90%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); padding: 3rem;">
+                     style="top: 50%; right: 10%; transform: translateY(-50%); width: 500px; height: 350px; max-width: 90%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); padding: 3rem; z-index: 2;">
                     <div class="flex h-full">
                         <!-- 左半分: タイトルとボタン -->
                         <div class="w-1/2 flex flex-col justify-between pr-4 border-r border-gray-700">
