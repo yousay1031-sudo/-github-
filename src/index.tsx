@@ -276,6 +276,7 @@ app.get('/', (c) => {
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            filter: brightness(1.3);
           }
           
           .ground-menu-content {
