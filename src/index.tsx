@@ -759,37 +759,29 @@ app.get('/', (c) => {
             </div>
         </section>
 
-        <!-- 店名の由来セクション -->
-        <section class="py-20 bg-dark">
-            <div class="max-w-5xl mx-auto px-6 lg:px-8">
-                <div class="bg-gradient-to-br from-yellow-950 to-gray-950 border-l-4 border-yellow-700 p-10 shadow-2xl">
-                    <h4 class="text-2xl font-light mb-6 text-yellow-600 tracking-wider" style="font-family: 'Noto Serif JP'">焼肉KARINの名前の由来</h4>
-                    <p class="text-gray-300 text-base leading-loose">
-                      「華麗（かりん）」という言葉には、美しく華やかという意味が込められています。お肉の味はもちろん、見た目に美味しい料理でお客様が日々楽しんでいただけるよう日々精進しております。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Messageセクション -->
-        <section class="py-24 bg-dark-alt">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Messageセクション - Redesigned -->
+        <section class="relative" style="background: linear-gradient(135deg, #ff6b7a 0%, #ff8a95 50%, #ffa5ad 100%); min-height: 70vh;">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <!-- 左側: 店舗の写真 -->
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80" 
-                             alt="TOKACHI YAKINIKU KARIN" 
-                             class="w-full h-96 md:h-[500px] object-cover shadow-2xl"
-                             style="filter: brightness(0.75) contrast(1.15) saturate(1.1);">
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-black opacity-30"></div>
+                        <div class="relative overflow-hidden shadow-2xl" style="border: 8px solid rgba(0, 0, 0, 0.8);">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" 
+                                 alt="TOKACHI YAKINIKU KARIN 店舗" 
+                                 class="w-full h-[400px] md:h-[500px] object-cover"
+                                 style="filter: brightness(0.95) contrast(1.1);">
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-3xl md:text-4xl font-light mb-8 text-yellow-600 tracking-wider" style="font-family: 'Noto Serif JP'">Message</h3>
+                    
+                    <!-- 右側: Messageテキスト -->
+                    <div class="text-white">
+                        <h2 class="text-5xl md:text-6xl font-light mb-12 tracking-widest" 
+                            style="font-family: 'Noto Serif JP'; letter-spacing: 0.3em;">
+                            Message
+                        </h2>
                         <div class="space-y-6">
-                            <p class="text-gray-300 text-base leading-loose border-l-3 border-yellow-700 pl-6">
-                              TOKACHI YAKINIKU KARINは十勝産を中心とした厳選素材をご提供する焼肉店です。
-                            </p>
-                            <p class="text-gray-300 text-base leading-loose">
-                              老舗ならではの目利きと独自ルートで厳選された焼肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                            <p class="text-white text-sm md:text-base leading-loose" style="line-height: 2.2;">
+                                焼肉美炙樂は(お勝手の年中居ばえを有所感「肉の大塚」の直営焼肉店です。老舗ならではの目利きと独自ルートで厳選された無肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
                             </p>
                         </div>
                     </div>
