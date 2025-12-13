@@ -251,10 +251,36 @@ app.get('/', (c) => {
           
           .ground-menu-section {
             position: relative;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             align-items: center;
-            background: #000000;
+            justify-content: center;
+            overflow: hidden;
+          }
+          
+          .ground-menu-bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+          }
+          
+          .ground-menu-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+          }
+          
+          .ground-menu-content {
+            position: relative;
+            z-index: 2;
           }
           
           .ground-menu-btn {
@@ -587,10 +613,17 @@ app.get('/', (c) => {
 
         <!-- Ground Menu Section -->
         <section class="ground-menu-section">
-            <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 py-20">
-                <div class="text-center mb-12">
+            <!-- レイヤー1: 画像 (z-index: 0) -->
+            <img src="/ground-menu-main.jpg" alt="十勝焼肉" class="ground-menu-image">
+            
+            <!-- レイヤー2: 黒背景 60% (z-index: 1) -->
+            <div class="ground-menu-bg-layer"></div>
+            
+            <!-- レイヤー3: コンテンツ (z-index: 2) -->
+            <div class="ground-menu-content w-full max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center">
                     <h2 class="text-5xl md:text-6xl lg:text-7xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;">GROUND MENU</h2>
-                    <div class="max-w-4xl mx-auto mb-12">
+                    <div class="max-w-4xl mx-auto mb-16">
                         <p class="text-gray-100 text-sm md:text-base leading-relaxed" style="line-height: 2.2;">
                           本物の食作法で選りすぐりのときをる。<br>
                           ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>
@@ -598,26 +631,21 @@ app.get('/', (c) => {
                           ファカが付き続きうろん、ご堪念、まだ引用付のコーテブランとなる実営業り時をますます。
                         </p>
                     </div>
-                </div>
-                
-                <!-- 肉の写真 -->
-                <div class="flex justify-center mb-12">
-                    <img src="/ground-menu-bg.jpg" alt="十勝焼肉" class="w-full max-w-5xl h-auto object-cover" style="max-height: 500px;">
-                </div>
-                
-                <!-- 3つのボタン -->
-                <div class="flex flex-col md:flex-row justify-center items-center gap-5 max-w-2xl mx-auto">
-                    <a href="/menu" class="ground-menu-btn w-full md:w-auto">
-                        dinner
-                    </a>
                     
-                    <a href="/course" class="ground-menu-btn w-full md:w-auto">
-                        course
-                    </a>
-                    
-                    <a href="/drink" class="ground-menu-btn w-full md:w-auto">
-                        drink
-                    </a>
+                    <!-- 3つのボタン -->
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-5 max-w-2xl mx-auto">
+                        <a href="/menu" class="ground-menu-btn w-full md:w-auto">
+                            dinner
+                        </a>
+                        
+                        <a href="/course" class="ground-menu-btn w-full md:w-auto">
+                            course
+                        </a>
+                        
+                        <a href="/drink" class="ground-menu-btn w-full md:w-auto">
+                            drink
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
