@@ -276,7 +276,11 @@ app.get('/', (c) => {
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            filter: brightness(1.3);
+            filter: brightness(1.3) contrast(1.05) saturate(1.1);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
           }
           
           .ground-menu-content {
