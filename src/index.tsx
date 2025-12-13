@@ -1263,12 +1263,12 @@ app.get('/menu', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-yellow-500">メニュー</a>
-                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
-                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-yellow-500">dinner</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">drink</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
@@ -1285,12 +1285,12 @@ app.get('/menu', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">ホーム</a>
-            <a href="/commitment">こだわり</a>
-            <a href="/menu">メニュー</a>
-            <a href="/drink">ドリンク</a>
-            <a href="/course">コース</a>
-            <a href="/access">アクセス</a>
+            <a href="/">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/drink">drink</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
@@ -1581,12 +1581,12 @@ app.get('/access', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
-                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
-                        <a href="/access" class="nav-link text-yellow-500">アクセス</a>
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">drink</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
@@ -1603,12 +1603,12 @@ app.get('/access', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">ホーム</a>
-            <a href="/commitment">こだわり</a>
-            <a href="/menu">メニュー</a>
-            <a href="/drink">ドリンク</a>
-            <a href="/course">コース</a>
-            <a href="/access">アクセス</a>
+            <a href="/">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/drink">drink</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
@@ -1950,12 +1950,12 @@ app.get('/commitment', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
-                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">drink</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
@@ -1972,12 +1972,12 @@ app.get('/commitment', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">ホーム</a>
-            <a href="/commitment">こだわり</a>
-            <a href="/menu">メニュー</a>
-            <a href="/drink">ドリンク</a>
-            <a href="/course">コース</a>
-            <a href="/access">アクセス</a>
+            <a href="/">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/drink">drink</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
@@ -2387,12 +2387,12 @@ app.get('/drink', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/drink" class="nav-link text-yellow-500">ドリンク</a>
-                        <a href="/course" class="nav-link text-white hover:text-yellow-500">コース</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">drink</a>
+                        <a href="/course" class="nav-link text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
@@ -2409,12 +2409,12 @@ app.get('/drink', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">ホーム</a>
-            <a href="/commitment">こだわり</a>
-            <a href="/menu">メニュー</a>
-            <a href="/drink">ドリンク</a>
-            <a href="/course">コース</a>
-            <a href="/access">アクセス</a>
+            <a href="/">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/drink">drink</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
@@ -3348,12 +3348,12 @@ app.get('/course', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">ホーム</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">こだわり</a>
-                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">メニュー</a>
-                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">ドリンク</a>
-                        <a href="/course" class="nav-link text-yellow-500">コース</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">アクセス</a>
+                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/drink" class="nav-link text-yellow-500">drink</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
                         </a>
@@ -3370,12 +3370,12 @@ app.get('/course', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">ホーム</a>
-            <a href="/commitment">こだわり</a>
-            <a href="/menu">メニュー</a>
-            <a href="/drink">ドリンク</a>
-            <a href="/course">コース</a>
-            <a href="/access">アクセス</a>
+            <a href="/">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/drink">drink</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
