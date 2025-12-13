@@ -634,7 +634,7 @@ app.get('/', (c) => {
                     </div>
                     
                     <!-- 3つのボタン -->
-                    <div class="flex flex-col md:flex-row justify-center items-center gap-5 max-w-2xl mx-auto" style="margin-top: 189px;">
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-5 max-w-2xl mx-auto" style="margin-top: 389px;">
                         <a href="/menu" class="ground-menu-btn w-full md:w-auto">
                             dinner
                         </a>
