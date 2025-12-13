@@ -832,29 +832,30 @@ app.get('/', (c) => {
                 
                 <!-- 中央: ロゴとメインコンテンツ -->
                 <div class="text-center mb-12">
-                    <!-- ロゴ（縦書き風） -->
-                    <div class="inline-block mb-8">
-                        <h3 class="text-4xl md:text-5xl font-light tracking-wider text-gray-900" 
-                            style="font-family: 'Noto Serif JP'; writing-mode: vertical-rl; letter-spacing: 0.2em;">
-                            美炙樂
+                    <!-- ロゴ（横書き） -->
+                    <div class="mb-8">
+                        <h3 class="text-2xl md:text-3xl font-light tracking-widest text-gray-900" 
+                            style="font-family: 'Noto Serif JP'; letter-spacing: 0.3em;">
+                            TOKACHI YAKINIKU KARIN
                         </h3>
                     </div>
                     
                     <!-- 住所 -->
-                    <p class="text-gray-700 text-xs mb-2 tracking-wide">茨城県美炊樂市那珂市町22号1-1</p>
+                    <p class="text-gray-700 text-xs mb-4 tracking-wide">北海道帯広市西一条南8-20-5</p>
                     
                     <!-- 営業時間 -->
-                    <p class="text-gray-700 text-xs mb-1 tracking-wide">営業時間 17:00〜22:00(L.O.21:00)</p>
-                    
-                    <!-- 定休日 -->
-                    <p class="text-gray-700 text-xs mb-6 tracking-wide">定休日 火曜日</p>
+                    <div class="text-gray-700 text-xs leading-relaxed mb-6 max-w-2xl mx-auto" style="line-height: 1.8;">
+                        <p class="mb-2">月・土・日・祝日 17:30 - 00:00 L.O. 料理23:00 ドリンク23:30</p>
+                        <p class="mb-2">火 11:30 - 15:00 L.O. 14:30</p>
+                        <p>水・木・金 11:30 - 15:00 L.O. 14:30 / 17:30 - 00:00 L.O. 料理23:00 ドリンク23:30</p>
+                    </div>
                     
                     <!-- 電話番号 -->
-                    <p class="text-gray-900 text-base font-light tracking-widest mb-8">tel.029 353 8955</p>
+                    <p class="text-gray-900 text-base font-light tracking-widest mb-8">TEL 050-8883-6929</p>
                     
                     <!-- SNSアイコン -->
                     <div class="flex justify-center space-x-6 mb-10">
-                        <a href="tel:0293538955" class="text-gray-700 hover:text-gray-900 transition text-lg">
+                        <a href="tel:0508836929" class="text-gray-700 hover:text-gray-900 transition text-lg">
                             <i class="fas fa-phone"></i>
                         </a>
                         <a href="https://twitter.com" target="_blank" class="text-gray-700 hover:text-gray-900 transition text-lg">
@@ -868,7 +869,7 @@ app.get('/', (c) => {
                 
                 <!-- 下部: コピーライト -->
                 <div class="text-center pt-8 border-t border-gray-300">
-                    <p class="text-gray-600 text-xs tracking-wide">Copyright © 2024 bishara. All rights reserved.</p>
+                    <p class="text-gray-600 text-xs tracking-wide">Copyright © 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
                 </div>
                 
                 <!-- トップに戻るボタン -->
