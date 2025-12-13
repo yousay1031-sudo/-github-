@@ -655,93 +655,106 @@ app.get('/', (c) => {
             </div>
         </section>
         
-        <!-- こだわりセクション (Features) -->
-        <section class="py-24 bg-dark-alt">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="mb-16 text-center">
-                    <h2 class="text-4xl md:text-5xl text-white mb-6 font-light tracking-widest" style="font-family: 'Noto Serif JP'">
-                      KARINの<br class="md:hidden">こだわり
-                    </h2>
-                    <div class="divider" style="background: linear-gradient(to right, transparent, #c9a961, transparent);"></div>
-                    <p class="text-gray-300 text-base md:text-lg leading-loose max-w-4xl mx-auto px-4">
-                      お肉を最もおいしい状態で食してほしい一心から生まれたKARINの名物メニュー。<br>
-                      「厳選素材厚切り」とくに数量限定の十勝若牛は当店の看板メニュー。<br>
-                      産地直送ならではの特別な味わいは驚くほど繊細。
-                    </p>
+        <!-- こだわりセクション (Features) - Redesigned -->
+        <section class="relative" style="height: 100vh; background: #000;">
+            <!-- 上半分: 50vh -->
+            <div class="relative" style="height: 50vh;">
+                <!-- 和牛の写真（左側、45vh） -->
+                <div class="absolute top-0 left-0" style="width: 50%; height: 45vh;">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80" 
+                         alt="和牛" 
+                         class="w-full h-full object-cover"
+                         style="filter: brightness(1.1) contrast(1.05) saturate(1.1);">
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-10">
-                    <a href="/course" class="card-link group">
-                        <div class="relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80" 
-                                 alt="宴会プラン" 
-                                 class="card-image">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                <!-- 黒透過ボックス（右側、W500 H350、透過率60%） -->
+                <div class="absolute" 
+                     style="top: 50%; right: 10%; transform: translateY(-50%); width: 500px; height: 350px; max-width: 90%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); padding: 3rem;">
+                    <div class="flex h-full">
+                        <!-- 左半分: タイトルとボタン -->
+                        <div class="w-1/2 flex flex-col justify-between pr-4 border-r border-gray-700">
+                            <div>
+                                <h2 class="text-white text-4xl font-light tracking-wider mb-8" style="font-family: 'Noto Serif JP'; line-height: 1.6;">
+                                    美炙樂の<br>こだわり
+                                </h2>
+                            </div>
+                            <a href="/commitment" 
+                               class="inline-block bg-transparent border border-yellow-700 text-yellow-700 px-6 py-2 text-sm tracking-widest hover:bg-yellow-700 hover:text-black transition-all duration-300"
+                               style="width: fit-content;">
+                                read more
+                            </a>
                         </div>
-                        <div class="card-content">
-                            <h3 class="card-title text-white mb-3">宴会プラン</h3>
-                            <p class="card-text mb-4">
-                              各コースだけでなく、ご予算に合わせてお造りいたします。サプライズもお任せください。
+                        
+                        <!-- 右半分: テキスト -->
+                        <div class="w-1/2 pl-4 flex items-center">
+                            <p class="text-gray-300 text-xs leading-loose">
+                                お肉を最もおいしい状態で楽しんでいただきたい一心から生まれた厳選素材を使った豪快メニューの数々。十勝若牛のもつ繊細な旨味、希少価値の高いアイスランドラムの芳醇な香り、一つひとつの料理にシェフの技術とこだわりが凝縮されております。産地直送ならではの新鮮さと品質をお約束いたします。
                             </p>
-                            <span class="card-arrow">
-                              → 詳しく見る
-                            </span>
                         </div>
-                    </a>
-                    
-                    <a href="/menu" class="card-link group">
-                        <div class="relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80" 
-                                 alt="ディナーコース" 
-                                 class="card-image">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title text-white mb-3">ディナーコース</h3>
-                            <p class="card-text mb-4">
-                              お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。
-                            </p>
-                            <span class="card-arrow">
-                              → 詳しく見る
-                            </span>
-                        </div>
-                    </a>
-                    
-                    <a href="/commitment" class="card-link group">
-                        <div class="relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80" 
-                                 alt="厳選十勝若牛" 
-                                 class="card-image">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title text-white mb-3">厳選十勝若牛</h3>
-                            <p class="card-text mb-4">
-                              十勝若牛や希少なアイスランドラムなど、最高級の食材を使用しております。
-                            </p>
-                            <span class="card-arrow">
-                              → 詳しく見る
-                            </span>
-                        </div>
-                    </a>
-                    
-                    <a href="/commitment" class="card-link group">
-                        <div class="relative overflow-hidden">
-                            <img src="/static/private-room.jpg" 
-                                 alt="美味しいお肉の焼き方" 
-                                 class="card-image">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title text-white mb-3">美味しい<br>お肉の焼き方</h3>
-                            <p class="card-text mb-4">
-                              美味しいお肉だからこそ、美味しく食べてもらいたい。各種焼き方のコツをご紹介。
-                            </p>
-                            <span class="card-arrow">
-                              → 詳しく見る
-                            </span>
-                        </div>
-                    </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下半分: 50vh - 3つのカード -->
+            <div class="absolute bottom-0 left-0 right-0 flex justify-center items-center gap-6 px-8" style="height: 50vh;">
+                <!-- カード1: 十勝若牛 -->
+                <div class="relative overflow-hidden group" style="width: 280px; height: 420px; background: #1a1a1a;">
+                    <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80" 
+                         alt="十勝若牛" 
+                         class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                         style="filter: brightness(0.9);">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                    <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP'; writing-mode: horizontal-tb;">
+                            厳選常陸牛<br>ギフト
+                        </h3>
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                            口溶け香り高いなめらかな食感と高級感が、あなたのギフトの心をより一層伝えます。
+                        </p>
+                        <a href="/menu" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
+                            詳しく見る →
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- カード2: アイスランドラム -->
+                <div class="relative overflow-hidden group" style="width: 280px; height: 420px; background: #1a1a1a;">
+                    <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80" 
+                         alt="アイスランドラム" 
+                         class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                         style="filter: brightness(0.9);">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                    <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';">
+                            ディナー<br>コース
+                        </h3>
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                            お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。
+                        </p>
+                        <a href="/course" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
+                            詳しく見る →
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- カード3: 美味しいお肉の焼き方 -->
+                <div class="relative overflow-hidden group" style="width: 280px; height: 420px; background: #1a1a1a;">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" 
+                         alt="美味しいお肉の焼き方" 
+                         class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                         style="filter: brightness(0.9);">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                    <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';">
+                            美味しい<br>お肉の焼き方
+                        </h3>
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                            実はよくお肉料理を素晴らしく楽しく食べてきたいと、本当に各種焼き方をお教えいたします。
+                        </p>
+                        <a href="/commitment" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
+                            詳しく見る →
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
