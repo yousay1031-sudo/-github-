@@ -115,6 +115,26 @@ app.delete('/api/admin/menu-items/:id', async (c) => {
   return c.json({ success: true })
 })
 
+// 画像アップロード（Base64形式）
+app.post('/api/admin/upload-image', async (c) => {
+  try {
+    const data = await c.req.json()
+    const { imageData } = data
+    
+    if (!imageData || !imageData.startsWith('data:image/')) {
+      return c.json({ error: 'Invalid image data' }, 400)
+    }
+    
+    // Base64画像をそのまま返す（データベースに保存可能な形式）
+    return c.json({ 
+      success: true, 
+      imageUrl: imageData 
+    })
+  } catch (error) {
+    return c.json({ error: 'Failed to upload image' }, 500)
+  }
+})
+
 // カテゴリー画像更新
 app.put('/api/admin/menu-categories/:id', async (c) => {
   const { DB } = c.env

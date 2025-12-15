@@ -111,8 +111,27 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-bold mb-2">カテゴリー画像URL</label>
-                        <input type="url" id="category-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="https://example.com/image.jpg">
+                        <label class="block text-sm font-bold mb-2">カテゴリー画像</label>
+                        
+                        <!-- 現在の画像プレビュー -->
+                        <div id="category-image-preview" class="mb-3">
+                          <img id="category-preview-img" src="" alt="画像プレビュー" class="max-w-full h-48 object-cover rounded-lg border-2 border-gray-300" style="display: none;">
+                        </div>
+                        
+                        <!-- 画像ファイル選択 -->
+                        <div class="flex items-center space-x-4 mb-2">
+                          <label class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
+                            <i class="fas fa-upload mr-2"></i>
+                            画像を選択
+                            <input type="file" id="category-image-file" accept="image/*" class="hidden" onchange="handleCategoryImageUpload(event)">
+                          </label>
+                          <button type="button" onclick="clearCategoryImage()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
+                            <i class="fas fa-times mr-2"></i>画像をクリア
+                          </button>
+                        </div>
+                        
+                        <!-- 画像URL入力（オプション） -->
+                        <input type="url" id="category-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="または画像URL: https://example.com/image.jpg">
                         <p class="text-xs text-gray-500 mt-1">メニューページのヘッダー画像として表示されます</p>
                     </div>
                     
@@ -166,8 +185,27 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-bold mb-2">画像URL</label>
-                        <input type="url" id="menu-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="https://example.com/image.jpg">
+                        <label class="block text-sm font-bold mb-2">メニュー画像</label>
+                        
+                        <!-- 現在の画像プレビュー -->
+                        <div id="menu-image-preview" class="mb-3">
+                          <img id="menu-preview-img" src="" alt="画像プレビュー" class="max-w-full h-48 object-cover rounded-lg border-2 border-gray-300" style="display: none;">
+                        </div>
+                        
+                        <!-- 画像ファイル選択 -->
+                        <div class="flex items-center space-x-4 mb-2">
+                          <label class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
+                            <i class="fas fa-upload mr-2"></i>
+                            画像を選択
+                            <input type="file" id="menu-image-file" accept="image/*" class="hidden" onchange="handleMenuImageUpload(event)">
+                          </label>
+                          <button type="button" onclick="clearMenuImage()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
+                            <i class="fas fa-times mr-2"></i>画像をクリア
+                          </button>
+                        </div>
+                        
+                        <!-- 画像URL入力（オプション） -->
+                        <input type="url" id="menu-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="または画像URL: https://example.com/image.jpg">
                         <p class="text-xs text-gray-500 mt-1">Unsplash、Pixabay などの画像URLを入力</p>
                     </div>
                     
@@ -199,6 +237,8 @@
       let categories = []
       let currentEditingMenuId = null
       let currentEditingCategoryId = null
+      let currentCategoryImageData = null
+      let currentMenuImageData = null
       
       // タブ切り替え
       function switchTab(tab) {
@@ -244,15 +284,59 @@
         }
       }
       
+      // カテゴリー画像アップロード処理
+      function handleCategoryImageUpload(event) {
+        const file = event.target.files[0]
+        if (!file) return
+        
+        // ファイルサイズチェック（5MB以下）
+        if (file.size > 5 * 1024 * 1024) {
+          alert('画像サイズは5MB以下にしてください')
+          return
+        }
+        
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          currentCategoryImageData = e.target.result
+          const previewImg = document.getElementById('category-preview-img')
+          previewImg.src = currentCategoryImageData
+          previewImg.style.display = 'block'
+          
+          // URL入力欄をクリア
+          document.getElementById('category-image-url').value = ''
+        }
+        reader.readAsDataURL(file)
+      }
+      
+      // カテゴリー画像クリア
+      function clearCategoryImage() {
+        currentCategoryImageData = null
+        document.getElementById('category-preview-img').style.display = 'none'
+        document.getElementById('category-preview-img').src = ''
+        document.getElementById('category-image-file').value = ''
+        document.getElementById('category-image-url').value = ''
+      }
+      
       // カテゴリー編集
       async function editCategory(id) {
         const category = categories.find(c => c.id === id)
         if (!category) return
         
         currentEditingCategoryId = id
+        currentCategoryImageData = null
+        
         document.getElementById('category-id').value = category.id
         document.getElementById('category-name').value = category.name
         document.getElementById('category-image-url').value = category.image_url || ''
+        
+        // 既存画像があればプレビュー表示
+        if (category.image_url) {
+          const previewImg = document.getElementById('category-preview-img')
+          previewImg.src = category.image_url
+          previewImg.style.display = 'block'
+        } else {
+          clearCategoryImage()
+        }
         
         document.getElementById('category-modal').classList.add('active')
       }
@@ -265,9 +349,23 @@
       document.getElementById('category-form').addEventListener('submit', async (e) => {
         e.preventDefault()
         
-        const data = {
-          image_url: document.getElementById('category-image-url').value || null
+        let imageUrl = document.getElementById('category-image-url').value || null
+        
+        // アップロードした画像がある場合、Base64データを使用
+        if (currentCategoryImageData) {
+          try {
+            const uploadResponse = await axios.post('/api/admin/upload-image', {
+              imageData: currentCategoryImageData
+            })
+            imageUrl = uploadResponse.data.imageUrl
+          } catch (error) {
+            console.error('Failed to upload image:', error)
+            alert('画像のアップロードに失敗しました')
+            return
+          }
         }
+        
+        const data = { image_url: imageUrl }
         
         try {
           await axios.put(`/api/admin/menu-categories/${currentEditingCategoryId}`, data)
@@ -275,6 +373,7 @@
           closeCategoryModal()
           loadCategoryList()
           loadCategories()
+          currentCategoryImageData = null
         } catch (error) {
           console.error('Failed to update category:', error)
           alert('更新に失敗しました')
@@ -346,9 +445,44 @@
         }
       }
       
+      // メニュー画像アップロード処理
+      function handleMenuImageUpload(event) {
+        const file = event.target.files[0]
+        if (!file) return
+        
+        // ファイルサイズチェック（5MB以下）
+        if (file.size > 5 * 1024 * 1024) {
+          alert('画像サイズは5MB以下にしてください')
+          return
+        }
+        
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          currentMenuImageData = e.target.result
+          const previewImg = document.getElementById('menu-preview-img')
+          previewImg.src = currentMenuImageData
+          previewImg.style.display = 'block'
+          
+          // URL入力欄をクリア
+          document.getElementById('menu-image-url').value = ''
+        }
+        reader.readAsDataURL(file)
+      }
+      
+      // メニュー画像クリア
+      function clearMenuImage() {
+        currentMenuImageData = null
+        document.getElementById('menu-preview-img').style.display = 'none'
+        document.getElementById('menu-preview-img').src = ''
+        document.getElementById('menu-image-file').value = ''
+        document.getElementById('menu-image-url').value = ''
+      }
+      
       // メニュー編集モーダルを開く
       function openMenuModal(item = null) {
         currentEditingMenuId = item ? item.id : null
+        currentMenuImageData = null
+        
         document.getElementById('menu-modal-title').textContent = item ? 'メニュー編集' : 'メニュー追加'
         
         if (item) {
@@ -360,8 +494,18 @@
           document.getElementById('menu-image-url').value = item.image_url || ''
           document.getElementById('menu-display-order').value = item.display_order || 0
           document.getElementById('menu-visible').checked = item.is_visible === 1
+          
+          // 既存画像があればプレビュー表示
+          if (item.image_url) {
+            const previewImg = document.getElementById('menu-preview-img')
+            previewImg.src = item.image_url
+            previewImg.style.display = 'block'
+          } else {
+            clearMenuImage()
+          }
         } else {
           document.getElementById('menu-form').reset()
+          clearMenuImage()
         }
         
         document.getElementById('menu-modal').classList.add('active')
@@ -402,12 +546,28 @@
       document.getElementById('menu-form').addEventListener('submit', async (e) => {
         e.preventDefault()
         
+        let imageUrl = document.getElementById('menu-image-url').value || null
+        
+        // アップロードした画像がある場合、Base64データを使用
+        if (currentMenuImageData) {
+          try {
+            const uploadResponse = await axios.post('/api/admin/upload-image', {
+              imageData: currentMenuImageData
+            })
+            imageUrl = uploadResponse.data.imageUrl
+          } catch (error) {
+            console.error('Failed to upload image:', error)
+            alert('画像のアップロードに失敗しました')
+            return
+          }
+        }
+        
         const data = {
           category_id: parseInt(document.getElementById('menu-category').value),
           name: document.getElementById('menu-name').value,
           description: document.getElementById('menu-description').value,
           price: parseInt(document.getElementById('menu-price').value) || null,
-          image_url: document.getElementById('menu-image-url').value || null,
+          image_url: imageUrl,
           display_order: parseInt(document.getElementById('menu-display-order').value) || 0,
           is_visible: document.getElementById('menu-visible').checked ? 1 : 0
         }
@@ -423,6 +583,7 @@
           
           closeMenuModal()
           loadMenuItems()
+          currentMenuImageData = null
         } catch (error) {
           console.error('Failed to save menu item:', error)
           alert('保存に失敗しました')
