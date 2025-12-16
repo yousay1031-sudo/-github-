@@ -1153,26 +1153,31 @@ app.get('/', (c) => {
           
           // ページのテキストを更新
           function updatePageTexts() {
+            // 改行を<br>タグに変換する関数
+            function nl2br(text) {
+              return text.replace(/\n/g, '<br>')
+            }
+            
             // Ground Menu
             const groundMenuTitle = document.querySelector('[data-text="home_ground_menu_title"]')
             if (groundMenuTitle && pageTextsCache.home_ground_menu_title) {
-              groundMenuTitle.innerHTML = pageTextsCache.home_ground_menu_title
+              groundMenuTitle.innerHTML = nl2br(pageTextsCache.home_ground_menu_title)
             }
             
             const groundMenuDesc = document.querySelector('[data-text="home_ground_menu_description"]')
             if (groundMenuDesc && pageTextsCache.home_ground_menu_description) {
-              groundMenuDesc.innerHTML = pageTextsCache.home_ground_menu_description
+              groundMenuDesc.innerHTML = nl2br(pageTextsCache.home_ground_menu_description)
             }
             
             // Commitment
             const commitmentTitle = document.querySelector('[data-text="home_commitment_title"]')
             if (commitmentTitle && pageTextsCache.home_commitment_title) {
-              commitmentTitle.innerHTML = pageTextsCache.home_commitment_title
+              commitmentTitle.innerHTML = nl2br(pageTextsCache.home_commitment_title)
             }
             
             const commitmentDesc = document.querySelector('[data-text="home_commitment_description"]')
             if (commitmentDesc && pageTextsCache.home_commitment_description) {
-              commitmentDesc.innerHTML = pageTextsCache.home_commitment_description
+              commitmentDesc.innerHTML = nl2br(pageTextsCache.home_commitment_description)
             }
             
             // Message
@@ -1183,7 +1188,7 @@ app.get('/', (c) => {
             
             const messageContent = document.querySelector('[data-text="home_message_content"]')
             if (messageContent && pageTextsCache.home_message_content) {
-              messageContent.innerHTML = pageTextsCache.home_message_content
+              messageContent.innerHTML = nl2br(pageTextsCache.home_message_content)
             }
           }
           
