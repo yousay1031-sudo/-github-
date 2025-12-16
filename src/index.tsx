@@ -1155,7 +1155,7 @@ app.get('/', (c) => {
           function updatePageTexts() {
             // 改行を<br>タグに変換する関数
             function nl2br(text) {
-              return text.replace(/\n/g, '<br>')
+              return text.replace(/\\n/g, '<br>')
             }
             
             // Ground Menu
