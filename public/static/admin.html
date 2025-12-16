@@ -1466,7 +1466,7 @@
           const isVisibleStr = prompt('公開状態 (1:公開, 0:非公開):', item.is_visible ? '1' : '0')
           const isVisible = isVisibleStr === '1'
           
-          await axios.put(\`/api/admin/lunch-menu/\${id}\`, {
+          await axios.put(`/api/admin/lunch-menu/${id}`, {
             name,
             name_en: nameEn,
             price,
@@ -1489,7 +1489,7 @@
         if (!confirm('このランチメニューを削除しますか？')) return
         
         try {
-          await axios.delete(\`/api/admin/lunch-menu/\${id}\`)
+          await axios.delete(`/api/admin/lunch-menu/${id}`)
           alert('ランチメニューを削除しました')
           loadLunchMenu()
         } catch (error) {
