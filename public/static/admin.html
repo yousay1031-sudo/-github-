@@ -349,28 +349,12 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-bold mb-2">新しい画像</label>
+                        <label class="block text-sm font-bold mb-2">新しい画像URL</label>
                         
-                        <!-- 画像ファイル選択 -->
-                        <div class="flex items-center space-x-4 mb-2">
-                            <label class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
-                                <i class="fas fa-upload mr-2"></i>
-                                画像を選択
-                                <input type="file" id="page-image-file" accept="image/*" class="hidden" onchange="handlePageImageUpload(event)">
-                            </label>
-                            <button type="button" onclick="clearPageImage()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
-                                <i class="fas fa-times mr-2"></i>クリア
-                            </button>
-                        </div>
-                        
-                        <!-- 新しい画像プレビュー -->
-                        <div id="new-image-preview" class="mb-3" style="display: none;">
-                            <img id="image-preview-new" src="" alt="新しい画像" class="max-w-full h-48 object-cover rounded-lg border-2 border-green-500">
-                        </div>
-                        
-                        <!-- 画像URL入力（オプション） -->
-                        <input type="url" id="page-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="または画像URL: https://example.com/image.jpg">
-                        <p class="text-xs text-gray-500 mt-1">画像ファイルをアップロードするか、URLを入力してください</p>
+                        <!-- 画像URL入力 -->
+                        <input type="url" id="page-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="画像URL: https://example.com/image.jpg" required>
+                        <p class="text-xs text-gray-500 mt-1">画像のURLを入力してください（例: https://images.unsplash.com/...）</p>
+                        <p class="text-xs text-red-500 mt-1">注意: 現在、ファイルアップロードは無効です。画像URLを使用してください。</p>
                     </div>
                     
                     <div class="flex justify-end space-x-4 mt-6">
@@ -843,39 +827,32 @@
             return
           }
           
-          let imageUrl = document.getElementById('page-image-url').value
-          
-          // アップロードした画像がある場合
-          if (currentPageImageData) {
-            try {
-              const uploadResponse = await axios.post('/api/admin/upload-image', {
-                imageData: currentPageImageData
-              })
-              imageUrl = uploadResponse.data.imageUrl
-            } catch (error) {
-              console.error('Failed to upload image:', error)
-              alert('画像のアップロードに失敗しました:\\n' + (error.response?.data?.error || error.message))
-              return
-            }
-          }
+          const imageUrl = document.getElementById('page-image-url').value
           
           if (!imageUrl) {
-            alert('画像を選択するかURLを入力してください')
+            alert('画像URLを入力してください')
+            return
+          }
+          
+          // URLの検証
+          try {
+            new URL(imageUrl)
+          } catch (error) {
+            alert('有効な画像URLを入力してください')
             return
           }
           
           const data = { image_url: imageUrl }
           
           try {
-            const response = await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
-            alert('更新しました！')
+            await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
+            alert('画像URLを更新しました！')
             closeImageModal()
             loadPageImages()
-            currentPageImageData = null
           } catch (error) {
             console.error('Failed to update image:', error)
             const errorMsg = error.response?.data?.error || error.response?.statusText || error.message
-            alert('更新に失敗しました:\\n' + errorMsg + '\\n\\nキー: ' + currentEditingImageKey)
+            alert('更新に失敗しました:\\n' + errorMsg)
           }
         })
       }
