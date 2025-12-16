@@ -1086,9 +1086,9 @@ app.get('/', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
-                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -1108,9 +1108,9 @@ app.get('/', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
@@ -1357,6 +1357,7 @@ app.get('/', (c) => {
                     <a href="/menu" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">dinner</a>
                     <a href="/course" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">course</a>
                     <a href="/commitment" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">preference</a>
+                    <a href="/lunch" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">lunch</a>
                     <a href="/access" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">access</a>
                 </div>
                 
@@ -1978,6 +1979,7 @@ app.get('/menu', (c) => {
                     <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                     <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                     <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                    <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                     <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                     <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                       <i class="fas fa-cog text-sm"></i> 管理
@@ -1999,6 +2001,7 @@ app.get('/menu', (c) => {
         <a href="/menu">dinner</a>
         <a href="/course">course</a>
         <a href="/commitment">preference</a>
+        <a href="/lunch">lunch</a>
         <a href="/access">access</a>
         <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
     </div>
@@ -2437,9 +2440,9 @@ app.get('/lunch', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
-                        <a href="/lunch" class="nav-link text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -2459,9 +2462,9 @@ app.get('/lunch', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
@@ -2527,37 +2530,37 @@ app.get('/lunch', (c) => {
               const grid = document.getElementById('lunchMenuGrid');
               
               if (lunchMenu.length === 0) {
-                grid.innerHTML = \\\`
+                grid.innerHTML = \`
                   <div style="grid-column: 1/-1; text-align: center; color: #a0a0a0; padding: 3rem 0;">
                     現在ランチメニューはありません
                   </div>
-                \\\`;
+                \`;
                 return;
               }
 
-              grid.innerHTML = lunchMenu.map(item => \\\`
+              grid.innerHTML = lunchMenu.map(item => \`
                 <div class="lunch-menu-item">
-                  <img src="\\\${item.image_url}" alt="\\\${item.name}" class="lunch-item-image">
+                  <img src="\${item.image_url}" alt="\${item.name}" class="lunch-item-image">
                   <div class="lunch-item-content">
                     <div class="lunch-item-header">
                       <div>
-                        <h3 class="lunch-item-name">\\\${item.name}</h3>
-                        <p class="lunch-item-name-en">\\\${item.name_en || ''}</p>
+                        <h3 class="lunch-item-name">\${item.name}</h3>
+                        <p class="lunch-item-name-en">\${item.name_en || ''}</p>
                       </div>
-                      <div class="lunch-item-price">¥\\\${item.price.toLocaleString()}</div>
+                      <div class="lunch-item-price">¥\${item.price.toLocaleString()}</div>
                     </div>
-                    <p class="lunch-item-description">\\\${item.description || ''}</p>
+                    <p class="lunch-item-description">\${item.description || ''}</p>
                   </div>
                 </div>
-              \\\`).join('');
+              \`).join('');
             } catch (error) {
               console.error('ランチメニューの読み込みに失敗しました:', error);
               const grid = document.getElementById('lunchMenuGrid');
-              grid.innerHTML = \\\`
+              grid.innerHTML = \`
                 <div style="grid-column: 1/-1; text-align: center; color: #ff6b6b; padding: 3rem 0;">
                   ランチメニューの読み込みに失敗しました
                 </div>
-              \\\`;
+              \`;
             }
           }
 
@@ -2840,9 +2843,9 @@ app.get('/news', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
-                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -2862,9 +2865,9 @@ app.get('/news', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
@@ -3148,6 +3151,7 @@ app.get('/access', (c) => {
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -3167,9 +3171,9 @@ app.get('/access', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
@@ -3517,6 +3521,7 @@ app.get('/commitment', (c) => {
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -3536,9 +3541,9 @@ app.get('/commitment', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
@@ -3958,9 +3963,9 @@ app.get('/course', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
-                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
                         <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
                           <i class="fas fa-cog text-sm"></i> 管理
@@ -3980,9 +3985,9 @@ app.get('/course', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
-            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
+            <a href="/lunch">lunch</a>
             <a href="/access">access</a>
             <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
