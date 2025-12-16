@@ -51,17 +51,23 @@
     <!-- メインコンテンツ -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- タブナビゲーション -->
-        <div class="flex space-x-4 mb-8 border-b border-gray-300">
-            <button onclick="switchTab('category')" id="tab-category" class="px-6 py-3 font-bold border-b-4 border-amber-600 text-amber-600">
+        <div class="flex space-x-4 mb-8 border-b border-gray-300 overflow-x-auto">
+            <button onclick="switchTab('category')" id="tab-category" class="px-6 py-3 font-bold border-b-4 border-amber-600 text-amber-600 whitespace-nowrap">
                 <i class="fas fa-list"></i> カテゴリー管理
             </button>
-            <button onclick="switchTab('menu')" id="tab-menu" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
+            <button onclick="switchTab('menu')" id="tab-menu" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
                 <i class="fas fa-utensils"></i> メニュー管理
             </button>
-            <button onclick="switchTab('text')" id="tab-text" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
+            <button onclick="switchTab('news')" id="tab-news" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
+                <i class="fas fa-newspaper"></i> ニュース管理
+            </button>
+            <button onclick="switchTab('instagram')" id="tab-instagram" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
+                <i class="fab fa-instagram"></i> Instagram連携
+            </button>
+            <button onclick="switchTab('text')" id="tab-text" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
                 <i class="fas fa-edit"></i> テキスト管理
             </button>
-            <button onclick="switchTab('image')" id="tab-image" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
+            <button onclick="switchTab('image')" id="tab-image" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
                 <i class="fas fa-image"></i> 画像管理
             </button>
         </div>
@@ -91,6 +97,71 @@
                 
                 <div id="menu-list" class="space-y-4">
                     <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ニュース管理セクション -->
+        <div id="section-news" class="tab-section hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">ニュース一覧</h2>
+                    <button onclick="openNewsModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                        <i class="fas fa-plus"></i> 新規追加
+                    </button>
+                </div>
+                
+                <div id="news-list" class="space-y-4">
+                    <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram連携セクション -->
+        <div id="section-instagram" class="tab-section hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-6">Instagram連携</h2>
+                
+                <!-- ステータス表示 -->
+                <div id="instagram-status" class="mb-8 p-6 bg-gray-50 rounded-lg">
+                    <h3 class="text-lg font-bold mb-4">連携ステータス</h3>
+                    <div id="instagram-status-content">
+                        <p class="text-gray-500">読み込み中...</p>
+                    </div>
+                </div>
+                
+                <!-- 同期ボタン -->
+                <div class="mb-8">
+                    <button onclick="syncInstagram()" id="sync-instagram-btn" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg">
+                        <i class="fab fa-instagram mr-2"></i> Instagramから投稿を同期
+                    </button>
+                    <p class="text-sm text-gray-500 mt-2">最新25件のInstagram投稿をニュースページに同期します</p>
+                </div>
+                
+                <!-- 最近の同期結果 -->
+                <div id="sync-results" class="hidden mb-8 p-6 rounded-lg">
+                    <!-- 同期結果がここに表示されます -->
+                </div>
+                
+                <!-- 設定方法 -->
+                <div class="p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="text-lg font-bold mb-4 text-blue-900">
+                        <i class="fas fa-info-circle"></i> Instagram連携の設定方法
+                    </h3>
+                    <ol class="list-decimal list-inside space-y-2 text-sm text-blue-900">
+                        <li>Meta for Developersでアプリを作成</li>
+                        <li>Instagram Basic Display APIを有効化</li>
+                        <li>アクセストークン（長期）を取得</li>
+                        <li>Cloudflare Pagesにトークンを設定:
+                            <pre class="mt-2 p-2 bg-blue-100 rounded text-xs overflow-x-auto">npx wrangler pages secret put INSTAGRAM_ACCESS_TOKEN --project-name webapp</pre>
+                        </li>
+                        <li>6時間ごとに自動同期されます（Cron Triggers）</li>
+                    </ol>
+                    <div class="mt-4">
+                        <a href="https://developers.facebook.com/docs/instagram-basic-display-api" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-sm">
+                            <i class="fas fa-external-link-alt"></i> Instagram Basic Display API ドキュメント
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1000,6 +1071,218 @@
         if (fileInput) fileInput.value = ''
       }
       
+      // ========== Instagram連携機能 ==========
+      
+      // Instagram連携ステータスを読み込み
+      async function loadInstagramStatus() {
+        try {
+          const response = await axios.get('/api/admin/instagram-status')
+          const data = response.data
+          
+          const statusContent = document.getElementById('instagram-status-content')
+          
+          if (data.configured) {
+            statusContent.innerHTML = `
+              <div class="flex items-center space-x-2 mb-4">
+                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                <span class="text-green-700 font-bold">Instagram APIが設定されています</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-4">6時間ごとに自動的にInstagram投稿が同期されます</p>
+              ${data.lastSyncedPosts.length > 0 ? `
+                <div class="mt-4">
+                  <h4 class="font-bold text-sm mb-2">最近同期された投稿（${data.lastSyncedPosts.length}件）</h4>
+                  <div class="space-y-2">
+                    ${data.lastSyncedPosts.map(post => `
+                      <div class="text-xs p-2 bg-white rounded border">
+                        <div class="font-bold">${post.title.substring(0, 60)}...</div>
+                        <div class="text-gray-500">${post.published_date}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            `
+          } else {
+            statusContent.innerHTML = `
+              <div class="flex items-center space-x-2 mb-4">
+                <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                <span class="text-yellow-700 font-bold">Instagram APIが未設定です</span>
+              </div>
+              <p class="text-sm text-gray-600">下記の設定方法を参照してアクセストークンを設定してください</p>
+            `
+            
+            // 同期ボタンを無効化
+            const syncBtn = document.getElementById('sync-instagram-btn')
+            if (syncBtn) {
+              syncBtn.disabled = true
+              syncBtn.classList.add('opacity-50', 'cursor-not-allowed')
+            }
+          }
+        } catch (error) {
+          console.error('Instagram status error:', error)
+          document.getElementById('instagram-status-content').innerHTML = `
+            <div class="text-red-600">
+              <i class="fas fa-times-circle"></i> ステータスの取得に失敗しました
+            </div>
+          `
+        }
+      }
+      
+      // Instagram投稿を同期
+      window.syncInstagram = async function() {
+        const btn = document.getElementById('sync-instagram-btn')
+        const resultsDiv = document.getElementById('sync-results')
+        
+        // ボタンを無効化
+        btn.disabled = true
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 同期中...'
+        
+        try {
+          const response = await axios.post('/api/admin/sync-instagram')
+          const data = response.data
+          
+          if (data.success) {
+            // 成功結果を表示
+            resultsDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200')
+            resultsDiv.classList.add('bg-green-50', 'border', 'border-green-200')
+            resultsDiv.innerHTML = `
+              <div class="flex items-start space-x-3">
+                <i class="fas fa-check-circle text-green-600 text-2xl mt-1"></i>
+                <div class="flex-1">
+                  <h3 class="font-bold text-green-900 mb-2">同期完了</h3>
+                  <p class="text-sm text-green-800 mb-3">${data.message}</p>
+                  <div class="grid grid-cols-3 gap-4 text-sm">
+                    <div class="bg-white p-3 rounded">
+                      <div class="text-gray-500">新規同期</div>
+                      <div class="text-2xl font-bold text-green-600">${data.syncedCount}件</div>
+                    </div>
+                    <div class="bg-white p-3 rounded">
+                      <div class="text-gray-500">スキップ</div>
+                      <div class="text-2xl font-bold text-gray-600">${data.skippedCount}件</div>
+                    </div>
+                    <div class="bg-white p-3 rounded">
+                      <div class="text-gray-500">合計</div>
+                      <div class="text-2xl font-bold text-blue-600">${data.totalPosts}件</div>
+                    </div>
+                  </div>
+                  ${data.syncedPosts && data.syncedPosts.length > 0 ? `
+                    <div class="mt-4">
+                      <h4 class="font-bold text-sm mb-2">同期された投稿</h4>
+                      <div class="space-y-2 max-h-60 overflow-y-auto">
+                        ${data.syncedPosts.map(post => `
+                          <div class="bg-white p-2 rounded text-xs border">
+                            <div class="font-bold">${post.title.substring(0, 80)}...</div>
+                            <div class="text-gray-500">${post.published_date}</div>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+                  ` : ''}
+                  <div class="mt-4">
+                    <a href="/news" target="_blank" class="text-green-700 hover:text-green-900 underline text-sm">
+                      <i class="fas fa-external-link-alt"></i> ニュースページで確認
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `
+            
+            // ステータスを再読み込み
+            loadInstagramStatus()
+          } else {
+            throw new Error(data.error || '同期に失敗しました')
+          }
+        } catch (error) {
+          console.error('Sync error:', error)
+          
+          // エラー結果を表示
+          resultsDiv.classList.remove('hidden', 'bg-green-50', 'border-green-200')
+          resultsDiv.classList.add('bg-red-50', 'border', 'border-red-200')
+          resultsDiv.innerHTML = `
+            <div class="flex items-start space-x-3">
+              <i class="fas fa-times-circle text-red-600 text-2xl mt-1"></i>
+              <div class="flex-1">
+                <h3 class="font-bold text-red-900 mb-2">同期失敗</h3>
+                <p class="text-sm text-red-800">${error.response?.data?.error || error.message}</p>
+                ${error.response?.data?.details ? `
+                  <p class="text-xs text-red-600 mt-2">詳細: ${error.response.data.details}</p>
+                ` : ''}
+                <p class="text-xs text-gray-600 mt-3">
+                  アクセストークンが正しく設定されているか確認してください
+                </p>
+              </div>
+            </div>
+          `
+        } finally {
+          // ボタンを再有効化
+          btn.disabled = false
+          btn.innerHTML = '<i class="fab fa-instagram mr-2"></i> Instagramから投稿を同期'
+        }
+      }
+      
+      // ニュース一覧を読み込み
+      async function loadNewsList() {
+        try {
+          const response = await axios.get('/api/admin/news')
+          const newsList = response.data
+          
+          document.getElementById('news-list').innerHTML = newsList.length === 0 
+            ? '<p class="text-gray-500 text-center py-8">ニュースがありません</p>'
+            : newsList.map(news => `
+              <div class="flex items-start justify-between bg-gray-50 p-4 rounded-lg">
+                <div class="flex-1">
+                  <div class="flex items-center space-x-2 mb-2">
+                    <span class="font-bold text-lg">${news.title}</span>
+                    ${news.is_visible ? 
+                      '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">公開中</span>' : 
+                      '<span class="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">非公開</span>'
+                    }
+                  </div>
+                  <p class="text-sm text-gray-600 mb-2">${news.content.substring(0, 100)}${news.content.length > 100 ? '...' : ''}</p>
+                  <div class="text-xs text-gray-500">
+                    <i class="fas fa-calendar"></i> ${news.published_date}
+                  </div>
+                </div>
+                <div class="flex space-x-2 ml-4">
+                  <button onclick="editNews(${news.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition">
+                    <i class="fas fa-edit"></i> 編集
+                  </button>
+                  <button onclick="deleteNews(${news.id})" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition">
+                    <i class="fas fa-trash"></i> 削除
+                  </button>
+                </div>
+              </div>
+            `).join('')
+        } catch (error) {
+          console.error('Load news error:', error)
+          document.getElementById('news-list').innerHTML = '<p class="text-red-500 text-center py-8">ニュースの読み込みに失敗しました</p>'
+        }
+      }
+      
+      // ニュースモーダルを開く（簡易版 - 実装は省略）
+      window.openNewsModal = function() {
+        alert('ニュース追加機能は現在開発中です。Instagram同期機能をご利用ください。')
+      }
+      
+      // ニュース編集（簡易版 - 実装は省略）
+      window.editNews = function(id) {
+        alert(`ニュース編集機能は現在開発中です（ID: ${id}）`)
+      }
+      
+      // ニュース削除
+      window.deleteNews = async function(id) {
+        if (!confirm('このニュースを削除しますか？')) return
+        
+        try {
+          await axios.delete(`/api/admin/news/${id}`)
+          alert('ニュースを削除しました')
+          loadNewsList()
+        } catch (error) {
+          console.error('Delete news error:', error)
+          alert('ニュースの削除に失敗しました')
+        }
+      }
+      
       // 初期化
       document.addEventListener('DOMContentLoaded', () => {
         loadCategories()
@@ -1007,6 +1290,8 @@
         loadMenuItems()
         loadPageTexts()
         loadPageImages()
+        loadInstagramStatus()
+        loadNewsList()
         
         // フォームイベントリスナーを登録
         setupFormListeners()

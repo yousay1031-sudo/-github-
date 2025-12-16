@@ -147,6 +147,166 @@ app.delete('/api/admin/news/:id', async (c) => {
   return c.json({ success: true })
 })
 
+// === Instagram連携API ===
+
+// Instagram投稿を取得（テスト用）
+app.get('/api/instagram/posts', async (c) => {
+  const INSTAGRAM_ACCESS_TOKEN = c.env.INSTAGRAM_ACCESS_TOKEN
+  
+  if (!INSTAGRAM_ACCESS_TOKEN) {
+    return c.json({ error: 'Instagram access token not configured' }, 500)
+  }
+  
+  try {
+    const response = await fetch(
+      `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${INSTAGRAM_ACCESS_TOKEN}`
+    )
+    
+    const data = await response.json()
+    
+    if (!response.ok) {
+      return c.json({ 
+        error: 'Instagram API error', 
+        details: data.error 
+      }, 400)
+    }
+    
+    return c.json({
+      success: true,
+      posts: data.data || [],
+      count: data.data?.length || 0
+    })
+  } catch (error) {
+    return c.json({ 
+      error: 'Failed to fetch Instagram posts',
+      details: error.message 
+    }, 500)
+  }
+})
+
+// Instagram投稿をNewsテーブルに同期
+app.post('/api/admin/sync-instagram', async (c) => {
+  const { DB } = c.env
+  const INSTAGRAM_ACCESS_TOKEN = c.env.INSTAGRAM_ACCESS_TOKEN
+  
+  if (!INSTAGRAM_ACCESS_TOKEN) {
+    return c.json({ 
+      error: 'Instagram access token not configured',
+      message: 'Please set INSTAGRAM_ACCESS_TOKEN in Cloudflare Secrets'
+    }, 500)
+  }
+  
+  try {
+    // Instagram APIから最新の投稿を取得（最大25件）
+    const response = await fetch(
+      `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=25&access_token=${INSTAGRAM_ACCESS_TOKEN}`
+    )
+    
+    const data = await response.json()
+    
+    if (!response.ok) {
+      return c.json({ 
+        error: 'Instagram API error', 
+        details: data.error 
+      }, 400)
+    }
+    
+    const posts = data.data || []
+    let syncedCount = 0
+    let skippedCount = 0
+    const syncedPosts = []
+    
+    // 各投稿をNewsテーブルに追加
+    for (const post of posts) {
+      // Instagram投稿IDで既に同期済みかチェック
+      const existing = await DB.prepare(
+        'SELECT id FROM news WHERE title LIKE ?'
+      ).bind(`%Instagram%${post.id}%`).first()
+      
+      if (existing) {
+        skippedCount++
+        continue
+      }
+      
+      // キャプションから最初の50文字をタイトルに
+      let title = post.caption 
+        ? post.caption.substring(0, 50).replace(/\n/g, ' ') 
+        : 'Instagram投稿'
+      
+      // Instagram投稿IDを含める（重複チェック用）
+      title = `${title} [Instagram: ${post.id}]`
+      
+      // 本文（全文）
+      const content = post.caption || ''
+      
+      // 画像URL（画像/動画の場合）
+      let imageUrl = ''
+      if (post.media_type === 'IMAGE' || post.media_type === 'CAROUSEL_ALBUM') {
+        imageUrl = post.media_url || ''
+      } else if (post.media_type === 'VIDEO') {
+        imageUrl = post.thumbnail_url || ''
+      }
+      
+      // 投稿日
+      const publishedDate = new Date(post.timestamp).toISOString().split('T')[0]
+      
+      // Newsテーブルに挿入
+      const result = await DB.prepare(`
+        INSERT INTO news (title, content, image_url, published_date, is_visible)
+        VALUES (?, ?, ?, ?, 1)
+      `).bind(title, content, imageUrl, publishedDate).run()
+      
+      syncedPosts.push({
+        id: result.meta.last_row_id,
+        instagram_id: post.id,
+        title,
+        published_date: publishedDate
+      })
+      
+      syncedCount++
+    }
+    
+    return c.json({ 
+      success: true, 
+      syncedCount,
+      skippedCount,
+      totalPosts: posts.length,
+      syncedPosts,
+      message: `${syncedCount}件の新しい投稿を同期しました（${skippedCount}件はスキップ）`
+    })
+  } catch (error) {
+    return c.json({ 
+      error: 'Sync failed',
+      details: error.message 
+    }, 500)
+  }
+})
+
+// Instagram同期ステータス確認
+app.get('/api/admin/instagram-status', async (c) => {
+  const { DB } = c.env
+  const INSTAGRAM_ACCESS_TOKEN = c.env.INSTAGRAM_ACCESS_TOKEN
+  
+  // トークン設定チェック
+  const hasToken = !!INSTAGRAM_ACCESS_TOKEN
+  
+  // 最新のInstagram同期記事を取得
+  const { results } = await DB.prepare(`
+    SELECT * FROM news 
+    WHERE title LIKE '%Instagram%'
+    ORDER BY created_at DESC
+    LIMIT 5
+  `).all()
+  
+  return c.json({
+    configured: hasToken,
+    lastSyncedPosts: results,
+    message: hasToken 
+      ? 'Instagram連携が設定されています' 
+      : 'INSTAGRAM_ACCESS_TOKENが設定されていません'
+  })
+})
+
 // メニューカテゴリー一覧取得
 app.get('/api/menu-categories', async (c) => {
   const { DB } = c.env
@@ -3584,4 +3744,45 @@ app.get('/admin', (c) => {
   return c.redirect('/static/admin.html')
 })
 
-export default app
+// Cloudflare Workers の型定義
+interface Env {
+  DB: D1Database
+  INSTAGRAM_ACCESS_TOKEN?: string
+}
+
+// Export default object with fetch and scheduled handlers
+export default {
+  // HTTP リクエストハンドラ
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    return app.fetch(request, env, ctx)
+  },
+  
+  // Cron Trigger ハンドラ（6時間ごとに実行）
+  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
+    console.log('Instagram auto-sync triggered at:', new Date(event.scheduledTime).toISOString())
+    
+    try {
+      // Instagram同期APIを内部的に呼び出す
+      const syncRequest = new Request('http://localhost/api/admin/sync-instagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      
+      // 同期実行
+      const response = await app.fetch(syncRequest, env, ctx)
+      const result = await response.json()
+      
+      console.log('Instagram sync completed:', result)
+      
+      if (result.success) {
+        console.log(`✅ Synced ${result.syncedCount} new posts, skipped ${result.skippedCount}`)
+      } else {
+        console.error('❌ Instagram sync failed:', result.error)
+      }
+    } catch (error) {
+      console.error('❌ Instagram auto-sync error:', error)
+    }
+  }
+}
