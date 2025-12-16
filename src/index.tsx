@@ -90,6 +90,7 @@ async function initPageTextsTable(DB: D1Database) {
   }
 }
 
+// データベース初期化（page_imagesテーブル）
 // === API Routes ===
 
 // メニューカテゴリー一覧取得
@@ -226,6 +227,45 @@ app.put('/api/admin/menu-categories/:id', async (c) => {
   return c.json({ success: true })
 })
 
+// ページ画像一覧取得
+app.get('/api/page-images', async (c) => {
+  const { DB } = c.env
+  await initPageImagesTable(DB)
+  
+  const { results } = await DB.prepare(`
+    SELECT * FROM page_images 
+    ORDER BY page_name ASC, section_name ASC
+  `).all()
+  return c.json(results)
+})
+
+// ページ画像取得（キー指定）
+app.get('/api/page-images/:key', async (c) => {
+  const { DB } = c.env
+  const key = c.req.param('key')
+  
+  const result = await DB.prepare(`
+    SELECT * FROM page_images WHERE image_key = ?
+  `).bind(key).first()
+  
+  return c.json(result || { image_url: '' })
+})
+
+// ページ画像更新（管理画面用）
+app.put('/api/admin/page-images/:key', async (c) => {
+  const { DB } = c.env
+  const key = c.req.param('key')
+  const data = await c.req.json()
+  
+  await DB.prepare(`
+    UPDATE page_images 
+    SET image_url = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE image_key = ?
+  `).bind(data.image_url, key).run()
+  
+  return c.json({ success: true })
+})
+
 // ページテキスト一覧取得
 app.get('/api/page-texts', async (c) => {
   const { DB } = c.env
@@ -261,6 +301,82 @@ app.put('/api/admin/page-texts/:key', async (c) => {
     SET text_value = ?, updated_at = CURRENT_TIMESTAMP
     WHERE text_key = ?
   `).bind(data.text_value, key).run()
+  
+  return c.json({ success: true })
+})
+
+// ページ画像テーブル初期化
+async function initPageImagesTable(DB: any) {
+  await DB.prepare(`
+    CREATE TABLE IF NOT EXISTS page_images (
+      image_key TEXT PRIMARY KEY,
+      image_url TEXT NOT NULL,
+      page_name TEXT NOT NULL,
+      section_name TEXT,
+      description TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `).run()
+  
+  await DB.prepare(`
+    CREATE INDEX IF NOT EXISTS idx_page_images_page ON page_images(page_name)
+  `).run()
+  
+  // 初期データ挿入
+  const defaultImages = [
+    ['hero_slide_1', '/hero-slide-1.jpg', 'home', 'hero', 'ヒーロースライド1 - 焼肉テーブル'],
+    ['hero_slide_2', '/hero-slide-2.jpg', 'home', 'hero', 'ヒーロースライド2 - ワイン乾杯'],
+    ['hero_slide_3', '/hero-slide-3.jpg', 'home', 'hero', 'ヒーロースライド3 - 個室'],
+    ['hero_logo', '/logo-hero.png', 'home', 'hero', 'ヒーローセクションロゴ'],
+    ['ground_menu_bg', '/ground-menu-main.jpg', 'home', 'ground_menu', 'GROUND MENUセクション背景'],
+    ['commitment_image_1', 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=800&q=80', 'commitment', 'main', 'こだわり画像1'],
+    ['commitment_image_2', 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=800&q=80', 'commitment', 'main', 'こだわり画像2']
+  ]
+  
+  for (const [key, url, page, section, desc] of defaultImages) {
+    await DB.prepare(`
+      INSERT OR IGNORE INTO page_images (image_key, image_url, page_name, section_name, description)
+      VALUES (?, ?, ?, ?, ?)
+    `).bind(key, url, page, section, desc).run()
+  }
+}
+
+// ページ画像一覧取得
+app.get('/api/page-images', async (c) => {
+  const { DB } = c.env
+  await initPageImagesTable(DB)
+  
+  const { results } = await DB.prepare(`
+    SELECT * FROM page_images 
+    ORDER BY page_name ASC, section_name ASC
+  `).all()
+  return c.json(results)
+})
+
+// ページ画像取得（キー指定）
+app.get('/api/page-images/:key', async (c) => {
+  const { DB } = c.env
+  const key = c.req.param('key')
+  
+  const result = await DB.prepare(`
+    SELECT * FROM page_images WHERE image_key = ?
+  `).bind(key).first()
+  
+  return c.json(result || { image_url: '' })
+})
+
+// ページ画像更新（管理画面用）
+app.put('/api/admin/page-images/:key', async (c) => {
+  const { DB } = c.env
+  const key = c.req.param('key')
+  const data = await c.req.json()
+  
+  await DB.prepare(`
+    UPDATE page_images 
+    SET image_url = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE image_key = ?
+  `).bind(data.image_url, key).run()
   
   return c.json({ success: true })
 })
@@ -1080,6 +1196,48 @@ app.get('/', (c) => {
           }
           
           // ヒーロースライドショー
+          // ページ画像を動的に読み込む
+          async function loadPageImages() {
+            try {
+              const response = await fetch('/api/page-images')
+              const images = await response.json()
+              
+              // ヒーロースライド画像
+              const heroSlide1 = images.find(img => img.image_key === 'hero_slide_1')
+              const heroSlide2 = images.find(img => img.image_key === 'hero_slide_2')
+              const heroSlide3 = images.find(img => img.image_key === 'hero_slide_3')
+              
+              if (heroSlide1) {
+                const slide1 = document.querySelector('.hero-slide:nth-child(1)')
+                if (slide1) slide1.style.backgroundImage = \`url('\${heroSlide1.image_url}')\`
+              }
+              if (heroSlide2) {
+                const slide2 = document.querySelector('.hero-slide:nth-child(2)')
+                if (slide2) slide2.style.backgroundImage = \`url('\${heroSlide2.image_url}')\`
+              }
+              if (heroSlide3) {
+                const slide3 = document.querySelector('.hero-slide:nth-child(3)')
+                if (slide3) slide3.style.backgroundImage = \`url('\${heroSlide3.image_url}')\`
+              }
+              
+              // ヒーローロゴ
+              const heroLogo = images.find(img => img.image_key === 'hero_logo')
+              if (heroLogo) {
+                const logoImg = document.querySelector('.hero-content img')
+                if (logoImg) logoImg.src = heroLogo.image_url
+              }
+              
+              // GROUND MENUセクション背景
+              const groundMenuBg = images.find(img => img.image_key === 'ground_menu_bg')
+              if (groundMenuBg) {
+                const bgImg = document.querySelector('.ground-menu-image')
+                if (bgImg) bgImg.src = groundMenuBg.image_url
+              }
+            } catch (error) {
+              console.error('Failed to load page images:', error)
+            }
+          }
+          
           function initHeroSlider() {
             const slides = document.querySelectorAll('.hero-slide')
             let currentSlide = 0
@@ -1096,6 +1254,7 @@ app.get('/', (c) => {
           
           // ページ読み込み時にスライダーを初期化
           document.addEventListener('DOMContentLoaded', () => {
+            loadPageImages()
             initHeroSlider()
             loadPageTexts()
           })

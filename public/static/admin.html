@@ -61,6 +61,9 @@
             <button onclick="switchTab('text')" id="tab-text" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
                 <i class="fas fa-edit"></i> テキスト管理
             </button>
+            <button onclick="switchTab('image')" id="tab-image" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600">
+                <i class="fas fa-image"></i> 画像管理
+            </button>
         </div>
 
         <!-- カテゴリー管理セクション -->
@@ -100,6 +103,19 @@
                 </div>
                 
                 <div id="text-list" class="space-y-4">
+                    <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 画像管理セクション -->
+        <div id="section-image" class="tab-section hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">ページ画像一覧</h2>
+                </div>
+                
+                <div id="image-list" class="space-y-4">
                     <!-- JavaScript で動的に読み込まれます -->
                 </div>
             </div>
@@ -296,6 +312,80 @@
         </div>
     </div>
 
+    <!-- 画像編集モーダル -->
+    <div id="image-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">画像編集</h3>
+                    <button onclick="closeImageModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form id="image-form" class="space-y-4">
+                    <input type="hidden" id="image-key">
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">キー</label>
+                        <input type="text" id="image-key-display" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">ページ / セクション</label>
+                        <input type="text" id="image-location" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">説明</label>
+                        <input type="text" id="image-description" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">現在の画像</label>
+                        <div class="mb-3">
+                            <img id="image-preview-current" src="" alt="現在の画像" class="max-w-full h-48 object-cover rounded-lg border-2 border-gray-300">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold mb-2">新しい画像</label>
+                        
+                        <!-- 画像ファイル選択 -->
+                        <div class="flex items-center space-x-4 mb-2">
+                            <label class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
+                                <i class="fas fa-upload mr-2"></i>
+                                画像を選択
+                                <input type="file" id="page-image-file" accept="image/*" class="hidden" onchange="handlePageImageUpload(event)">
+                            </label>
+                            <button type="button" onclick="clearPageImage()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
+                                <i class="fas fa-times mr-2"></i>クリア
+                            </button>
+                        </div>
+                        
+                        <!-- 新しい画像プレビュー -->
+                        <div id="new-image-preview" class="mb-3" style="display: none;">
+                            <img id="image-preview-new" src="" alt="新しい画像" class="max-w-full h-48 object-cover rounded-lg border-2 border-green-500">
+                        </div>
+                        
+                        <!-- 画像URL入力（オプション） -->
+                        <input type="url" id="page-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent" placeholder="または画像URL: https://example.com/image.jpg">
+                        <p class="text-xs text-gray-500 mt-1">画像ファイルをアップロードするか、URLを入力してください</p>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeImageModal()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                            キャンセル
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>
       let categories = []
@@ -305,6 +395,9 @@
       let currentMenuImageData = null
       let pageTexts = []
       let currentEditingTextKey = null
+      let pageImages = []
+      let currentEditingImageKey = null
+      let currentPageImageData = null
       
       // タブ切り替え
       function switchTab(tab) {
@@ -735,12 +828,145 @@
         }
       })
       
+      // 画像一覧の読み込み
+      async function loadPageImages() {
+        try {
+          const response = await axios.get('/api/page-images')
+          pageImages = response.data
+          
+          const groupedByPage = {}
+          pageImages.forEach(image => {
+            if (!groupedByPage[image.page_name]) {
+              groupedByPage[image.page_name] = []
+            }
+            groupedByPage[image.page_name].push(image)
+          })
+          
+          document.getElementById('image-list').innerHTML = Object.keys(groupedByPage).map(pageName => `
+            <div class="border-l-4 border-amber-600 pl-4 mb-6">
+              <h3 class="text-xl font-bold mb-4">${pageName}</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                ${groupedByPage[pageName].map(image => `
+                  <div class="bg-gray-50 rounded-lg overflow-hidden">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                      <img src="${image.image_url}" alt="${image.description}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                      <div class="font-bold text-sm mb-1">${image.image_key}</div>
+                      <div class="text-xs text-gray-600 mb-2">${image.description || ''}</div>
+                      <div class="text-xs text-gray-500 mb-3">セクション: ${image.section_name || '-'}</div>
+                      <button onclick="editPageImage('${image.image_key}')" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition text-sm">
+                        <i class="fas fa-edit"></i> 編集
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')
+        } catch (error) {
+          console.error('Failed to load page images:', error)
+        }
+      }
+      
+      // 画像編集
+      function editPageImage(key) {
+        const image = pageImages.find(i => i.image_key === key)
+        if (!image) return
+        
+        currentEditingImageKey = key
+        currentPageImageData = null
+        
+        document.getElementById('image-key').value = image.image_key
+        document.getElementById('image-key-display').value = image.image_key
+        document.getElementById('image-location').value = `${image.page_name} / ${image.section_name || '-'}`
+        document.getElementById('image-description').value = image.description || ''
+        document.getElementById('image-preview-current').src = image.image_url
+        document.getElementById('page-image-url').value = ''
+        document.getElementById('new-image-preview').style.display = 'none'
+        
+        document.getElementById('image-modal').classList.add('active')
+      }
+      
+      function closeImageModal() {
+        document.getElementById('image-modal').classList.remove('active')
+      }
+      
+      // ページ画像アップロード処理
+      function handlePageImageUpload(event) {
+        const file = event.target.files[0]
+        if (!file) return
+        
+        if (file.size > 5 * 1024 * 1024) {
+          alert('画像サイズは5MB以下にしてください')
+          return
+        }
+        
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          currentPageImageData = e.target.result
+          document.getElementById('image-preview-new').src = currentPageImageData
+          document.getElementById('new-image-preview').style.display = 'block'
+          document.getElementById('page-image-url').value = ''
+        }
+        reader.readAsDataURL(file)
+      }
+      
+      // ページ画像クリア
+      function clearPageImage() {
+        currentPageImageData = null
+        document.getElementById('image-preview-new').src = ''
+        document.getElementById('new-image-preview').style.display = 'none'
+        document.getElementById('page-image-file').value = ''
+        document.getElementById('page-image-url').value = ''
+      }
+      
+      // 画像フォーム送信
+      document.getElementById('image-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        
+        let imageUrl = document.getElementById('page-image-url').value
+        
+        // アップロードした画像がある場合
+        if (currentPageImageData) {
+          try {
+            const uploadResponse = await axios.post('/api/admin/upload-image', {
+              imageData: currentPageImageData
+            })
+            imageUrl = uploadResponse.data.imageUrl
+          } catch (error) {
+            console.error('Failed to upload image:', error)
+            alert('画像のアップロードに失敗しました')
+            return
+          }
+        }
+        
+        if (!imageUrl) {
+          alert('画像を選択するかURLを入力してください')
+          return
+        }
+        
+        const data = { image_url: imageUrl }
+        
+        try {
+          await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
+          alert('更新しました')
+          closeImageModal()
+          loadPageImages()
+          currentPageImageData = null
+        } catch (error) {
+          console.error('Failed to update image:', error)
+          alert('更新に失敗しました')
+        }
+      })
+      
       // 初期化
       document.addEventListener('DOMContentLoaded', () => {
         loadCategories()
         loadCategoryList()
         loadMenuItems()
         loadPageTexts()
+        loadPageImages()
       })
     </script>
 </body>
