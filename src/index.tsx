@@ -1934,51 +1934,142 @@ app.get('/news', (c) => {
             font-weight: 300;
             letter-spacing: 0.1em;
           }
-
-          /* ナビゲーション */
-          .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
+          
+          nav {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
           }
-
+          
           .nav-link {
-            color: #d4af37;
-            text-decoration: none;
-            padding: 1rem 1.5rem;
-            display: inline-block;
-            transition: color 0.3s ease;
+            position: relative;
             font-size: 0.9rem;
             letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+          
+          .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+          }
+          
+          .nav-link:hover:after {
+            width: 100%;
+          }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
           }
 
-          .nav-link:hover {
-            color: #fff;
+          /* ニュースページ専用スタイル */
+          .news-page-container {
+            padding-top: 96px;
+            min-height: 100vh;
+            background: #0a0a0a;
           }
 
-          /* ページタイトル */
-          .page-header {
-            padding: 150px 2rem 80px;
-            text-align: center;
+          .news-hero {
             background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(30, 20, 10, 0.95) 100%);
-            border-bottom: 2px solid #d4af37;
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
           }
 
-          .page-title {
-            font-size: 3rem;
+          .news-hero-title {
+            font-size: 3.5rem;
             font-weight: 300;
             letter-spacing: 0.2em;
             color: #d4af37;
             margin-bottom: 1rem;
           }
 
-          .page-subtitle {
-            font-size: 0.9rem;
-            letter-spacing: 0.3em;
+          .news-hero-subtitle {
+            font-size: 1rem;
+            letter-spacing: 0.4em;
             color: #a0a0a0;
             text-transform: uppercase;
           }
@@ -1987,7 +2078,7 @@ app.get('/news', (c) => {
           .news-container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
           }
 
           .news-list {
@@ -1996,46 +2087,60 @@ app.get('/news', (c) => {
 
           .news-item {
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 2rem 0;
-            transition: background 0.3s ease;
+            padding: 2.5rem 0;
+            transition: all 0.3s ease;
           }
 
           .news-item:hover {
-            background: rgba(212, 175, 55, 0.05);
+            background: rgba(212, 175, 55, 0.03);
+            padding-left: 1rem;
+            padding-right: 1rem;
           }
 
           .news-date {
             display: inline-block;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #d4af37;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.75rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
             font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 2px;
           }
 
           .news-title {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 400;
             letter-spacing: 0.05em;
             color: #e0e0e0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
           }
 
           .news-content {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #b0b0b0;
-            line-height: 1.8;
+            line-height: 1.9;
             letter-spacing: 0.05em;
+          }
+
+          /* フッター */
+          footer {
+            background: #000;
+            color: #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
           }
 
           /* モバイル対応 */
           @media (max-width: 768px) {
-            .page-title {
+            .news-hero-title {
               font-size: 2rem;
             }
 
-            .nav-link {
-              padding: 0.75rem 1rem;
+            .news-hero-subtitle {
               font-size: 0.8rem;
             }
 
@@ -2044,98 +2149,104 @@ app.get('/news', (c) => {
             }
 
             .news-title {
-              font-size: 1.1rem;
-            }
-          }
-
-          /* ハンバーガーメニュー */
-          .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 1rem;
-          }
-
-          .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: #d4af37;
-            margin: 3px 0;
-            transition: 0.3s;
-          }
-
-          @media (max-width: 768px) {
-            .hamburger {
-              display: flex;
+              font-size: 1.15rem;
             }
 
-            .nav-menu {
-              display: none;
-              flex-direction: column;
-              position: absolute;
-              top: 100%;
-              left: 0;
-              width: 100%;
-              background: rgba(10, 10, 10, 0.98);
-              padding: 1rem 0;
-            }
-
-            .nav-menu.active {
-              display: flex;
-            }
-
-            .nav-link {
-              padding: 1rem;
-              text-align: center;
-              border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            .news-content {
+              font-size: 0.95rem;
             }
           }
         </style>
     </head>
     <body>
         <!-- ナビゲーション -->
-        <nav class="navbar">
-            <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
-                <div style="font-size: 1.5rem; font-weight: 300; letter-spacing: 0.2em; color: #d4af37;">
-                    KARIN
-                </div>
-                <div class="hamburger" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="nav-menu" id="navMenu">
-                    <a href="/" class="nav-link">NEWS</a>
-                    <a href="/menu" class="nav-link">DINNER</a>
-                    <a href="/course" class="nav-link">COURSE</a>
-                    <a href="/commitment" class="nav-link">PREFERENCE</a>
-                    <a href="/access" class="nav-link">ACCESS</a>
-                    <a href="/admin" class="nav-link">管理</a>
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                        </a>
+                    </div>
+                    <!-- デスクトップメニュー -->
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
+                        </a>
+                    </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </nav>
-
-        <!-- ページヘッダー -->
-        <div class="page-header">
-            <h1 class="page-title">新着情報</h1>
-            <p class="page-subtitle">News</p>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/news">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
         </div>
 
-        <!-- ニュース一覧 -->
-        <div class="news-container">
-            <ul class="news-list" id="newsList">
-                <li style="text-align: center; color: #a0a0a0; padding: 3rem 0;">
-                    読み込み中...
-                </li>
-            </ul>
+        <!-- ニュースページコンテンツ -->
+        <div class="news-page-container">
+            <!-- ヒーローセクション -->
+            <div class="news-hero">
+                <h1 class="news-hero-title">新着情報</h1>
+                <p class="news-hero-subtitle">News</p>
+            </div>
+
+            <!-- ニュース一覧 -->
+            <div class="news-container">
+                <ul class="news-list" id="newsList">
+                    <li style="text-align: center; color: #a0a0a0; padding: 3rem 0;">
+                        読み込み中...
+                    </li>
+                </ul>
+            </div>
         </div>
+
+        <!-- フッター -->
+        <footer>
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-2xl font-light tracking-widest mb-4">TOKACHI YAKINIKU KARIN</h3>
+                <p class="text-sm text-gray-400 tracking-wider mb-8">トカチ ヤキニク カリン</p>
+                
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+            </div>
+        </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script>
           // ハンバーガーメニュー
-          function toggleMenu() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('active');
+          function toggleMobileMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
           }
 
           // ニュースデータ読み込み
