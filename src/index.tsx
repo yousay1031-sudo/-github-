@@ -1414,413 +1414,427 @@ app.get('/', (c) => {
 // メニューページ
 app.get('/menu', (c) => {
   return c.html(`
-    <!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>メニュー | TOKACHI YAKINIKU KARIN</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.8;
-          }
-          
-          h1, h2, h3, h4 {
-            font-family: 'Noto Serif JP', serif;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-          }
-          
-          .bg-dark {
-            background: #0a0a0a;
-          }
-          
-          .bg-dark-alt {
-            background: #141414;
-          }
-          
-          nav {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-          }
-          
-          .nav-link {
-            position: relative;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            transition: color 0.3s ease;
-          }
-          
-          .nav-link:after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #d4af37;
-            transition: width 0.3s ease;
-          }
-          
-          .nav-link:hover:after {
-            width: 100%;
-          }
-          
-          .section-title {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-          }
-          
-          .divider {
-            width: 60px;
-            height: 1px;
-            background: #d4af37;
-            margin: 2rem auto;
-          }
-          
-          /* ハンバーガーメニュー */
-          .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 0.5rem;
-          }
-          
-          @media (max-width: 768px) {
-            .hamburger {
-              display: flex;
-            }
-          }
-          
-          .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: white;
-            margin: 3px 0;
-            transition: all 0.3s ease;
-          }
-          
-          .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-          }
-          
-          .hamburger.active span:nth-child(2) {
-            opacity: 0;
-          }
-          
-          .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-          }
-          
-          .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 96px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            z-index: 40;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-          }
-          
-          .mobile-menu.active {
-            display: block;
-            animation: slideDown 0.3s ease;
-          }
-          
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          
-          .mobile-menu a {
-            display: block;
-            padding: 1rem 0;
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            letter-spacing: 0.1em;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-          }
-          
-          .mobile-menu a:hover {
-            color: #d4af37;
-            padding-left: 1rem;
-          }
-          
-          .mobile-menu a:last-child {
-            border-bottom: none;
-          }
-          
-          .category-header {
-            position: relative;
-            margin-bottom: 4rem;
-            overflow: hidden;
-          }
-          
-          .category-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            filter: brightness(0.6) contrast(1.1);
-          }
-          
-          .category-title-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
-            z-index: 10;
-          }
-          
-          .category-title {
-            font-size: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            color: white;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.8);
-            margin-bottom: 0.5rem;
-          }
-          
-          .category-subtitle {
-            font-size: 0.9rem;
-            color: #d4af37;
-            letter-spacing: 0.15em;
-            text-shadow: 0 1px 10px rgba(0,0,0,0.8);
-          }
-          
-          .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem 3rem;
-            margin-bottom: 5rem;
-          }
-          
-          @media (max-width: 768px) {
-            .menu-grid {
-              grid-template-columns: 1fr;
-            }
-          }
-          
-          .menu-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid #2a2a2a;
-            transition: all 0.3s ease;
-          }
-          
-          .menu-item:hover {
-            border-bottom-color: #d4af37;
-            padding-left: 0.5rem;
-          }
-          
-          .menu-item-content {
-            flex: 1;
-            padding-right: 1.5rem;
-          }
-          
-          .menu-item-name {
-            font-size: 1rem;
-            font-weight: 400;
-            color: #e0e0e0;
-            margin-bottom: 0.3rem;
-            letter-spacing: 0.05em;
-          }
-          
-          .menu-item-description {
-            font-size: 0.85rem;
-            color: #999;
-            line-height: 1.6;
-            letter-spacing: 0.02em;
-          }
-          
-          .menu-item-price {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: #d4af37;
-            white-space: nowrap;
-            letter-spacing: 0.05em;
-          }
-        </style>
-    </head>
-    <body class="bg-dark">
-        <!-- ナビゲーション -->
-        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="flex justify-between items-center h-24">
-                    <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center -space-x-8">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
-                        </a>
-                    </div>
-                    <!-- デスクトップメニュー -->
-                    <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
-                        <a href="/menu" class="nav-link text-yellow-500">dinner</a>
-                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
-                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
-                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
-                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
-                          <i class="fas fa-cog text-sm"></i> 管理
-                        </a>
-                    </div>
-                    <!-- ハンバーガーメニューボタン -->
-                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メニュー | TOKACHI YAKINIKU KARIN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background: #0a0a0a;
+        color: #e0e0e0;
+        line-height: 1.8;
+      }
+      
+      h1, h2, h3, h4 {
+        font-family: 'Noto Serif JP', serif;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+      }
+      
+      nav {
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      
+      .nav-link {
+        position: relative;
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-link:after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #d4af37;
+        transition: width 0.3s ease;
+      }
+      
+      .nav-link:hover:after {
+        width: 100%;
+      }
+      
+      /* ハンバーガーメニュー */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+      
+      @media (max-width: 768px) {
+        .hamburger {
+          display: flex;
+        }
+      }
+      
+      .hamburger span {
+        width: 25px;
+        height: 2px;
+        background: white;
+        margin: 3px 0;
+        transition: all 0.3s ease;
+      }
+      
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+      
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 96px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        z-index: 40;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+      }
+      
+      .mobile-menu.active {
+        display: block;
+        animation: slideDown 0.3s ease;
+      }
+      
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .mobile-menu a {
+        display: block;
+        padding: 1rem 0;
+        color: white;
+        text-decoration: none;
+        font-size: 1.1rem;
+        letter-spacing: 0.1em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .mobile-menu a:hover {
+        color: #d4af37;
+        padding-left: 1rem;
+      }
+      
+      .mobile-menu a:last-child {
+        border-bottom: none;
+      }
+      
+      /* カテゴリーセクション */
+      .category-section {
+        position: relative;
+        margin-bottom: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .category-hero {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+      }
+      
+      .category-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.6);
+      }
+      
+      .category-hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+      }
+      
+      .category-title {
+        font-size: 3rem;
+        font-weight: 300;
+        letter-spacing: 0.2em;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+      }
+      
+      .category-subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 0.3em;
+        color: #d4af37;
+        text-transform: uppercase;
+      }
+      
+      /* メニューコンテンツ */
+      .menu-content {
+        background: #0a0a0a;
+        padding: 4rem 2rem;
+      }
+      
+      .menu-grid {
+        max-width: 900px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 4rem;
+      }
+      
+      @media (max-width: 768px) {
+        .menu-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+      
+      .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        padding-bottom: 1.5rem;
+      }
+      
+      .menu-item-info {
+        flex: 1;
+      }
+      
+      .menu-item-name {
+        font-size: 1rem;
+        color: #e0e0e0;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+      }
+      
+      .menu-item-description {
+        font-size: 0.85rem;
+        color: #999;
+        line-height: 1.6;
+      }
+      
+      .menu-item-price {
+        font-size: 1.1rem;
+        color: #d4af37;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-left: 1.5rem;
+      }
+      
+      .category-note {
+        max-width: 900px;
+        margin: 0 auto 3rem;
+        padding: 1.5rem;
+        background: rgba(212, 175, 55, 0.1);
+        border-left: 3px solid #d4af37;
+        color: #d4af37;
+        font-size: 0.9rem;
+      }
+    </style>
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <div class="flex-shrink-0">
+                    <a href="/" class="flex items-center -space-x-8">
+                      <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                      <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                    </a>
                 </div>
-            </div>
-        </nav>
-        
-        <!-- モバイルメニュー -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="/">news</a>
-            <a href="/menu">dinner</a>
-            <a href="/course">course</a>
-            <a href="/commitment">preference</a>
-            <a href="/access">access</a>
-            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
-        </div>
-
-        <!-- ヘッダー -->
-        <div class="pt-40 pb-20 bg-dark-alt">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
-                <h1 class="section-title text-white text-4xl mb-6">Menu</h1>
-                <div class="divider"></div>
-                <p class="text-gray-400 text-sm tracking-wider">十勝産の厳選素材を使用した極上の焼肉</p>
+                <!-- デスクトップメニュー -->
+                <div class="hidden md:flex space-x-10">
+                    <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                    <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                    <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                    <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                    <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
+                    <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                      <i class="fas fa-cog text-sm"></i> 管理
+                    </a>
+                </div>
+                <!-- ハンバーガーメニューボタン -->
+                <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
+    </nav>
+    
+    <!-- モバイルメニュー -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">news</a>
+        <a href="/menu">dinner</a>
+        <a href="/course">course</a>
+        <a href="/commitment">preference</a>
+        <a href="/access">access</a>
+        <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+    </div>
 
-        <!-- メニューコンテンツ -->
-        <section class="py-20 bg-dark">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div id="menu-content">
-                    <!-- JavaScript で動的に読み込まれます -->
+    <!-- メニューカテゴリ動的表示 -->
+    <div id="menu-categories-container" style="padding-top: 96px;">
+        <!-- カテゴリーとメニューアイテムがここに動的に挿入されます -->
+    </div>
+
+    <!-- フッター -->
+    <footer class="bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-light tracking-widest mb-4">TOKACHI YAKINIKU KARIN</h3>
+                <p class="text-sm text-gray-400 tracking-wider mb-8">トカチ ヤキニク カリン</p>
+                
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                 </div>
+                <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
             </div>
-        </section>
+        </div>
+    </footer>
 
-        <!-- フッター -->
-        <footer class="bg-dark text-white py-16 border-t border-gray-800">
-            <div class="max-w-6xl mx-auto px-6 lg:px-8">
-                <div class="text-center">
-                    <h3 class="text-xl font-light tracking-widest mb-3">TOKACHI YAKINIKU KARIN</h3>
-                    <p class="text-gray-500 text-sm mb-6 tracking-wider">トカチ ヤキニク カリン</p>
-                    <div class="divider"></div>
-                    <p class="text-gray-400 text-sm mb-2">北海道帯広市西一条南8-20-5</p>
-                    <p class="text-gray-400 text-sm mb-6">TEL: 050-8883-6929</p>
-                    <div class="flex justify-center space-x-8 mt-8">
-                        <a href="https://www.instagram.com/tokachi_yakiniku_karin" target="_blank" class="text-gray-400 hover:text-yellow-500 transition text-xl">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                    <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+      async function loadMenu() {
+        try {
+          const [categoriesRes, itemsRes] = await Promise.all([
+            axios.get('/api/menu-categories'),
+            axios.get('/api/menu-items')
+          ])
+          
+          const categories = categoriesRes.data
+          const items = itemsRes.data
+          
+          const container = document.getElementById('menu-categories-container')
+          
+          categories.forEach(category => {
+            const categoryItems = items.filter(item => item.category_id === category.id)
+            
+            if (categoryItems.length === 0) return
+            
+            // カテゴリ名から英語サブタイトルを生成
+            const subtitles = {
+              '牛': 'BEEF',
+              '牛ホルモン': 'BEEF HORMONE',
+              'ラム': 'LAMB',
+              '豚・鶏': 'PORK & CHICKEN',
+              '海鮮・野菜': 'SEAFOOD & VEGETABLES',
+              'お飲み物': 'DRINK',
+              '肉料理': 'MEAT DISHES',
+              '他一品': 'OTHER DISHES'
+            }
+            
+            const subtitle = subtitles[category.name] || category.name.toUpperCase()
+            
+            // カテゴリーセクション
+            const section = document.createElement('div')
+            section.className = 'category-section'
+            
+            // ヒーロー画像とタイトル
+            section.innerHTML = \`
+              <div class="category-hero">
+                <img src="\${category.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=1920&q=80'}" 
+                     alt="\${category.name}">
+                <div class="category-hero-overlay">
+                  <h2 class="category-title">\${category.name}</h2>
+                  <p class="category-subtitle">\${subtitle}</p>
                 </div>
-            </div>
-        </footer>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script>
-          async function loadMenu() {
-            try {
-              const [categoriesRes, itemsRes] = await Promise.all([
-                axios.get('/api/menu-categories'),
-                axios.get('/api/menu-items')
-              ])
+              </div>
               
-              const categories = categoriesRes.data
-              const items = itemsRes.data
-              
-              const menuByCategory = categories.map(category => ({
-                ...category,
-                items: items.filter(item => item.category_id === category.id)
-              }))
-              
-              document.getElementById('menu-content').innerHTML = menuByCategory.map(category => \`
-                <div class="mb-24">
-                  <!-- カテゴリーヘッダー画像 -->
-                  <div class="category-header">
-                    <img src="\${category.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80'}" 
-                         alt="\${category.name}" 
-                         class="category-image">
-                    <div class="category-title-overlay">
-                      <h2 class="category-title">\${category.name}</h2>
-                      <p class="category-subtitle">\${category.name.toUpperCase()}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- メニューアイテム（2カラムグリッド） -->
-                  <div class="menu-grid">
-                    \${category.items.map(item => \`
-                      <div class="menu-item">
-                        <div class="menu-item-content">
-                          <div class="menu-item-name">\${item.name}</div>
-                          <div class="menu-item-description">\${item.description || ''}</div>
-                        </div>
-                        <div class="menu-item-price">¥\${(item.price || 0).toLocaleString()}</div>
+              <div class="menu-content">
+                \${category.id === 2 ? '<div class="category-note">当店のホルモンはすべて北海道産です。<br>～ 味はタレ ・ ミソ ・ 塩 ・ ピリ辛 ・ ネギ塩 （+100 円） からお選びください。 ～</div>' : ''}
+                \${category.id === 3 ? '<div class="category-note">当店のラムはアイスランド産のオーガニックラムを使用しております。</div>' : ''}
+                \${category.id === 1 ? '<div class="category-note">+300円でトリュフソースをご用意できます。</div>' : ''}
+                
+                <div class="menu-grid">
+                  \${categoryItems.map(item => \`
+                    <div class="menu-item">
+                      <div class="menu-item-info">
+                        <div class="menu-item-name">\${item.name}</div>
+                        \${item.description ? \`<div class="menu-item-description">\${item.description}</div>\` : ''}
                       </div>
-                    \`).join('')}
-                  </div>
+                      <div class="menu-item-price">¥\${item.price.toLocaleString()}</div>
+                    </div>
+                  \`).join('')}
                 </div>
-              \`).join('')
-            } catch (error) {
-              console.error('Failed to load menu:', error)
-              document.getElementById('menu-content').innerHTML = \`
-                <div class="text-center text-red-600">
-                  <p>メニューの読み込みに失敗しました。</p>
-                </div>
-              \`
-            }
-          }
-          
-          document.addEventListener('DOMContentLoaded', loadMenu)
-          
-          // ハンバーガーメニューの切り替え
-          function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu')
-            const hamburger = document.querySelector('.hamburger')
-            menu.classList.toggle('active')
-            hamburger.classList.toggle('active')
-          }
-        </script>
-    </body>
-    </html>
+              </div>
+            \`
+            
+            container.appendChild(section)
+          })
+        } catch (error) {
+          console.error('Failed to load menu:', error)
+          document.getElementById('menu-categories-container').innerHTML = \`
+            <div class="text-center text-red-600 py-20">
+              <p>メニューの読み込みに失敗しました。</p>
+            </div>
+          \`
+        }
+      }
+      
+      document.addEventListener('DOMContentLoaded', loadMenu)
+      
+      // ハンバーガーメニューの切り替え
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu')
+        const hamburger = document.querySelector('.hamburger')
+        menu.classList.toggle('active')
+        hamburger.classList.toggle('active')
+      }
+    </script>
+</body>
+</html>
   `)
 })
 
-// アクセスページ
 // アクセスページ
 app.get('/access', (c) => {
   return c.html(`
