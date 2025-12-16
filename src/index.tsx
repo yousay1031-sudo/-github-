@@ -611,7 +611,7 @@ app.get('/', (c) => {
             <!-- Hero Content -->
             <div class="hero-content flex flex-col items-center justify-center px-4">
                 <div class="text-center" style="animation: fadeInUp 1.5s ease-out">
-                    <img src="/logo-hero.png" alt="十勝焼肉かりん" class="mx-auto" style="max-width: 500px; width: 90%; height: auto; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));">
+                    <img src="/logo-hero.png" alt="十勝焼肉かりん" class="mx-auto" style="max-width: 800px; width: 90%; height: auto; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));">
                 </div>
             </div>
             
