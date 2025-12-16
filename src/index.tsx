@@ -4035,223 +4035,165 @@ app.get('/course', (c) => {
         <div class="py-16 max-w-5xl mx-auto px-6 lg:px-8">
             <!-- 匠コース -->
             <div class="course-card">
-                <h2 class="course-title">匠コース</h2>
-                <p class="course-subtitle">ご宴会向けプラン　3名様〜承ります</p>
-                <div class="course-price">お一人様 7,500円（税込）</div>
+                <h2 class="course-title">12/24,25限定クリスマスコース</h2>
+                <p class="course-subtitle">Christmas Special Course</p>
+                <div class="course-price">お一人様 6,500円（税込）</div>
                 
                 <div class="course-menu">
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">キムチ盛り</div>
-                            <div class="menu-item-name-en">Kimuchi</div>
+                            <div class="menu-item-name">前菜三点盛り合わせ</div>
+                            <div class="menu-item-name-en">Assortment of 3 appetizers</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">ナムル盛り</div>
-                            <div class="menu-item-name-en">Namuru</div>
+                            <div class="menu-item-name">本日のサラダ</div>
+                            <div class="menu-item-name-en">Today's salad</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">KARINサラダ</div>
-                            <div class="menu-item-name-en">Bishara salad</div>
+                            <div class="menu-item-name">霜降りタン（塩）</div>
+                            <div class="menu-item-name-en">Marbled beef tongue (salt)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">常陸牛の握り2種</div>
-                            <div class="menu-item-name-en">Hitachi-beef sushi (2pcs./set)</div>
+                            <div class="menu-item-name">上ヒレ（塩）</div>
+                            <div class="menu-item-name-en">Prime fillet (salt)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上タン塩</div>
-                            <div class="menu-item-name-en">Prime beef tongue</div>
+                            <div class="menu-item-name">上赤身（タレ）</div>
+                            <div class="menu-item-name-en">Prime lean meat (sauce)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">車海老</div>
-                            <div class="menu-item-name-en">Japanese tiger prawn</div>
+                            <div class="menu-item-name">ハラミ（タレ）</div>
+                            <div class="menu-item-name-en">Skirt steak (sauce)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上カルビ</div>
-                            <div class="menu-item-name-en">Prime kalbi</div>
+                            <div class="menu-item-name">オーガニックラムロース</div>
+                            <div class="menu-item-name-en">Organic lamb loin</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上ロース</div>
-                            <div class="menu-item-name-en">Prime loin</div>
+                            <div class="menu-item-name">ビーフシチュー</div>
+                            <div class="menu-item-name-en">Beef stew</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">おまかせホルモンミックス</div>
-                            <div class="menu-item-name-en">Mix horumon</div>
-                        </div>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-bullet">●</div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-name">本日の究極素材3点盛り</div>
-                            <div class="menu-item-name-en">Assortment of prime 3 kinds</div>
-                        </div>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-bullet">●</div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-name">幸せの茶漬け</div>
-                            <div class="menu-item-name-en">Ochazuke</div>
-                        </div>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-bullet">●</div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-name">本日のデザート</div>
-                            <div class="menu-item-name-en">Dessert</div>
+                            <div class="menu-item-name">かりん自家製スイーツ</div>
+                            <div class="menu-item-name-en">KARIN's homemade sweets</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 極コース -->
+            <!-- 宴会コース -->
             <div class="course-card">
-                <h2 class="course-title">極コース</h2>
-                <p class="course-subtitle">ご宴会向けプラン　3名様〜承ります</p>
-                <div class="course-price">お一人様 9,500円（税込）</div>
+                <h2 class="course-title">宴会コース</h2>
+                <p class="course-subtitle">Banquet Course</p>
+                <div class="course-price">お一人様 7,000円（税込）</div>
                 
                 <div class="course-menu">
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">本日のオードブル</div>
-                            <div class="menu-item-name-en">Hors d'oeuvre</div>
+                            <div class="menu-item-name">前菜2点盛り</div>
+                            <div class="menu-item-name-en">Assortment of 2 appetizers</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">キムチ盛り</div>
-                            <div class="menu-item-name-en">Kimuchi</div>
+                            <div class="menu-item-name">鮮菜</div>
+                            <div class="menu-item-name-en">Fresh vegetables</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">KARINサラダ</div>
-                            <div class="menu-item-name-en">Bishara salad</div>
+                            <div class="menu-item-name">葱塩上牛タン（塩）</div>
+                            <div class="menu-item-name-en">Prime beef tongue with green onion salt</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">常陸牛の握り2種</div>
-                            <div class="menu-item-name-en">Hitachi-beef sushi (2pcs./set)</div>
+                            <div class="menu-item-name">塩ラム（塩）</div>
+                            <div class="menu-item-name-en">Salted lamb</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上タン塩</div>
-                            <div class="menu-item-name-en">Prime beef tongue</div>
+                            <div class="menu-item-name">牛ヒレ（塩）</div>
+                            <div class="menu-item-name-en">Beef fillet (salt)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上ハラミ</div>
-                            <div class="menu-item-name-en">Prime harami</div>
+                            <div class="menu-item-name">上サガリ（タレ）</div>
+                            <div class="menu-item-name-en">Prime sagari (sauce)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">車海老</div>
-                            <div class="menu-item-name-en">Japanese tiger prawn</div>
+                            <div class="menu-item-name">和牛カルビ（タレ）</div>
+                            <div class="menu-item-name-en">Wagyu kalbi (sauce)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上カルビ</div>
-                            <div class="menu-item-name-en">Prime kalbi</div>
+                            <div class="menu-item-name">上ミノ（タレ）</div>
+                            <div class="menu-item-name-en">Prime mino (sauce)</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">上ロース</div>
-                            <div class="menu-item-name-en">Prime loin</div>
+                            <div class="menu-item-name">テールスープ</div>
+                            <div class="menu-item-name-en">Tail soup</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">おまかせホルモンミックス</div>
-                            <div class="menu-item-name-en">Mix horumon</div>
+                            <div class="menu-item-name">道産サガリご飯</div>
+                            <div class="menu-item-name-en">Hokkaido sagari rice</div>
                         </div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">本日の究極素材5点盛り</div>
-                            <div class="menu-item-name-en">Assortment of prime 5 kinds</div>
+                            <div class="menu-item-name">ソルベ（りんご or ゆず）</div>
+                            <div class="menu-item-name-en">Sorbet (apple or yuzu)</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <div class="menu-item-bullet">●</div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-name">お食事</div>
-                            <div class="menu-item-name-en">Meal</div>
-                        </div>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-bullet">●</div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-name">本日のデザート</div>
-                            <div class="menu-item-name-en">Dessert</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="note-text">
-                    ※ご宴会は3名様より承ります。<br>
-                    ※季節や仕入れ状況により内容が異なる場合がございます。<br>
-                    ※宴会ご予約当時のキャンセルにつきましては、お受けできない場合もございます。
                 </div>
             </div>
 
-            <!-- 2名様限定ディナーコース -->
-            <div class="course-card special-course">
-                <h2 class="course-title">2名様限定ディナーコース</h2>
-                <p class="course-subtitle">クリスマスや誕生日、二人にとっての大切な日をもっと素敵に演出いたします</p>
-                
-                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1200" alt="Special Dinner" class="course-image">
-                
-                <div class="course-price">
-                    お一人様 10,000円（税込）<br>
-                    <span class="text-xl">または</span><br>
-                    お一人様 15,000円（税込）
-                </div>
-                
-                <div class="note-text">
-                    個室対応。お気軽にお問い合わせください。<br>
-                    ※コースの内容についてはお任せになります。
-                </div>
-            </div>
+
         </div>
 
         <!-- フッター -->
