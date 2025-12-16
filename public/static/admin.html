@@ -384,7 +384,7 @@
       let currentPageImageData = null
       
       // タブ切り替え
-      function switchTab(tab) {
+      window.switchTab = function(tab) {
         document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'))
         document.querySelectorAll('[id^="tab-"]').forEach(el => {
           el.classList.remove('border-amber-600', 'text-amber-600')
@@ -428,7 +428,7 @@
       }
       
       // カテゴリー画像アップロード処理
-      function handleCategoryImageUpload(event) {
+      window.handleCategoryImageUpload = function(event) {
         const file = event.target.files[0]
         if (!file) return
         
@@ -452,7 +452,7 @@
       }
       
       // カテゴリー画像クリア
-      function clearCategoryImage() {
+      window.clearCategoryImage = function() {
         currentCategoryImageData = null
         document.getElementById('category-preview-img').style.display = 'none'
         document.getElementById('category-preview-img').src = ''
@@ -461,7 +461,7 @@
       }
       
       // カテゴリー編集
-      async function editCategory(id) {
+      window.editCategory = async function(id) {
         const category = categories.find(c => c.id === id)
         if (!category) return
         
@@ -484,7 +484,7 @@
         document.getElementById('category-modal').classList.add('active')
       }
       
-      function closeCategoryModal() {
+      window.closeCategoryModal = function() {
         document.getElementById('category-modal').classList.remove('active')
       }
       
@@ -589,7 +589,7 @@
       }
       
       // メニュー画像アップロード処理
-      function handleMenuImageUpload(event) {
+      window.handleMenuImageUpload = function(event) {
         const file = event.target.files[0]
         if (!file) return
         
@@ -613,7 +613,7 @@
       }
       
       // メニュー画像クリア
-      function clearMenuImage() {
+      window.clearMenuImage = function() {
         currentMenuImageData = null
         document.getElementById('menu-preview-img').style.display = 'none'
         document.getElementById('menu-preview-img').src = ''
@@ -622,7 +622,7 @@
       }
       
       // メニュー編集モーダルを開く
-      function openMenuModal(item = null) {
+      window.openMenuModal = function(item = null) {
         currentEditingMenuId = item ? item.id : null
         currentMenuImageData = null
         
@@ -654,12 +654,12 @@
         document.getElementById('menu-modal').classList.add('active')
       }
       
-      function closeMenuModal() {
+      window.closeMenuModal = function() {
         document.getElementById('menu-modal').classList.remove('active')
       }
       
       // メニュー編集
-      async function editMenuItem(id) {
+      window.editMenuItem = async function(id) {
         try {
           const response = await axios.get('/api/admin/menu-items')
           const item = response.data.find(i => i.id === id)
@@ -779,7 +779,7 @@
       }
       
       // テキスト編集
-      function editPageText(key) {
+      window.editPageText = function(key) {
         const text = pageTexts.find(t => t.text_key === key)
         if (!text) return
         
@@ -793,7 +793,7 @@
         document.getElementById('text-modal').classList.add('active')
       }
       
-      function closeTextModal() {
+      window.closeTextModal = function() {
         document.getElementById('text-modal').classList.remove('active')
       }
       
@@ -899,8 +899,9 @@
       }
       
       // 画像編集
-      function editPageImage(key) {
+      window.editPageImage = function(key) {
         const image = pageImages.find(i => i.image_key === key)
+        
         if (!image) {
           alert('エラー: 画像が見つかりません')
           return
@@ -915,17 +916,16 @@
         document.getElementById('image-description').value = image.description || ''
         document.getElementById('image-preview-current').src = image.image_url
         document.getElementById('page-image-url').value = ''
-        document.getElementById('new-image-preview').style.display = 'none'
         
         document.getElementById('image-modal').classList.add('active')
       }
       
-      function closeImageModal() {
+      window.closeImageModal = function() {
         document.getElementById('image-modal').classList.remove('active')
       }
       
       // ページ画像アップロード処理
-      function handlePageImageUpload(event) {
+      window.handlePageImageUpload = function(event) {
         const file = event.target.files[0]
         if (!file) return
         
@@ -945,7 +945,7 @@
       }
       
       // ページ画像クリア
-      function clearPageImage() {
+      window.clearPageImage = function() {
         currentPageImageData = null
         document.getElementById('image-preview-new').src = ''
         document.getElementById('new-image-preview').style.display = 'none'
