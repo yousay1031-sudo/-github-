@@ -1019,7 +1019,7 @@ app.get('/', (c) => {
         </section>
 
         <!-- Messageセクション - Redesigned -->
-        <section class="relative" style="background: linear-gradient(135deg, #ff6b7a 0%, #ff8a95 50%, #ffa5ad 100%); min-height: 70vh;">
+        <section class="relative" style="background: linear-gradient(180deg, #d97e31 0%, #c86a23 50%, #8b4513 100%); min-height: 70vh;">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20">
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <!-- 左側: 店舗の写真 -->
