@@ -1145,10 +1145,13 @@ app.get('/', (c) => {
           // おすすめメニューの読み込み（最初の3件）
           async function loadFeaturedMenu() {
             try {
+              const menuElement = document.getElementById('featured-menu')
+              if (!menuElement) return
+              
               const response = await axios.get('/api/menu-items')
               const items = response.data.slice(0, 3)
               
-              document.getElementById('featured-menu').innerHTML = items.map(item => \`
+              menuElement.innerHTML = items.map(item => \`
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
                   <div class="h-64 bg-gray-200 overflow-hidden">
                     <img src="\${item.image_url || 'https://images.unsplash.com/photo-1558030006-450675393462?w=800'}" 
