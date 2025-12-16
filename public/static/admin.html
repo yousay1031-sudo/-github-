@@ -58,6 +58,9 @@
             <button onclick="switchTab('menu')" id="tab-menu" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
                 <i class="fas fa-utensils"></i> メニュー管理
             </button>
+            <button onclick="switchTab('lunch')" id="tab-lunch" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
+                <i class="fas fa-sun"></i> ランチ管理
+            </button>
             <button onclick="switchTab('news')" id="tab-news" class="px-6 py-3 font-bold border-b-4 border-transparent hover:text-amber-600 whitespace-nowrap">
                 <i class="fas fa-newspaper"></i> ニュース管理
             </button>
@@ -96,6 +99,29 @@
                 </div>
                 
                 <div id="menu-list" class="space-y-4">
+                    <!-- JavaScript で動的に読み込まれます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ランチメニュー管理セクション -->
+        <div id="section-lunch" class="tab-section hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">ランチメニュー一覧</h2>
+                    <button onclick="openLunchModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                        <i class="fas fa-plus"></i> 新規追加
+                    </button>
+                </div>
+                
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <p class="text-sm text-blue-900">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        ランチメニューの表示順序はドラッグ&ドロップまたは「表示順」を変更して保存してください
+                    </p>
+                </div>
+                
+                <div id="lunch-list" class="space-y-4">
                     <!-- JavaScript で動的に読み込まれます -->
                 </div>
             </div>
@@ -1283,6 +1309,162 @@
         }
       }
       
+      // ========== ランチメニュー管理機能 ==========
+      
+      // ランチメニュー一覧を読み込み
+      async function loadLunchMenu() {
+        try {
+          const response = await axios.get('/api/admin/lunch-menu')
+          const lunchMenu = response.data
+          
+          document.getElementById('lunch-list').innerHTML = lunchMenu.length === 0 
+            ? '<p class="text-gray-500 text-center py-8">ランチメニューがありません</p>'
+            : lunchMenu.map(item => `
+              <div class="flex items-start justify-between bg-gray-50 p-4 rounded-lg border-2 ${item.is_visible ? 'border-green-200' : 'border-gray-300'}">
+                <div class="flex items-start space-x-4 flex-1">
+                  <div class="w-32 h-24 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+                    <img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-2">
+                      <span class="font-bold text-lg">${item.name}</span>
+                      <span class="text-sm text-gray-500">${item.name_en || ''}</span>
+                      ${item.is_visible ? 
+                        '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">公開中</span>' : 
+                        '<span class="text-xs bg-gray-300 text-gray-700 px-2 py-1 rounded">非公開</span>'
+                      }
+                    </div>
+                    <div class="text-xl font-bold text-amber-600 mb-2">¥${item.price.toLocaleString()}</div>
+                    <p class="text-sm text-gray-600 mb-2">${item.description || ''}</p>
+                    <div class="text-xs text-gray-400">
+                      表示順: ${item.display_order}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex space-x-2 ml-4">
+                  <button onclick="editLunchItem(${item.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition">
+                    <i class="fas fa-edit"></i> 編集
+                  </button>
+                  <button onclick="deleteLunchItem(${item.id})" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition">
+                    <i class="fas fa-trash"></i> 削除
+                  </button>
+                </div>
+              </div>
+            `).join('')
+        } catch (error) {
+          console.error('Load lunch menu error:', error)
+          document.getElementById('lunch-list').innerHTML = '<p class="text-red-500 text-center py-8">ランチメニューの読み込みに失敗しました</p>'
+        }
+      }
+      
+      // ランチメニューモーダルを開く
+      window.openLunchModal = function() {
+        const name = prompt('メニュー名を入力してください:')
+        if (!name) return
+        
+        const nameEn = prompt('英語名を入力してください（任意）:') || ''
+        const priceStr = prompt('価格を入力してください（例: 1760）:')
+        if (!priceStr) return
+        
+        const price = parseInt(priceStr)
+        if (isNaN(price)) {
+          alert('価格は数字で入力してください')
+          return
+        }
+        
+        const description = prompt('説明文を入力してください（1-2行）:') || ''
+        const imageUrl = prompt('画像URLを入力してください（例: /lunch/lunch1.jpg）:')
+        if (!imageUrl) return
+        
+        const displayOrderStr = prompt('表示順を入力してください（例: 1）:') || '0'
+        const displayOrder = parseInt(displayOrderStr)
+        
+        // 作成実行
+        createLunchItem(name, nameEn, price, description, imageUrl, displayOrder)
+      }
+      
+      // ランチメニュー作成
+      async function createLunchItem(name, nameEn, price, description, imageUrl, displayOrder) {
+        try {
+          await axios.post('/api/admin/lunch-menu', {
+            name,
+            name_en: nameEn,
+            price,
+            description,
+            image_url: imageUrl,
+            display_order: displayOrder,
+            is_visible: true
+          })
+          alert('ランチメニューを追加しました')
+          loadLunchMenu()
+        } catch (error) {
+          console.error('Create lunch item error:', error)
+          alert('ランチメニューの追加に失敗しました')
+        }
+      }
+      
+      // ランチメニュー編集
+      window.editLunchItem = async function(id) {
+        try {
+          const response = await axios.get('/api/admin/lunch-menu')
+          const item = response.data.find(i => i.id === id)
+          if (!item) return
+          
+          const name = prompt('メニュー名:', item.name)
+          if (!name) return
+          
+          const nameEn = prompt('英語名:', item.name_en || '')
+          const priceStr = prompt('価格:', item.price)
+          if (!priceStr) return
+          
+          const price = parseInt(priceStr)
+          if (isNaN(price)) {
+            alert('価格は数字で入力してください')
+            return
+          }
+          
+          const description = prompt('説明文:', item.description || '')
+          const imageUrl = prompt('画像URL:', item.image_url)
+          if (!imageUrl) return
+          
+          const displayOrderStr = prompt('表示順:', item.display_order)
+          const displayOrder = parseInt(displayOrderStr)
+          
+          const isVisibleStr = prompt('公開状態 (1:公開, 0:非公開):', item.is_visible ? '1' : '0')
+          const isVisible = isVisibleStr === '1'
+          
+          await axios.put(\`/api/admin/lunch-menu/\${id}\`, {
+            name,
+            name_en: nameEn,
+            price,
+            description,
+            image_url: imageUrl,
+            display_order: displayOrder,
+            is_visible: isVisible
+          })
+          
+          alert('ランチメニューを更新しました')
+          loadLunchMenu()
+        } catch (error) {
+          console.error('Edit lunch item error:', error)
+          alert('ランチメニューの更新に失敗しました')
+        }
+      }
+      
+      // ランチメニュー削除
+      window.deleteLunchItem = async function(id) {
+        if (!confirm('このランチメニューを削除しますか？')) return
+        
+        try {
+          await axios.delete(\`/api/admin/lunch-menu/\${id}\`)
+          alert('ランチメニューを削除しました')
+          loadLunchMenu()
+        } catch (error) {
+          console.error('Delete lunch item error:', error)
+          alert('ランチメニューの削除に失敗しました')
+        }
+      }
+      
       // 初期化
       document.addEventListener('DOMContentLoaded', () => {
         loadCategories()
@@ -1292,6 +1474,7 @@
         loadPageImages()
         loadInstagramStatus()
         loadNewsList()
+        loadLunchMenu()
         
         // フォームイベントリスナーを登録
         setupFormListeners()

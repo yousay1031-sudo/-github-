@@ -307,6 +307,67 @@ app.get('/api/admin/instagram-status', async (c) => {
   })
 })
 
+// === ランチメニューAPI ===
+
+// ランチメニュー一覧取得（公開中のみ）
+app.get('/api/lunch-menu', async (c) => {
+  const { DB } = c.env
+  const { results } = await DB.prepare(`
+    SELECT * FROM lunch_menu 
+    WHERE is_visible = 1
+    ORDER BY display_order ASC
+  `).all()
+  return c.json(results)
+})
+
+// 管理用ランチメニュー一覧取得（全件）
+app.get('/api/admin/lunch-menu', async (c) => {
+  const { DB } = c.env
+  const { results } = await DB.prepare(`
+    SELECT * FROM lunch_menu 
+    ORDER BY display_order ASC
+  `).all()
+  return c.json(results)
+})
+
+// ランチメニュー作成
+app.post('/api/admin/lunch-menu', async (c) => {
+  const { DB } = c.env
+  const { name, name_en, price, description, image_url, display_order, is_visible } = await c.req.json()
+  
+  const result = await DB.prepare(`
+    INSERT INTO lunch_menu (name, name_en, price, description, image_url, display_order, is_visible)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).bind(name, name_en || '', price, description || '', image_url, display_order || 0, is_visible ? 1 : 0).run()
+  
+  return c.json({ id: result.meta.last_row_id, success: true })
+})
+
+// ランチメニュー更新
+app.put('/api/admin/lunch-menu/:id', async (c) => {
+  const { DB } = c.env
+  const id = c.req.param('id')
+  const { name, name_en, price, description, image_url, display_order, is_visible } = await c.req.json()
+  
+  await DB.prepare(`
+    UPDATE lunch_menu 
+    SET name = ?, name_en = ?, price = ?, description = ?, image_url = ?, display_order = ?, is_visible = ?
+    WHERE id = ?
+  `).bind(name, name_en || '', price, description || '', image_url, display_order || 0, is_visible ? 1 : 0, id).run()
+  
+  return c.json({ success: true })
+})
+
+// ランチメニュー削除
+app.delete('/api/admin/lunch-menu/:id', async (c) => {
+  const { DB } = c.env
+  const id = c.req.param('id')
+  
+  await DB.prepare(`DELETE FROM lunch_menu WHERE id = ?`).bind(id).run()
+  
+  return c.json({ success: true })
+})
+
 // メニューカテゴリー一覧取得
 app.get('/api/menu-categories', async (c) => {
   const { DB } = c.env
@@ -1025,6 +1086,7 @@ app.get('/', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
@@ -1046,6 +1108,7 @@ app.get('/', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
             <a href="/access">access</a>
@@ -2062,6 +2125,450 @@ app.get('/menu', (c) => {
   `)
 })
 
+// ランチページ
+app.get('/lunch', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ランチメニュー | TOKACHI YAKINIKU KARIN</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
+          }
+          
+          h1, h2, h3, h4 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+          }
+          
+          nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+          }
+          
+          .nav-link {
+            position: relative;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+          
+          .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+          }
+          
+          .nav-link:hover:after {
+            width: 100%;
+          }
+          
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+          
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+          }
+          
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+          }
+          
+          .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          
+          .hamburger.active span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+          
+          .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 96px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            z-index: 40;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+          
+          .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+          }
+          
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-menu a:hover {
+            color: #d4af37;
+            padding-left: 1rem;
+          }
+          
+          .mobile-menu a:last-child {
+            border-bottom: none;
+          }
+
+          /* ヒーローセクション */
+          .lunch-hero {
+            position: relative;
+            padding-top: 96px;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(30, 20, 10, 0.95) 100%);
+          }
+
+          .lunch-hero-content {
+            text-align: center;
+            padding: 3rem 2rem;
+          }
+
+          .lunch-hero-title {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: #d4af37;
+            margin-bottom: 1rem;
+          }
+
+          .lunch-hero-subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+          }
+
+          .lunch-hero-description {
+            font-size: 1rem;
+            color: #c0c0c0;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+          }
+
+          /* ランチメニューグリッド */
+          .lunch-menu-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+          }
+
+          .lunch-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+          }
+
+          .lunch-menu-item {
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+          }
+
+          .lunch-menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+          }
+
+          .lunch-item-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+          }
+
+          .lunch-item-content {
+            padding: 2rem;
+          }
+
+          .lunch-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+          }
+
+          .lunch-item-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #e0e0e0;
+            letter-spacing: 0.05em;
+          }
+
+          .lunch-item-name-en {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.25rem;
+            letter-spacing: 0.05em;
+          }
+
+          .lunch-item-price {
+            font-size: 1.8rem;
+            color: #d4af37;
+            font-weight: 600;
+            white-space: nowrap;
+          }
+
+          .lunch-item-description {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            line-height: 1.7;
+            letter-spacing: 0.05em;
+          }
+
+          /* フッター */
+          footer {
+            background: #000;
+            color: #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+          }
+
+          /* モバイル対応 */
+          @media (max-width: 768px) {
+            .lunch-hero-title {
+              font-size: 2.5rem;
+            }
+
+            .lunch-hero-subtitle {
+              font-size: 0.9rem;
+            }
+
+            .lunch-menu-grid {
+              grid-template-columns: 1fr;
+              gap: 2rem;
+            }
+
+            .lunch-item-image {
+              height: 220px;
+            }
+
+            .lunch-item-content {
+              padding: 1.5rem;
+            }
+
+            .lunch-item-name {
+              font-size: 1.25rem;
+            }
+
+            .lunch-item-price {
+              font-size: 1.5rem;
+            }
+          }
+        </style>
+    </head>
+    <body>
+        <!-- ナビゲーション -->
+        <nav class="fixed w-full top-0 z-50 text-white shadow-2xl">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                        </a>
+                    </div>
+                    <!-- デスクトップメニュー -->
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/lunch" class="nav-link text-yellow-500">lunch</a>
+                        <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
+                        <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
+                        <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
+                        <a href="/admin" class="nav-link text-yellow-600 hover:text-yellow-500">
+                          <i class="fas fa-cog text-sm"></i> 管理
+                        </a>
+                    </div>
+                    <!-- ハンバーガーメニューボタン -->
+                    <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/news">news</a>
+            <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
+            <a href="/course">course</a>
+            <a href="/commitment">preference</a>
+            <a href="/access">access</a>
+            <a href="/admin"><i class="fas fa-cog"></i> 管理</a>
+        </div>
+
+        <!-- ヒーローセクション -->
+        <div class="lunch-hero">
+            <div class="lunch-hero-content">
+                <h1 class="lunch-hero-title">ランチメニュー</h1>
+                <p class="lunch-hero-subtitle">Lunch Menu</p>
+                <p class="lunch-hero-description">
+                  厳選された十勝産の食材を使用した、ボリューム満点のランチメニュー。<br>
+                  焼肉の旨味を気軽にお楽しみいただけます。
+                </p>
+            </div>
+        </div>
+
+        <!-- ランチメニュー一覧 -->
+        <div class="lunch-menu-container">
+            <div class="lunch-menu-grid" id="lunchMenuGrid">
+                <!-- JavaScriptで動的に読み込まれます -->
+                <div style="grid-column: 1/-1; text-align: center; color: #a0a0a0; padding: 3rem 0;">
+                    読み込み中...
+                </div>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer>
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-2xl font-light tracking-widest mb-4">TOKACHI YAKINIKU KARIN</h3>
+                <p class="text-sm text-gray-400 tracking-wider mb-8">トカチ ヤキニク カリン</p>
+                
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <p class="text-gray-600 mt-12 text-xs tracking-wider">© 2024 TOKACHI YAKINIKU KARIN. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+        <script>
+          // ハンバーガーメニュー
+          function toggleMobileMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+          }
+
+          // ランチメニューデータ読み込み
+          async function loadLunchMenu() {
+            try {
+              const response = await axios.get('/api/lunch-menu');
+              const lunchMenu = response.data;
+              const grid = document.getElementById('lunchMenuGrid');
+              
+              if (lunchMenu.length === 0) {
+                grid.innerHTML = \\\`
+                  <div style="grid-column: 1/-1; text-align: center; color: #a0a0a0; padding: 3rem 0;">
+                    現在ランチメニューはありません
+                  </div>
+                \\\`;
+                return;
+              }
+
+              grid.innerHTML = lunchMenu.map(item => \\\`
+                <div class="lunch-menu-item">
+                  <img src="\\\${item.image_url}" alt="\\\${item.name}" class="lunch-item-image">
+                  <div class="lunch-item-content">
+                    <div class="lunch-item-header">
+                      <div>
+                        <h3 class="lunch-item-name">\\\${item.name}</h3>
+                        <p class="lunch-item-name-en">\\\${item.name_en || ''}</p>
+                      </div>
+                      <div class="lunch-item-price">¥\\\${item.price.toLocaleString()}</div>
+                    </div>
+                    <p class="lunch-item-description">\\\${item.description || ''}</p>
+                  </div>
+                </div>
+              \\\`).join('');
+            } catch (error) {
+              console.error('ランチメニューの読み込みに失敗しました:', error);
+              const grid = document.getElementById('lunchMenuGrid');
+              grid.innerHTML = \\\`
+                <div style="grid-column: 1/-1; text-align: center; color: #ff6b6b; padding: 3rem 0;">
+                  ランチメニューの読み込みに失敗しました
+                </div>
+              \\\`;
+            }
+          }
+
+          // ページ読み込み時にランチメニューを表示
+          loadLunchMenu();
+        </script>
+    </body>
+    </html>
+  `)
+})
+
 // ニュースページ
 app.get('/news', (c) => {
   return c.html(`
@@ -2333,6 +2840,7 @@ app.get('/news', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
@@ -2354,6 +2862,7 @@ app.get('/news', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
             <a href="/access">access</a>
@@ -2658,6 +3167,7 @@ app.get('/access', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
             <a href="/access">access</a>
@@ -3026,6 +3536,7 @@ app.get('/commitment', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
             <a href="/access">access</a>
@@ -3447,6 +3958,7 @@ app.get('/course', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
+                        <a href="/lunch" class="nav-link text-white hover:text-yellow-500">lunch</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
@@ -3468,6 +3980,7 @@ app.get('/course', (c) => {
         <div class="mobile-menu" id="mobileMenu">
             <a href="/news">news</a>
             <a href="/menu">dinner</a>
+            <a href="/lunch">lunch</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
             <a href="/access">access</a>
