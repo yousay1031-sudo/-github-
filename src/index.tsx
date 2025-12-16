@@ -1662,7 +1662,7 @@ app.get('/menu', (c) => {
       
       .category-note {
         max-width: 900px;
-        margin: 0 auto 3rem;
+        margin: 3rem auto 0;
         padding: 1.5rem;
         background: rgba(212, 175, 55, 0.1);
         border-left: 3px solid #d4af37;
@@ -1790,10 +1790,6 @@ app.get('/menu', (c) => {
               </div>
               
               <div class="menu-content">
-                \${category.id === 2 ? '<div class="category-note">当店のホルモンはすべて北海道産です。<br>～ 味はタレ ・ ミソ ・ 塩 ・ ピリ辛 ・ ネギ塩 （+100 円） からお選びください。 ～</div>' : ''}
-                \${category.id === 3 ? '<div class="category-note">当店のラムはアイスランド産のオーガニックラムを使用しております。</div>' : ''}
-                \${category.id === 1 ? '<div class="category-note">+300円でトリュフソースをご用意できます。</div>' : ''}
-                
                 <div class="menu-grid">
                   \${categoryItems.map(item => \`
                     <div class="menu-item">
@@ -1805,6 +1801,10 @@ app.get('/menu', (c) => {
                     </div>
                   \`).join('')}
                 </div>
+                
+                \${category.id === 2 ? '<div class="category-note">当店のホルモンはすべて北海道産です。<br>～ 味はタレ ・ ミソ ・ 塩 ・ ピリ辛 ・ ネギ塩 （+100 円） からお選びください。 ～</div>' : ''}
+                \${category.id === 3 ? '<div class="category-note">当店のラムはアイスランド産のオーガニックラムを使用しております。</div>' : ''}
+                \${category.id === 1 ? '<div class="category-note">+300円でトリュフソースをご用意できます。</div>' : ''}
               </div>
             \`
             
