@@ -898,10 +898,6 @@ app.get('/', (c) => {
                         <a href="/course" class="ground-menu-btn w-full md:w-auto">
                             course
                         </a>
-                        
-                        <a href="/drink" class="ground-menu-btn w-full md:w-auto">
-                            drink
-                        </a>
                     </div>
                 </div>
             </div>
@@ -1077,7 +1073,6 @@ app.get('/', (c) => {
                 <div class="flex justify-center items-center space-x-6 md:space-x-8 mb-12 flex-wrap gap-y-3">
                     <a href="/" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">news</a>
                     <a href="/menu" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">dinner</a>
-                    <a href="/drink" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">drink</a>
                     <a href="/course" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">course</a>
                     <a href="/commitment" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">preference</a>
                     <a href="/access" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">access</a>
@@ -1692,7 +1687,6 @@ app.get('/menu', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-yellow-500">dinner</a>
-                        <a href="/drink" class="nav-link text-white hover:text-yellow-500">drink</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
@@ -2819,7 +2813,6 @@ app.get('/course', (c) => {
                     <div class="hidden md:flex space-x-10">
                         <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
-                        <a href="/drink" class="nav-link text-yellow-500">drink</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
                         <a href="/access" class="nav-link text-white hover:text-yellow-500">access</a>
