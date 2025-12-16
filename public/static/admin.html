@@ -515,11 +515,26 @@
       
       // カテゴリー一覧の読み込み
       async function loadCategoryList() {
+        const listEl = document.getElementById('category-list')
+        if (!listEl) {
+          console.error('category-list element not found!')
+          return
+        }
+        
         try {
+          console.log('Loading category list...')
+          listEl.innerHTML = '<p class="text-gray-500 text-center py-8">読み込み中...</p>'
+          
           const response = await axios.get('/api/menu-categories')
           categories = response.data
+          console.log('Categories loaded:', categories.length)
           
-          document.getElementById('category-list').innerHTML = categories.map(category => `
+          if (categories.length === 0) {
+            listEl.innerHTML = '<p class="text-gray-500 text-center py-8">カテゴリーがありません</p>'
+            return
+          }
+          
+          listEl.innerHTML = categories.map(category => `
             <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
               <div class="flex items-center space-x-4 flex-1">
                 <div class="w-32 h-24 bg-gray-200 rounded overflow-hidden">
@@ -540,8 +555,10 @@
               </div>
             </div>
           `).join('')
+          console.log('Category list rendered successfully')
         } catch (error) {
           console.error('Failed to load categories:', error)
+          listEl.innerHTML = '<p class="text-red-500 text-center py-8">カテゴリーの読み込みに失敗しました: ' + error.message + '</p>'
         }
       }
       
@@ -657,9 +674,23 @@
       
       // メニュー一覧の読み込み
       async function loadMenuItems() {
+        const listEl = document.getElementById('menu-list')
+        if (!listEl) {
+          console.error('menu-list element not found!')
+          return
+        }
+        
         try {
+          listEl.innerHTML = '<p class="text-gray-500 text-center py-8">読み込み中...</p>'
+          
           const response = await axios.get('/api/admin/menu-items')
           const items = response.data
+          console.log('Menu items loaded:', items.length)
+          
+          if (items.length === 0) {
+            listEl.innerHTML = '<p class="text-gray-500 text-center py-8">メニューアイテムがありません</p>'
+            return
+          }
           
           const groupedByCategory = {}
           items.forEach(item => {
@@ -669,7 +700,7 @@
             groupedByCategory[item.category_name].push(item)
           })
           
-          document.getElementById('menu-list').innerHTML = Object.keys(groupedByCategory).map(categoryName => `
+          listEl.innerHTML = Object.keys(groupedByCategory).map(categoryName => `
             <div class="border-l-4 border-amber-600 pl-4 mb-6">
               <h3 class="text-xl font-bold mb-4">${categoryName}</h3>
               <div class="space-y-2">
@@ -701,8 +732,10 @@
               </div>
             </div>
           `).join('')
+          console.log('Menu items rendered successfully')
         } catch (error) {
           console.error('Failed to load menu items:', error)
+          listEl.innerHTML = '<p class="text-red-500 text-center py-8">メニューアイテムの読み込みに失敗しました: ' + error.message + '</p>'
         }
       }
       
@@ -1467,17 +1500,24 @@
       
       // 初期化
       document.addEventListener('DOMContentLoaded', () => {
-        loadCategories()
-        loadCategoryList()
-        loadMenuItems()
-        loadPageTexts()
-        loadPageImages()
-        loadInstagramStatus()
-        loadNewsList()
-        loadLunchMenu()
-        
-        // フォームイベントリスナーを登録
-        setupFormListeners()
+        console.log('Admin page initialized')
+        try {
+          loadCategories()
+          loadCategoryList()
+          loadMenuItems()
+          loadPageTexts()
+          loadPageImages()
+          loadInstagramStatus()
+          loadNewsList()
+          loadLunchMenu()
+          
+          // フォームイベントリスナーを登録
+          setupFormListeners()
+          console.log('All initialization functions called')
+        } catch (error) {
+          console.error('Initialization error:', error)
+          alert('初期化エラー: ' + error.message)
+        }
       })
     </script>
 </body>
