@@ -603,9 +603,9 @@ app.get('/', (c) => {
         <div class="hero-section">
             <!-- Slider Background -->
             <div class="hero-slider">
-                <div class="hero-slide active" style="background-image: url('https://www.genspark.ai/api/files/s/W1fngn8p')"></div>
-                <div class="hero-slide" style="background-image: url('https://www.genspark.ai/api/files/s/cUUBnlnb')"></div>
-                <div class="hero-slide" style="background-image: url('https://www.genspark.ai/api/files/s/EJoQARLL')"></div>
+                <div class="hero-slide active" style="background-image: url('/hero-slide-1.jpg')"></div>
+                <div class="hero-slide" style="background-image: url('/hero-slide-2.jpg')"></div>
+                <div class="hero-slide" style="background-image: url('/hero-slide-3.jpg')"></div>
             </div>
             
             <!-- Hero Content -->
