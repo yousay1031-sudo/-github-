@@ -813,8 +813,10 @@
         document.getElementById('text-modal').classList.remove('active')
       }
       
-      // テキストフォーム送信
-      document.getElementById('text-form').addEventListener('submit', async (e) => {
+      // フォームイベントリスナーの設定
+      function setupFormListeners() {
+        // テキストフォーム送信
+        document.getElementById('text-form').addEventListener('submit', async (e) => {
         e.preventDefault()
         
         const data = {
@@ -830,7 +832,53 @@
           console.error('Failed to update text:', error)
           alert('更新に失敗しました')
         }
-      })
+        })
+        
+        // 画像フォーム送信
+        document.getElementById('image-form').addEventListener('submit', async (e) => {
+          e.preventDefault()
+          
+          if (!currentEditingImageKey) {
+            alert('エラー: 編集中の画像キーが設定されていません')
+            return
+          }
+          
+          let imageUrl = document.getElementById('page-image-url').value
+          
+          // アップロードした画像がある場合
+          if (currentPageImageData) {
+            try {
+              const uploadResponse = await axios.post('/api/admin/upload-image', {
+                imageData: currentPageImageData
+              })
+              imageUrl = uploadResponse.data.imageUrl
+            } catch (error) {
+              console.error('Failed to upload image:', error)
+              alert('画像のアップロードに失敗しました:\\n' + (error.response?.data?.error || error.message))
+              return
+            }
+          }
+          
+          if (!imageUrl) {
+            alert('画像を選択するかURLを入力してください')
+            return
+          }
+          
+          const data = { image_url: imageUrl }
+          
+          try {
+            const response = await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
+            alert('更新しました！')
+            closeImageModal()
+            loadPageImages()
+            currentPageImageData = null
+          } catch (error) {
+            console.error('Failed to update image:', error)
+            const errorMsg = error.response?.data?.error || error.response?.statusText || error.message
+            alert('更新に失敗しました:\\n' + errorMsg + '\\n\\nキー: ' + currentEditingImageKey)
+          }
+        })
+      }
       
       // 画像一覧の読み込み
       async function loadPageImages() {
@@ -928,51 +976,6 @@
         document.getElementById('page-image-url').value = ''
       }
       
-      // 画像フォーム送信
-      document.getElementById('image-form').addEventListener('submit', async (e) => {
-        e.preventDefault()
-        
-        if (!currentEditingImageKey) {
-          alert('エラー: 編集中の画像キーが設定されていません')
-          return
-        }
-        
-        let imageUrl = document.getElementById('page-image-url').value
-        
-        // アップロードした画像がある場合
-        if (currentPageImageData) {
-          try {
-            const uploadResponse = await axios.post('/api/admin/upload-image', {
-              imageData: currentPageImageData
-            })
-            imageUrl = uploadResponse.data.imageUrl
-          } catch (error) {
-            console.error('Failed to upload image:', error)
-            alert('画像のアップロードに失敗しました:\n' + (error.response?.data?.error || error.message))
-            return
-          }
-        }
-        
-        if (!imageUrl) {
-          alert('画像を選択するかURLを入力してください')
-          return
-        }
-        
-        const data = { image_url: imageUrl }
-        
-        try {
-          const response = await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
-          alert('更新しました！')
-          closeImageModal()
-          loadPageImages()
-          currentPageImageData = null
-        } catch (error) {
-          console.error('Failed to update image:', error)
-          const errorMsg = error.response?.data?.error || error.response?.statusText || error.message
-          alert('更新に失敗しました:\n' + errorMsg + '\n\nキー: ' + currentEditingImageKey)
-        }
-      })
-      
       // 初期化
       document.addEventListener('DOMContentLoaded', () => {
         loadCategories()
@@ -980,6 +983,9 @@
         loadMenuItems()
         loadPageTexts()
         loadPageImages()
+        
+        // フォームイベントリスナーを登録
+        setupFormListeners()
       })
     </script>
 </body>
