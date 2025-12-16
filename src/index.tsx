@@ -964,10 +964,10 @@ app.get('/', (c) => {
                          style="filter: brightness(0.9);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
-                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP'; writing-mode: horizontal-tb;">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP'; writing-mode: horizontal-tb;" data-text="home_card1_title">
                             厳選常陸牛<br>ギフト
                         </h3>
-                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4" data-text="home_card1_description">
                             口溶け香り高いなめらかな食感と高級感が、あなたのギフトの心をより一層伝えます。
                         </p>
                         <a href="/menu" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
@@ -984,10 +984,10 @@ app.get('/', (c) => {
                          style="filter: brightness(0.9);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
-                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';" data-text="home_card2_title">
                             ディナー<br>コース
                         </h3>
-                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4" data-text="home_card2_description">
                             お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。
                         </p>
                         <a href="/course" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
@@ -1004,10 +1004,10 @@ app.get('/', (c) => {
                          style="filter: brightness(0.9);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
-                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';">
+                        <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';" data-text="home_card3_title">
                             美味しい<br>お肉の焼き方
                         </h3>
-                        <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                        <p class="text-gray-400 text-xs leading-relaxed mb-4" data-text="home_card3_description">
                             実はよくお肉料理を素晴らしく楽しく食べてきたいと、本当に各種焼き方をお教えいたします。
                         </p>
                         <a href="/commitment" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
@@ -1199,6 +1199,39 @@ app.get('/', (c) => {
             const messageContent = document.querySelector('[data-text="home_message_content"]')
             if (messageContent && pageTextsCache.home_message_content) {
               messageContent.innerHTML = nl2br(pageTextsCache.home_message_content)
+            }
+            
+            // Card 1
+            const card1Title = document.querySelector('[data-text="home_card1_title"]')
+            if (card1Title && pageTextsCache.home_card1_title) {
+              card1Title.innerHTML = nl2br(pageTextsCache.home_card1_title)
+            }
+            
+            const card1Desc = document.querySelector('[data-text="home_card1_description"]')
+            if (card1Desc && pageTextsCache.home_card1_description) {
+              card1Desc.innerHTML = nl2br(pageTextsCache.home_card1_description)
+            }
+            
+            // Card 2
+            const card2Title = document.querySelector('[data-text="home_card2_title"]')
+            if (card2Title && pageTextsCache.home_card2_title) {
+              card2Title.innerHTML = nl2br(pageTextsCache.home_card2_title)
+            }
+            
+            const card2Desc = document.querySelector('[data-text="home_card2_description"]')
+            if (card2Desc && pageTextsCache.home_card2_description) {
+              card2Desc.innerHTML = nl2br(pageTextsCache.home_card2_description)
+            }
+            
+            // Card 3
+            const card3Title = document.querySelector('[data-text="home_card3_title"]')
+            if (card3Title && pageTextsCache.home_card3_title) {
+              card3Title.innerHTML = nl2br(pageTextsCache.home_card3_title)
+            }
+            
+            const card3Desc = document.querySelector('[data-text="home_card3_description"]')
+            if (card3Desc && pageTextsCache.home_card3_description) {
+              card3Desc.innerHTML = nl2br(pageTextsCache.home_card3_description)
             }
           }
           
