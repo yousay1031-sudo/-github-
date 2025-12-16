@@ -325,11 +325,21 @@ async function initPageImagesTable(DB: any) {
   
   // 初期データ挿入
   const defaultImages = [
+    // Home - Hero section
     ['hero_slide_1', '/hero-slide-1.jpg', 'home', 'hero', 'ヒーロースライド1 - 焼肉テーブル'],
     ['hero_slide_2', '/hero-slide-2.jpg', 'home', 'hero', 'ヒーロースライド2 - ワイン乾杯'],
     ['hero_slide_3', '/hero-slide-3.jpg', 'home', 'hero', 'ヒーロースライド3 - 個室'],
     ['hero_logo', '/logo-hero.png', 'home', 'hero', 'ヒーローセクションロゴ'],
+    // Home - Ground menu section
     ['ground_menu_bg', '/ground-menu-main.jpg', 'home', 'ground_menu', 'GROUND MENUセクション背景'],
+    // Home - Commitment section
+    ['home_commitment_wagyu', 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80', 'home', 'commitment', 'こだわりセクション - 和牛メイン画像'],
+    ['home_commitment_card1', 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80', 'home', 'commitment', 'こだわりセクション - カード1（厳選常陸牛ギフト）'],
+    ['home_commitment_card2', 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80', 'home', 'commitment', 'こだわりセクション - カード2（ディナーコース）'],
+    ['home_commitment_card3', 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80', 'home', 'commitment', 'こだわりセクション - カード3（オンライン注文）'],
+    // Home - Message section
+    ['home_message_photo', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80', 'home', 'message', 'メッセージセクション - 店舗写真'],
+    // Commitment page
     ['commitment_image_1', 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=800&q=80', 'commitment', 'main', 'こだわり画像1'],
     ['commitment_image_2', 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=800&q=80', 'commitment', 'main', 'こだわり画像2']
   ]
@@ -1237,6 +1247,41 @@ app.get('/', (c) => {
               if (groundMenuBg) {
                 const bgImg = document.querySelector('.ground-menu-image')
                 if (bgImg) bgImg.src = groundMenuBg.image_url
+              }
+              
+              // こだわりセクション - 和牛メイン画像
+              const commitmentWagyu = images.find(img => img.image_key === 'home_commitment_wagyu')
+              if (commitmentWagyu) {
+                const wagyuImg = document.querySelector('section.relative img[alt="和牛"]')
+                if (wagyuImg) wagyuImg.src = commitmentWagyu.image_url
+              }
+              
+              // こだわりセクション - カード1
+              const commitmentCard1 = images.find(img => img.image_key === 'home_commitment_card1')
+              if (commitmentCard1) {
+                const card1Img = document.querySelector('img[alt="十勝若牛"]')
+                if (card1Img) card1Img.src = commitmentCard1.image_url
+              }
+              
+              // こだわりセクション - カード2
+              const commitmentCard2 = images.find(img => img.image_key === 'home_commitment_card2')
+              if (commitmentCard2) {
+                const card2Img = document.querySelector('img[alt="アイスランドラム"]')
+                if (card2Img) card2Img.src = commitmentCard2.image_url
+              }
+              
+              // こだわりセクション - カード3
+              const commitmentCard3 = images.find(img => img.image_key === 'home_commitment_card3')
+              if (commitmentCard3) {
+                const card3Img = document.querySelector('img[alt="美味しいお肉の焼き方"]')
+                if (card3Img) card3Img.src = commitmentCard3.image_url
+              }
+              
+              // メッセージセクション - 店舗写真
+              const messagePhoto = images.find(img => img.image_key === 'home_message_photo')
+              if (messagePhoto) {
+                const photoImg = document.querySelector('[alt="TOKACHI YAKINIKU KARIN 店舗"]')
+                if (photoImg) photoImg.src = messagePhoto.image_url
               }
             } catch (error) {
               console.error('Failed to load page images:', error)
