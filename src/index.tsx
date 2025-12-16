@@ -1137,14 +1137,9 @@ app.get('/', (c) => {
                     <i class="fas fa-bullhorn text-yellow-600 mr-3"></i>
                     <h3 class="text-yellow-600 text-sm tracking-widest" style="font-family: 'Noto Serif JP'">NEWS</h3>
                 </div>
-                <div class="space-y-3">
+                <div id="heroNewsList" class="space-y-3">
                     <div class="border-l-2 border-gray-700 pl-3">
-                        <p class="text-gray-400 text-xs mb-1">2024.12.12</p>
-                        <p class="text-gray-200 text-sm leading-relaxed">年末年始の営業時間のお知らせ</p>
-                    </div>
-                    <div class="border-l-2 border-gray-700 pl-3">
-                        <p class="text-gray-400 text-xs mb-1">2024.12.01</p>
-                        <p class="text-gray-200 text-sm leading-relaxed">冬の特別コース始まりました</p>
+                        <p class="text-gray-400 text-xs mb-1">読み込み中...</p>
                     </div>
                 </div>
             </div>
@@ -1683,10 +1678,45 @@ app.get('/', (c) => {
             }
           }
           
+          // ヒーローセクションのニュース読み込み（最新2件）
+          async function loadHeroNews() {
+            try {
+              const response = await axios.get('/api/news')
+              const newsList = response.data.slice(0, 2)
+              const heroNewsEl = document.getElementById('heroNewsList')
+              
+              if (!heroNewsEl) return
+              
+              if (newsList.length === 0) {
+                heroNewsEl.innerHTML = \`
+                  <div class="border-l-2 border-gray-700 pl-3">
+                    <p class="text-gray-400 text-xs mb-1">お知らせはありません</p>
+                  </div>
+                \`
+                return
+              }
+              
+              heroNewsEl.innerHTML = newsList.map(news => {
+                const date = new Date(news.published_date)
+                const formattedDate = \`\${date.getFullYear()}.\${String(date.getMonth() + 1).padStart(2, '0')}.\${String(date.getDate()).padStart(2, '0')}\`
+                
+                return \`
+                  <div class="border-l-2 border-gray-700 pl-3">
+                    <p class="text-gray-400 text-xs mb-1">\${formattedDate}</p>
+                    <p class="text-gray-200 text-sm leading-relaxed">\${news.title}</p>
+                  </div>
+                \`
+              }).join('')
+            } catch (error) {
+              console.error('Failed to load hero news:', error)
+            }
+          }
+          
           // ページ読み込み時に実行
           document.addEventListener('DOMContentLoaded', () => {
             loadStoreInfo()
             loadFeaturedMenu()
+            loadHeroNews()
           })
         </script>
     </body>
@@ -2928,34 +2958,34 @@ app.get('/news', (c) => {
               const newsList = document.getElementById('newsList');
               
               if (response.data.length === 0) {
-                newsList.innerHTML = \\\`
+                newsList.innerHTML = \`
                   <li style="text-align: center; color: #a0a0a0; padding: 3rem 0;">
                     現在お知らせはありません
                   </li>
-                \\\`;
+                \`;
                 return;
               }
 
               newsList.innerHTML = response.data.map(news => {
                 const date = new Date(news.published_date);
-                const formattedDate = \\\`\\\${date.getFullYear()}年\\\${date.getMonth() + 1}月\\\${date.getDate()}日\\\`;
+                const formattedDate = \`\${date.getFullYear()}年\${date.getMonth() + 1}月\${date.getDate()}日\`;
                 
-                return \\\`
+                return \`
                   <li class="news-item">
-                    <div class="news-date">\\\${formattedDate}</div>
-                    <h2 class="news-title">\\\${news.title}</h2>
-                    <p class="news-content">\\\${news.content}</p>
+                    <div class="news-date">\${formattedDate}</div>
+                    <h2 class="news-title">\${news.title}</h2>
+                    <p class="news-content">\${news.content}</p>
                   </li>
-                \\\`;
+                \`;
               }).join('');
             } catch (error) {
               console.error('ニュースの読み込みに失敗しました:', error);
               const newsList = document.getElementById('newsList');
-              newsList.innerHTML = \\\`
+              newsList.innerHTML = \`
                 <li style="text-align: center; color: #ff6b6b; padding: 3rem 0;">
                   ニュースの読み込みに失敗しました
                 </li>
-              \\\`;
+              \`;
             }
           }
 

@@ -1318,14 +1318,73 @@
         }
       }
       
-      // ニュースモーダルを開く（簡易版 - 実装は省略）
+      // ニュースモーダルを開く（新規追加）
       window.openNewsModal = function() {
-        alert('ニュース追加機能は現在開発中です。Instagram同期機能をご利用ください。')
+        const title = prompt('ニュースタイトルを入力してください:')
+        if (!title) return
+        
+        const content = prompt('ニュース内容を入力してください:')
+        if (!content) return
+        
+        const imageUrl = prompt('画像URL（任意、空白可）:') || ''
+        const publishedDate = prompt('公開日（YYYY-MM-DD形式、例: 2024-12-20）:', new Date().toISOString().split('T')[0])
+        if (!publishedDate) return
+        
+        createNews(title, content, imageUrl, publishedDate)
       }
       
-      // ニュース編集（簡易版 - 実装は省略）
-      window.editNews = function(id) {
-        alert(`ニュース編集機能は現在開発中です（ID: ${id}）`)
+      // ニュース作成
+      async function createNews(title, content, imageUrl, publishedDate) {
+        try {
+          await axios.post('/api/admin/news', {
+            title,
+            content,
+            image_url: imageUrl,
+            published_date: publishedDate,
+            is_visible: true
+          })
+          alert('ニュースを追加しました')
+          loadNewsList()
+        } catch (error) {
+          console.error('Create news error:', error)
+          alert('ニュースの追加に失敗しました')
+        }
+      }
+      
+      // ニュース編集
+      window.editNews = async function(id) {
+        try {
+          const response = await axios.get('/api/admin/news')
+          const news = response.data.find(n => n.id === id)
+          if (!news) return
+          
+          const title = prompt('ニュースタイトル:', news.title)
+          if (!title) return
+          
+          const content = prompt('ニュース内容:', news.content)
+          if (!content) return
+          
+          const imageUrl = prompt('画像URL（任意）:', news.image_url || '')
+          const publishedDate = prompt('公開日（YYYY-MM-DD）:', news.published_date)
+          if (!publishedDate) return
+          
+          const isVisibleStr = prompt('公開状態 (1:公開, 0:非公開):', news.is_visible ? '1' : '0')
+          const isVisible = isVisibleStr === '1'
+          
+          await axios.put(`/api/admin/news/${id}`, {
+            title,
+            content,
+            image_url: imageUrl,
+            published_date: publishedDate,
+            is_visible: isVisible
+          })
+          
+          alert('ニュースを更新しました')
+          loadNewsList()
+        } catch (error) {
+          console.error('Edit news error:', error)
+          alert('ニュースの更新に失敗しました')
+        }
       }
       
       // ニュース削除
