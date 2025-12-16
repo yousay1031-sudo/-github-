@@ -603,10 +603,9 @@ app.get('/', (c) => {
         <div class="hero-section">
             <!-- Slider Background -->
             <div class="hero-slider">
-                <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1920&q=80')"></div>
-                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1558030006-450675393462?w=1920&q=80')"></div>
-                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&q=80')"></div>
-                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1920&q=80')"></div>
+                <div class="hero-slide active" style="background-image: url('https://www.genspark.ai/api/files/s/W1fngn8p')"></div>
+                <div class="hero-slide" style="background-image: url('https://www.genspark.ai/api/files/s/cUUBnlnb')"></div>
+                <div class="hero-slide" style="background-image: url('https://www.genspark.ai/api/files/s/EJoQARLL')"></div>
             </div>
             
             <!-- Hero Content -->
