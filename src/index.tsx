@@ -88,6 +88,65 @@ async function initPageTextsTable(DB: D1Database) {
 // データベース初期化（page_imagesテーブル）
 // === API Routes ===
 
+// ニュース一覧取得（公開中のみ）
+app.get('/api/news', async (c) => {
+  const { DB } = c.env
+  const { results } = await DB.prepare(`
+    SELECT * FROM news 
+    WHERE is_visible = 1
+    ORDER BY published_date DESC
+  `).all()
+  return c.json(results)
+})
+
+// 管理用ニュース一覧取得（全件）
+app.get('/api/admin/news', async (c) => {
+  const { DB } = c.env
+  const { results } = await DB.prepare(`
+    SELECT * FROM news 
+    ORDER BY published_date DESC
+  `).all()
+  return c.json(results)
+})
+
+// ニュース作成
+app.post('/api/admin/news', async (c) => {
+  const { DB } = c.env
+  const { title, content, image_url, published_date, is_visible } = await c.req.json()
+  
+  const result = await DB.prepare(`
+    INSERT INTO news (title, content, image_url, published_date, is_visible)
+    VALUES (?, ?, ?, ?, ?)
+  `).bind(title, content, image_url || '', published_date, is_visible ? 1 : 0).run()
+  
+  return c.json({ id: result.meta.last_row_id, success: true })
+})
+
+// ニュース更新
+app.put('/api/admin/news/:id', async (c) => {
+  const { DB } = c.env
+  const id = c.req.param('id')
+  const { title, content, image_url, published_date, is_visible } = await c.req.json()
+  
+  await DB.prepare(`
+    UPDATE news 
+    SET title = ?, content = ?, image_url = ?, published_date = ?, is_visible = ?
+    WHERE id = ?
+  `).bind(title, content, image_url || '', published_date, is_visible ? 1 : 0, id).run()
+  
+  return c.json({ success: true })
+})
+
+// ニュース削除
+app.delete('/api/admin/news/:id', async (c) => {
+  const { DB } = c.env
+  const id = c.req.param('id')
+  
+  await DB.prepare(`DELETE FROM news WHERE id = ?`).bind(id).run()
+  
+  return c.json({ success: true })
+})
+
 // メニューカテゴリー一覧取得
 app.get('/api/menu-categories', async (c) => {
   const { DB } = c.env
@@ -804,7 +863,7 @@ app.get('/', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
@@ -825,7 +884,7 @@ app.get('/', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">news</a>
+            <a href="/news">news</a>
             <a href="/menu">dinner</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
@@ -1071,7 +1130,7 @@ app.get('/', (c) => {
             <div class="max-w-4xl mx-auto px-6 lg:px-8">
                 <!-- 上部: ナビゲーションリンク -->
                 <div class="flex justify-center items-center space-x-6 md:space-x-8 mb-12 flex-wrap gap-y-3">
-                    <a href="/" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">news</a>
+                    <a href="/news" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">news</a>
                     <a href="/menu" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">dinner</a>
                     <a href="/course" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">course</a>
                     <a href="/commitment" class="text-gray-800 text-xs tracking-widest hover:text-gray-600 transition">preference</a>
@@ -1692,7 +1751,7 @@ app.get('/menu', (c) => {
                 </div>
                 <!-- デスクトップメニュー -->
                 <div class="hidden md:flex space-x-10">
-                    <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                    <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                     <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                     <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                     <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
@@ -1713,7 +1772,7 @@ app.get('/menu', (c) => {
     
     <!-- モバイルメニュー -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="/">news</a>
+        <a href="/news">news</a>
         <a href="/menu">dinner</a>
         <a href="/course">course</a>
         <a href="/commitment">preference</a>
@@ -1840,6 +1899,288 @@ app.get('/menu', (c) => {
     </script>
 </body>
 </html>
+  `)
+})
+
+// ニュースページ
+app.get('/news', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>新着情報 | TOKACHI YAKINIKU KARIN</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600;700;900&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.8;
+          }
+          
+          h1, h2, h3, h4 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+          }
+
+          /* ナビゲーション */
+          .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+          }
+
+          .nav-link {
+            color: #d4af37;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: inline-block;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+          }
+
+          .nav-link:hover {
+            color: #fff;
+          }
+
+          /* ページタイトル */
+          .page-header {
+            padding: 150px 2rem 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(30, 20, 10, 0.95) 100%);
+            border-bottom: 2px solid #d4af37;
+          }
+
+          .page-title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: #d4af37;
+            margin-bottom: 1rem;
+          }
+
+          .page-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: #a0a0a0;
+            text-transform: uppercase;
+          }
+
+          /* ニュース一覧 */
+          .news-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+          }
+
+          .news-list {
+            list-style: none;
+          }
+
+          .news-item {
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 2rem 0;
+            transition: background 0.3s ease;
+          }
+
+          .news-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+          }
+
+          .news-date {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #d4af37;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+          }
+
+          .news-title {
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+          }
+
+          .news-content {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+          }
+
+          /* モバイル対応 */
+          @media (max-width: 768px) {
+            .page-title {
+              font-size: 2rem;
+            }
+
+            .nav-link {
+              padding: 0.75rem 1rem;
+              font-size: 0.8rem;
+            }
+
+            .news-container {
+              padding: 2rem 1.5rem;
+            }
+
+            .news-title {
+              font-size: 1.1rem;
+            }
+          }
+
+          /* ハンバーガーメニュー */
+          .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 1rem;
+          }
+
+          .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: #d4af37;
+            margin: 3px 0;
+            transition: 0.3s;
+          }
+
+          @media (max-width: 768px) {
+            .hamburger {
+              display: flex;
+            }
+
+            .nav-menu {
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              background: rgba(10, 10, 10, 0.98);
+              padding: 1rem 0;
+            }
+
+            .nav-menu.active {
+              display: flex;
+            }
+
+            .nav-link {
+              padding: 1rem;
+              text-align: center;
+              border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            }
+          }
+        </style>
+    </head>
+    <body>
+        <!-- ナビゲーション -->
+        <nav class="navbar">
+            <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
+                <div style="font-size: 1.5rem; font-weight: 300; letter-spacing: 0.2em; color: #d4af37;">
+                    KARIN
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="/" class="nav-link">NEWS</a>
+                    <a href="/menu" class="nav-link">DINNER</a>
+                    <a href="/course" class="nav-link">COURSE</a>
+                    <a href="/commitment" class="nav-link">PREFERENCE</a>
+                    <a href="/access" class="nav-link">ACCESS</a>
+                    <a href="/admin" class="nav-link">管理</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ページヘッダー -->
+        <div class="page-header">
+            <h1 class="page-title">新着情報</h1>
+            <p class="page-subtitle">News</p>
+        </div>
+
+        <!-- ニュース一覧 -->
+        <div class="news-container">
+            <ul class="news-list" id="newsList">
+                <li style="text-align: center; color: #a0a0a0; padding: 3rem 0;">
+                    読み込み中...
+                </li>
+            </ul>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+        <script>
+          // ハンバーガーメニュー
+          function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+          }
+
+          // ニュースデータ読み込み
+          async function loadNews() {
+            try {
+              const response = await axios.get('/api/news');
+              const newsList = document.getElementById('newsList');
+              
+              if (response.data.length === 0) {
+                newsList.innerHTML = \\\`
+                  <li style="text-align: center; color: #a0a0a0; padding: 3rem 0;">
+                    現在お知らせはありません
+                  </li>
+                \\\`;
+                return;
+              }
+
+              newsList.innerHTML = response.data.map(news => {
+                const date = new Date(news.published_date);
+                const formattedDate = \\\`\\\${date.getFullYear()}年\\\${date.getMonth() + 1}月\\\${date.getDate()}日\\\`;
+                
+                return \\\`
+                  <li class="news-item">
+                    <div class="news-date">\\\${formattedDate}</div>
+                    <h2 class="news-title">\\\${news.title}</h2>
+                    <p class="news-content">\\\${news.content}</p>
+                  </li>
+                \\\`;
+              }).join('');
+            } catch (error) {
+              console.error('ニュースの読み込みに失敗しました:', error);
+              const newsList = document.getElementById('newsList');
+              newsList.innerHTML = \\\`
+                <li style="text-align: center; color: #ff6b6b; padding: 3rem 0;">
+                  ニュースの読み込みに失敗しました
+                </li>
+              \\\`;
+            }
+          }
+
+          // ページ読み込み時にニュースを表示
+          loadNews();
+        </script>
+    </body>
+    </html>
   `)
 })
 
@@ -2023,7 +2364,7 @@ app.get('/access', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
@@ -2044,7 +2385,7 @@ app.get('/access', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">news</a>
+            <a href="/news">news</a>
             <a href="/menu">dinner</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
@@ -2391,7 +2732,7 @@ app.get('/commitment', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-yellow-500">preference</a>
@@ -2412,7 +2753,7 @@ app.get('/commitment', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">news</a>
+            <a href="/news">news</a>
             <a href="/menu">dinner</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
@@ -2833,7 +3174,7 @@ app.get('/course', (c) => {
                     </div>
                     <!-- デスクトップメニュー -->
                     <div class="hidden md:flex space-x-10">
-                        <a href="/" class="nav-link text-white hover:text-yellow-500">news</a>
+                        <a href="/news" class="nav-link text-white hover:text-yellow-500">news</a>
                         <a href="/menu" class="nav-link text-white hover:text-yellow-500">dinner</a>
                         <a href="/course" class="nav-link text-white hover:text-yellow-500">course</a>
                         <a href="/commitment" class="nav-link text-white hover:text-yellow-500">preference</a>
@@ -2854,7 +3195,7 @@ app.get('/course', (c) => {
         
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="/">news</a>
+            <a href="/news">news</a>
             <a href="/menu">dinner</a>
             <a href="/course">course</a>
             <a href="/commitment">preference</a>
