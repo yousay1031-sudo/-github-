@@ -1592,7 +1592,7 @@ app.get('/menu', (c) => {
       }
       
       .category-title {
-        font-size: 3rem;
+        font-size: 8rem;
         font-weight: 300;
         letter-spacing: 0.2em;
         margin-bottom: 1rem;
@@ -1600,7 +1600,7 @@ app.get('/menu', (c) => {
       }
       
       .category-subtitle {
-        font-size: 0.9rem;
+        font-size: 2.5rem;
         letter-spacing: 0.3em;
         color: #d4af37;
         text-transform: uppercase;
@@ -1624,6 +1624,14 @@ app.get('/menu', (c) => {
         .menu-grid {
           grid-template-columns: 1fr;
           gap: 2rem;
+        }
+        
+        .category-title {
+          font-size: 4rem;
+        }
+        
+        .category-subtitle {
+          font-size: 1.5rem;
         }
       }
       
