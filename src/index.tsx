@@ -34,12 +34,49 @@ async function initPageTextsTable(DB: D1Database) {
     
     // デフォルトテキストを挿入
     const defaultTexts = [
-      ['ground_menu_title', 'GROUND MENU', 'home', 'ground_menu', 'Ground Menuセクションのタイトル'],
-      ['ground_menu_description', '本物の食作法で選りすぐりのときをる��<br>ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>～時間中の全ての食、お飲、デザートまでここならではKARINの宴。<br>ファカが付き続きうろん、ご堪念、まだ引用付のコーテブランとなる実営業り時をますます。', 'home', 'ground_menu', 'Ground Menuセクションの説明文'],
-      ['commitment_title', 'KARINのこだわり', 'home', 'commitment', 'こだわりセクションのタイトル'],
-      ['commitment_description', 'お肉を最もおいしい状態で楽しんでいただきたい一心から生まれた厳選素材を使った豪快メニューの数々。十勝若牛のもつ繊細な旨味、希少価値の高いアイスランドラムの芳醇な香り、一つひとつの料理にシェフの技術とこだわりが凝縮されております。産地直送ならではの新鮮さと品質をお約束いたします。', 'home', 'commitment', 'こだわりセクションの説明文'],
-      ['message_title', 'Message', 'home', 'message', 'Messageセクションのタイトル'],
-      ['message_content', '焼肉KARINは(お勝手の年中居ばえを有所感「肉の大塚」の直営焼肉店です。老舗ならではの目利きと独自ルートで厳選された無肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。', 'home', 'message', 'Messageセクションの本文']
+      // Home page
+      ['home_ground_menu_title', 'GROUND MENU', 'home', 'ground_menu', 'Ground Menuセクションのタイトル'],
+      ['home_ground_menu_description', '本物の食作法で選りすぐりのときをる��<br>ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>～時間中の全ての食、お飲、デザートまでここならではKARINの宴。<br>ファカが付き続きうろん、ご堪念、まだ引用付のコーテブランとなる実営業り時をますます。', 'home', 'ground_menu', 'Ground Menuセクションの説明文'],
+      ['home_commitment_title', 'KARINのこだわり', 'home', 'commitment', 'こだわりセクションのタイトル'],
+      ['home_commitment_description', 'お肉を最もおいしい状態で楽しんでいただきたい一心から生まれた厳選素材を使った豪快メニューの数々。十勝若牛のもつ繊細な旨味、希少価値の高いアイスランドラムの芳醇な香り、一つひとつの料理にシェフの技術とこだわりが凝縮されております。産地直送ならではの新鮮さと品質をお約束いたします。', 'home', 'commitment', 'こだわりセクションの説明文'],
+      ['home_message_title', 'Message', 'home', 'message', 'Messageセクションのタイトル'],
+      ['home_message_content', '焼肉KARINは(お勝手の年中居ばえを有所感「肉の大塚」の直営焼肉店です。老舗ならではの目利きと独自ルートで厳選された無肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。', 'home', 'message', 'Messageセクションの本文'],
+      ['home_card1_title', '厳選常陸牛ギフト', 'home', 'cards', 'カード1のタイトル'],
+      ['home_card1_description', '口溶け香り高いなめらかな食感と高級感が、あなたのギフトの心をより一層伝えます。', 'home', 'cards', 'カード1の説明'],
+      ['home_card2_title', 'ディナーコース', 'home', 'cards', 'カード2のタイトル'],
+      ['home_card2_description', 'お肉だけではなく、お料理各種をご用意いたしました。お飲み物も豊富にございます。', 'home', 'cards', 'カード2の説明'],
+      ['home_card3_title', '美味しいお肉の焼き方', 'home', 'cards', 'カード3のタイトル'],
+      ['home_card3_description', '実はよくお肉料理を素晴らしく楽しく食べてきたいと、本当に各種焼き方をお教えいたします。', 'home', 'cards', 'カード3の説明'],
+      
+      // Menu page
+      ['menu_page_title', 'メニュー', 'menu', 'header', 'メニューページのタイトル'],
+      ['menu_page_subtitle', 'Menu', 'menu', 'header', 'メニューページのサブタイトル'],
+      ['menu_page_description', '厳選された上質なお肉と、新鮮な食材を使った逸品の数々。KARINこだわりのメニューをご堪能ください。', 'menu', 'header', 'メニューページの説明'],
+      
+      // Drink page
+      ['drink_page_title', 'ドリンク', 'drink', 'header', 'ドリンクページのタイトル'],
+      ['drink_page_subtitle', 'Drink', 'drink', 'header', 'ドリンクページのサブタイトル'],
+      ['drink_page_description', 'お肉との相性を考え抜いた、厳選されたドリンクメニュー。お食事をより一層お楽しみいただけます。', 'drink', 'header', 'ドリンクページの説明'],
+      
+      // Course page
+      ['course_page_title', 'コース', 'course', 'header', 'コースページのタイトル'],
+      ['course_page_subtitle', 'Course', 'course', 'header', 'コースページのサブタイトル'],
+      ['course_page_description', '特別な日のお食事や、大切な方とのひとときに。KARINが誇る贅沢なコースをご用意しております。', 'course', 'header', 'コースページの説明'],
+      
+      // Commitment page
+      ['commitment_page_title', 'こだわり', 'commitment', 'header', 'こだわりページのタイトル'],
+      ['commitment_page_subtitle', 'Our Commitment', 'commitment', 'header', 'こだわりページのサブタイトル'],
+      ['commitment_page_description', 'KARINのこだわりは、食材の選定から調理法、そしておもてなしの心まで。すべてにおいて妥協を許しません。', 'commitment', 'header', 'こだわりページの説明'],
+      
+      // Access page
+      ['access_page_title', '店舗情報・アクセス', 'access', 'header', 'アクセスページのタイトル'],
+      ['access_page_subtitle', 'Access', 'access', 'header', 'アクセスページのサブタイトル'],
+      ['access_page_description', '十勝焼肉かりんへのアクセス方法と、店舗情報をご案内いたします。', 'access', 'header', 'アクセスページの説明'],
+      
+      // Common
+      ['store_name', 'TOKACHI YAKINIKU KARIN', 'common', 'header', '店舗名（英語）'],
+      ['store_name_ja', 'トカチ ヤキニク カリン', 'common', 'header', '店舗名（日本語読み）'],
+      ['store_name_kanji', '十勝焼肉かりん', 'common', 'header', '店舗名（漢字）']
     ]
     
     for (const [key, value, page, section, desc] of defaultTexts) {
@@ -723,9 +760,9 @@ app.get('/', (c) => {
             <!-- レイヤー3: コンテンツ (z-index: 2) -->
             <div class="ground-menu-content w-full max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-5xl md:text-6xl lg:text-7xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;">GROUND MENU</h2>
+                    <h2 class="text-5xl md:text-6xl lg:text-7xl text-white mb-8 font-light tracking-widest" style="font-family: 'Noto Serif JP'; letter-spacing: 0.5em;" data-text="home_ground_menu_title">GROUND MENU</h2>
                     <div class="max-w-4xl mx-auto mb-16">
-                        <p class="text-gray-100 text-sm md:text-base leading-relaxed" style="line-height: 2.2;">
+                        <p class="text-gray-100 text-sm md:text-base leading-relaxed" style="line-height: 2.2;" data-text="home_ground_menu_description">
                           本物の食作法で選りすぐりのときをる。<br>
                           ここでしか食べられない「極至」上質のよさとご期待くださったみなさん。<br>
                           ～時間中の全ての食、お飲、デザートまでここならではKARINの宴。<br>
@@ -770,7 +807,7 @@ app.get('/', (c) => {
                         <!-- 左半分: タイトルとボタン -->
                         <div class="w-1/2 flex flex-col justify-between pr-4 border-r border-gray-700">
                             <div>
-                                <h2 class="text-white text-4xl font-light tracking-wider mb-8" style="font-family: 'Noto Serif JP'; line-height: 1.6;">
+                                <h2 class="text-white text-4xl font-light tracking-wider mb-8" style="font-family: 'Noto Serif JP'; line-height: 1.6;" data-text="home_commitment_title">
                                     KARINの<br>こだわり
                                 </h2>
                             </div>
@@ -783,7 +820,7 @@ app.get('/', (c) => {
                         
                         <!-- 右半分: テキスト -->
                         <div class="w-1/2 pl-4 flex items-center">
-                            <p class="text-gray-300 text-xs leading-loose">
+                            <p class="text-gray-300 text-xs leading-loose" data-text="home_commitment_description">
                                 お肉を最もおいしい状態で楽しんでいただきたい一心から生まれた厳選素材を使った豪快メニューの数々。十勝若牛のもつ繊細な旨味、希少価値の高いアイスランドラムの芳醇な香り、一つひとつの料理にシェフの技術とこだわりが凝縮されております。産地直送ならではの新鮮さと品質をお約束いたします。
                             </p>
                         </div>
@@ -981,6 +1018,59 @@ app.get('/', (c) => {
 
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script>
+          // ページテキストのキャッシュ
+          let pageTextsCache = {}
+          
+          // ページテキストを取得
+          async function loadPageTexts() {
+            try {
+              const response = await fetch('/api/page-texts')
+              const texts = await response.json()
+              texts.forEach(text => {
+                pageTextsCache[text.text_key] = text.text_value
+              })
+              updatePageTexts()
+            } catch (error) {
+              console.error('Failed to load page texts:', error)
+            }
+          }
+          
+          // ページのテキストを更新
+          function updatePageTexts() {
+            // Ground Menu
+            const groundMenuTitle = document.querySelector('[data-text="home_ground_menu_title"]')
+            if (groundMenuTitle && pageTextsCache.home_ground_menu_title) {
+              groundMenuTitle.innerHTML = pageTextsCache.home_ground_menu_title
+            }
+            
+            const groundMenuDesc = document.querySelector('[data-text="home_ground_menu_description"]')
+            if (groundMenuDesc && pageTextsCache.home_ground_menu_description) {
+              groundMenuDesc.innerHTML = pageTextsCache.home_ground_menu_description
+            }
+            
+            // Commitment
+            const commitmentTitle = document.querySelector('[data-text="home_commitment_title"]')
+            if (commitmentTitle && pageTextsCache.home_commitment_title) {
+              commitmentTitle.innerHTML = pageTextsCache.home_commitment_title
+            }
+            
+            const commitmentDesc = document.querySelector('[data-text="home_commitment_description"]')
+            if (commitmentDesc && pageTextsCache.home_commitment_description) {
+              commitmentDesc.innerHTML = pageTextsCache.home_commitment_description
+            }
+            
+            // Message
+            const messageTitle = document.querySelector('[data-text="home_message_title"]')
+            if (messageTitle && pageTextsCache.home_message_title) {
+              messageTitle.textContent = pageTextsCache.home_message_title
+            }
+            
+            const messageContent = document.querySelector('[data-text="home_message_content"]')
+            if (messageContent && pageTextsCache.home_message_content) {
+              messageContent.innerHTML = pageTextsCache.home_message_content
+            }
+          }
+          
           // ハンバーガーメニューの切り替え
           function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu')
@@ -1005,7 +1095,10 @@ app.get('/', (c) => {
           }
           
           // ページ読み込み時にスライダーを初期化
-          document.addEventListener('DOMContentLoaded', initHeroSlider)
+          document.addEventListener('DOMContentLoaded', () => {
+            initHeroSlider()
+            loadPageTexts()
+          })
           
           // 店舗情報の読み込み
           async function loadStoreInfo() {
