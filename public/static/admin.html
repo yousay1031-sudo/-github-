@@ -876,7 +876,10 @@
       // 画像編集
       function editPageImage(key) {
         const image = pageImages.find(i => i.image_key === key)
-        if (!image) return
+        if (!image) {
+          alert('エラー: 画像が見つかりません')
+          return
+        }
         
         currentEditingImageKey = key
         currentPageImageData = null
@@ -929,6 +932,11 @@
       document.getElementById('image-form').addEventListener('submit', async (e) => {
         e.preventDefault()
         
+        if (!currentEditingImageKey) {
+          alert('エラー: 編集中の画像キーが設定されていません')
+          return
+        }
+        
         let imageUrl = document.getElementById('page-image-url').value
         
         // アップロードした画像がある場合
@@ -940,7 +948,7 @@
             imageUrl = uploadResponse.data.imageUrl
           } catch (error) {
             console.error('Failed to upload image:', error)
-            alert('画像のアップロードに失敗しました')
+            alert('画像のアップロードに失敗しました:\n' + (error.response?.data?.error || error.message))
             return
           }
         }
@@ -953,14 +961,15 @@
         const data = { image_url: imageUrl }
         
         try {
-          await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
-          alert('更新しました')
+          const response = await axios.put(`/api/admin/page-images/${currentEditingImageKey}`, data)
+          alert('更新しました！')
           closeImageModal()
           loadPageImages()
           currentPageImageData = null
         } catch (error) {
           console.error('Failed to update image:', error)
-          alert('更新に失敗しました')
+          const errorMsg = error.response?.data?.error || error.response?.statusText || error.message
+          alert('更新に失敗しました:\n' + errorMsg + '\n\nキー: ' + currentEditingImageKey)
         }
       })
       
