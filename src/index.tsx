@@ -803,8 +803,8 @@ app.get('/', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -1691,8 +1691,8 @@ app.get('/menu', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -2009,8 +2009,8 @@ app.get('/access', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -2379,8 +2379,8 @@ app.get('/commitment', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -2816,8 +2816,8 @@ app.get('/drink', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -3777,8 +3777,8 @@ app.get('/course', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center gap-4">
-                          <img src="https://www.genspark.ai/api/files/s/arTtis8s" alt="KARIN Logo" class="h-16 w-auto">
-                          <img src="https://www.genspark.ai/api/files/s/SHqAM9iM" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
