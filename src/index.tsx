@@ -12,7 +12,7 @@ const app = new Hono<{ Bindings: Bindings }>()
 app.use('/api/*', cors())
 
 // 静的ファイルの提供
-app.use('/static/*', serveStatic({ root: './public' }))
+app.use('/static/*', serveStatic({ root: './' }))
 
 // データベース初期化（page_textsテーブル）
 async function initPageTextsTable(DB: D1Database) {
@@ -4259,7 +4259,7 @@ app.get('/course', (c) => {
 
 // 管理画面
 app.get('/admin', (c) => {
-  return c.redirect('/static/admin.html')
+  return c.redirect('/static/admin')
 })
 
 // Cloudflare Workers の型定義
