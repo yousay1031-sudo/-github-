@@ -802,8 +802,8 @@ app.get('/', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
@@ -1690,8 +1690,8 @@ app.get('/menu', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
@@ -2008,8 +2008,8 @@ app.get('/access', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
@@ -2378,8 +2378,8 @@ app.get('/commitment', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
@@ -2815,8 +2815,8 @@ app.get('/drink', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
@@ -3776,8 +3776,8 @@ app.get('/course', (c) => {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
-                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto -mr-2">
+                        <a href="/" class="flex items-center -space-x-8">
+                          <img src="/logo-karin.png" alt="KARIN Logo" class="h-16 w-auto">
                           <img src="/logo-tokachi.png" alt="TOKACHI YAKINIKU Logo" class="h-16 w-auto">
                         </a>
                     </div>
