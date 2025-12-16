@@ -693,7 +693,7 @@ app.get('/', (c) => {
                         <div class="w-1/2 flex flex-col justify-between pr-4 border-r border-gray-700">
                             <div>
                                 <h2 class="text-white text-4xl font-light tracking-wider mb-8" style="font-family: 'Noto Serif JP'; line-height: 1.6;">
-                                    美炙樂の<br>こだわり
+                                    KARINの<br>こだわり
                                 </h2>
                             </div>
                             <a href="/commitment" 
@@ -799,7 +799,7 @@ app.get('/', (c) => {
                         </h2>
                         <div class="space-y-6">
                             <p class="text-white text-sm md:text-base leading-loose" style="line-height: 2.2;">
-                                焼肉美炙樂は(お勝手の年中居ばえを有所感「肉の大塚」の直営焼肉店です。老舗ならではの目利きと独自ルートで厳選された無肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
+                                焼肉KARINは(お勝手の年中居ばえを有所感「肉の大塚」の直営焼肉店です。老舗ならではの目利きと独自ルートで厳選された無肉がいただけます。また空間にもこだわり、デザイナー設計の落ち着いた雰囲気の個室などご家族はもちろんデートや接待、ご宴会などあらゆるシーンでゆっくりとしたひとときを。
                             </p>
                         </div>
                     </div>
@@ -2456,7 +2456,7 @@ app.get('/drink', (c) => {
                         <div class="subtitle">RECOMMENDED</div>
                     </div>
                 </div>
-                <h3 class="subcategory-title text-center">美炙樂おすすめ</h3>
+                <h3 class="subcategory-title text-center">KARINおすすめ</h3>
                 <div class="drink-grid">
                     <div class="drink-item">
                         <div class="drink-name">琉球の酒 ハブ源酒（1杯）</div>
@@ -3433,7 +3433,7 @@ app.get('/course', (c) => {
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">美炙樂サラダ</div>
+                            <div class="menu-item-name">KARINサラダ</div>
                             <div class="menu-item-name-en">Bishara salad</div>
                         </div>
                     </div>
@@ -3527,7 +3527,7 @@ app.get('/course', (c) => {
                     <div class="menu-item">
                         <div class="menu-item-bullet">●</div>
                         <div class="menu-item-content">
-                            <div class="menu-item-name">美炙樂サラダ</div>
+                            <div class="menu-item-name">KARINサラダ</div>
                             <div class="menu-item-name-en">Bishara salad</div>
                         </div>
                     </div>
