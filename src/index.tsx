@@ -1566,7 +1566,7 @@ app.get('/menu', (c) => {
       .category-hero {
         position: relative;
         width: 100%;
-        height: 400px;
+        height: 600px;
         overflow: hidden;
       }
       
