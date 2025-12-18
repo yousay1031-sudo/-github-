@@ -527,6 +527,25 @@ app.get('/api/page-images/:key', async (c) => {
 })
 
 // ページ画像更新（管理画面用）
+// ページ画像追加（管理画面用）
+app.post('/api/admin/page-images', async (c) => {
+  const { DB } = c.env
+  const data = await c.req.json()
+  
+  await DB.prepare(`
+    INSERT INTO page_images (image_key, image_url, page_name, section_name, description, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  `).bind(
+    data.image_key,
+    data.image_url,
+    data.page_name,
+    data.section_name || '',
+    data.description || ''
+  ).run()
+  
+  return c.json({ success: true })
+})
+
 app.put('/api/admin/page-images/:key', async (c) => {
   const { DB } = c.env
   const key = c.req.param('key')
@@ -3592,7 +3611,8 @@ app.get('/commitment', (c) => {
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80" 
+                        <img id="commitment-image-1" 
+                             src="https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80" 
                              alt="十勝若牛" 
                              class="commitment-image">
                     </div>
@@ -3648,7 +3668,8 @@ app.get('/commitment', (c) => {
                         </p>
                     </div>
                     <div>
-                        <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1200&q=80" 
+                        <img id="commitment-image-2" 
+                             src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1200&q=80" 
                              alt="アイスランドラム" 
                              class="commitment-image">
                     </div>
@@ -3661,7 +3682,8 @@ app.get('/commitment', (c) => {
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="/static/private-room.jpg" 
+                        <img id="commitment-image-3" 
+                             src="/static/private-room.jpg" 
                              alt="個室空間" 
                              class="commitment-image">
                     </div>
@@ -3712,6 +3734,7 @@ app.get('/commitment', (c) => {
             </div>
         </footer>
         
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         <script>
           // ハンバーガーメニューの切り替え
           function toggleMobileMenu() {
@@ -3720,6 +3743,32 @@ app.get('/commitment', (c) => {
             menu.classList.toggle('active')
             hamburger.classList.toggle('active')
           }
+          
+          // こだわりページの画像を読み込み
+          async function loadCommitmentImages() {
+            try {
+              const response = await axios.get('/api/page-images');
+              const images = response.data.filter(img => img.page_name === 'commitment');
+              
+              images.forEach(img => {
+                if (img.image_key === 'commitment_image_1') {
+                  const el = document.getElementById('commitment-image-1');
+                  if (el) el.src = img.image_url;
+                } else if (img.image_key === 'commitment_image_2') {
+                  const el = document.getElementById('commitment-image-2');
+                  if (el) el.src = img.image_url;
+                } else if (img.image_key === 'commitment_image_3') {
+                  const el = document.getElementById('commitment-image-3');
+                  if (el) el.src = img.image_url;
+                }
+              });
+            } catch (error) {
+              console.error('画像の読み込みエラー:', error);
+            }
+          }
+          
+          // ページ読み込み時に実行
+          document.addEventListener('DOMContentLoaded', loadCommitmentImages);
         </script>
     </body>
     </html>
