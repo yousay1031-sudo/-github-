@@ -1444,7 +1444,7 @@ app.get('/', (c) => {
                 
                 <!-- カード3: 年末オードブル -->
                 <div class="relative overflow-hidden group" style="width: 280px; height: 420px; background: #1a1a1a;">
-                    <img src="/osechi-oseibo.jpg" 
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" 
                          alt="年末オードブル" 
                          class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                          style="filter: brightness(0.9);">
