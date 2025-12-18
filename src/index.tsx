@@ -1259,7 +1259,7 @@ app.get('/', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -2642,7 +2642,7 @@ app.get('/lunch', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -3044,7 +3044,7 @@ app.get('/news', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -3403,7 +3403,7 @@ app.get('/access', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -3826,7 +3826,7 @@ app.get('/commitment', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
@@ -4427,7 +4427,7 @@ app.get('/course', (c) => {
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0">
                         <a href="/" class="flex items-center">
-                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-16 w-auto">
+                          <img src="/logo-header.png" alt="TOKACHI YAKINIKU KARIN Logo" class="h-28 w-auto">
                         </a>
                     </div>
                     <!-- デスクトップメニュー -->
