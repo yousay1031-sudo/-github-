@@ -1752,7 +1752,7 @@ app.get('/', (c) => {
               // こだわりセクション - カード3
               const commitmentCard3 = images.find(img => img.image_key === 'home_commitment_card3')
               if (commitmentCard3) {
-                const card3Img = document.querySelector('img[alt="美味しいお肉の焼き方"]')
+                const card3Img = document.querySelector('img[alt="年末オードブル"]')
                 if (card3Img) card3Img.src = commitmentCard3.image_url
               }
               
