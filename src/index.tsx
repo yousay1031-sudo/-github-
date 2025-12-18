@@ -14,6 +14,69 @@ app.use('/api/*', cors())
 // 静的ファイルの提供
 app.use('/static/*', serveStatic({ root: './' }))
 
+// SEO: robots.txt
+app.get('/robots.txt', (c) => {
+  return c.text(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://tokachi-yakiniku-karin.com/sitemap.xml`, 200, {
+    'Content-Type': 'text/plain'
+  })
+})
+
+// SEO: sitemap.xml
+app.get('/sitemap.xml', (c) => {
+  return c.text(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/menu</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/lunch</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/course</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/commitment</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/access</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tokachi-yakiniku-karin.com/news</loc>
+    <lastmod>2025-12-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>`, 200, {
+    'Content-Type': 'application/xml'
+  })
+})
+
 // データベース初期化（page_textsテーブル）
 async function initPageTextsTable(DB: D1Database) {
   try {
@@ -727,7 +790,33 @@ app.get('/', (c) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>TOKACHI YAKINIKU KARIN | トカチ ヤキニク カリン</title>
+        <title>帯広の高級焼肉 TOKACHI YAKINIKU KARIN | 十勝若牛・オーガニックラム・個室完備</title>
+        <meta name="description" content="帯広の高級焼肉店TOKACHI YAKINIKU KARIN。十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。ワイン・日本酒・サッポロクラシックなど豊富なドリンクメニュー。">
+        <meta name="keywords" content="焼肉,帯広,ディナー,デート,宴会,個室,高級,オーガニック,オーガニックラム,十勝若牛,レバー,もつ鍋,ちりとり鍋,刺身,ワイン,日本酒,サッポロビール,クラシック,ソラチ,ビール">
+        <meta name="author" content="TOKACHI YAKINIKU KARIN">
+        <link rel="canonical" href="https://tokachi-yakiniku-karin.com/">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="restaurant">
+        <meta property="og:url" content="https://tokachi-yakiniku-karin.com/">
+        <meta property="og:title" content="帯広の高級焼肉 TOKACHI YAKINIKU KARIN | 十勝若牛・オーガニックラム">
+        <meta property="og:description" content="十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。">
+        <meta property="og:image" content="https://tokachi-yakiniku-karin.com/logo-hero.png">
+        <meta property="og:locale" content="ja_JP">
+        <meta property="og:site_name" content="TOKACHI YAKINIKU KARIN">
+        
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="帯広の高級焼肉 TOKACHI YAKINIKU KARIN">
+        <meta name="twitter:description" content="十勝若牛、オーガニックラム、レバー刺身。個室完備の高級焼肉店。">
+        <meta name="twitter:image" content="https://tokachi-yakiniku-karin.com/logo-hero.png">
+        
+        <!-- Geo Tags -->
+        <meta name="geo.region" content="JP-01">
+        <meta name="geo.placename" content="帯広市">
+        <meta name="geo.position" content="42.9236;143.1947">
+        <meta name="ICBM" content="42.9236, 143.1947">
+        
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <style>
@@ -1108,6 +1197,60 @@ app.get('/', (c) => {
             border-bottom: none;
           }
         </style>
+        
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Restaurant",
+          "name": "TOKACHI YAKINIKU KARIN",
+          "alternateName": "トカチ ヤキニク カリン",
+          "image": "https://tokachi-yakiniku-karin.com/logo-hero.png",
+          "description": "帯広の高級焼肉店。十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "西一条南8-20-5",
+            "addressLocality": "帯広市",
+            "addressRegion": "北海道",
+            "postalCode": "080-0011",
+            "addressCountry": "JP"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 42.9236,
+            "longitude": 143.1947
+          },
+          "telephone": "+81-50-8883-6929",
+          "url": "https://tokachi-yakiniku-karin.com/",
+          "priceRange": "¥¥¥",
+          "servesCuisine": ["焼肉", "Japanese", "Yakiniku"],
+          "acceptsReservations": "True",
+          "menu": "https://tokachi-yakiniku-karin.com/menu",
+          "hasMenu": "https://tokachi-yakiniku-karin.com/menu",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Saturday", "Sunday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/tokachi_yakiniku_karin"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "120"
+          }
+        }
+        </script>
     </head>
     <body class="bg-dark">
         <!-- ナビゲーション -->
@@ -3201,6 +3344,60 @@ app.get('/access', (c) => {
             border-bottom: none;
           }
         </style>
+        
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Restaurant",
+          "name": "TOKACHI YAKINIKU KARIN",
+          "alternateName": "トカチ ヤキニク カリン",
+          "image": "https://tokachi-yakiniku-karin.com/logo-hero.png",
+          "description": "帯広の高級焼肉店。十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "西一条南8-20-5",
+            "addressLocality": "帯広市",
+            "addressRegion": "北海道",
+            "postalCode": "080-0011",
+            "addressCountry": "JP"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 42.9236,
+            "longitude": 143.1947
+          },
+          "telephone": "+81-50-8883-6929",
+          "url": "https://tokachi-yakiniku-karin.com/",
+          "priceRange": "¥¥¥",
+          "servesCuisine": ["焼肉", "Japanese", "Yakiniku"],
+          "acceptsReservations": "True",
+          "menu": "https://tokachi-yakiniku-karin.com/menu",
+          "hasMenu": "https://tokachi-yakiniku-karin.com/menu",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Saturday", "Sunday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/tokachi_yakiniku_karin"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "120"
+          }
+        }
+        </script>
     </head>
     <body class="bg-dark">
         <!-- ナビゲーション -->
@@ -3571,6 +3768,60 @@ app.get('/commitment', (c) => {
             font-weight: 500;
           }
         </style>
+        
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Restaurant",
+          "name": "TOKACHI YAKINIKU KARIN",
+          "alternateName": "トカチ ヤキニク カリン",
+          "image": "https://tokachi-yakiniku-karin.com/logo-hero.png",
+          "description": "帯広の高級焼肉店。十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "西一条南8-20-5",
+            "addressLocality": "帯広市",
+            "addressRegion": "北海道",
+            "postalCode": "080-0011",
+            "addressCountry": "JP"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 42.9236,
+            "longitude": 143.1947
+          },
+          "telephone": "+81-50-8883-6929",
+          "url": "https://tokachi-yakiniku-karin.com/",
+          "priceRange": "¥¥¥",
+          "servesCuisine": ["焼肉", "Japanese", "Yakiniku"],
+          "acceptsReservations": "True",
+          "menu": "https://tokachi-yakiniku-karin.com/menu",
+          "hasMenu": "https://tokachi-yakiniku-karin.com/menu",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Saturday", "Sunday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/tokachi_yakiniku_karin"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "120"
+          }
+        }
+        </script>
     </head>
     <body class="bg-dark">
         <!-- ナビゲーション -->
@@ -4045,6 +4296,60 @@ app.get('/course', (c) => {
             margin-bottom: 2rem;
           }
         </style>
+        
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Restaurant",
+          "name": "TOKACHI YAKINIKU KARIN",
+          "alternateName": "トカチ ヤキニク カリン",
+          "image": "https://tokachi-yakiniku-karin.com/logo-hero.png",
+          "description": "帯広の高級焼肉店。十勝若牛、希少なオーガニックラム、新鮮なレバー刺身をご堪能。デート・宴会に最適な個室完備。",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "西一条南8-20-5",
+            "addressLocality": "帯広市",
+            "addressRegion": "北海道",
+            "postalCode": "080-0011",
+            "addressCountry": "JP"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 42.9236,
+            "longitude": 143.1947
+          },
+          "telephone": "+81-50-8883-6929",
+          "url": "https://tokachi-yakiniku-karin.com/",
+          "priceRange": "¥¥¥",
+          "servesCuisine": ["焼肉", "Japanese", "Yakiniku"],
+          "acceptsReservations": "True",
+          "menu": "https://tokachi-yakiniku-karin.com/menu",
+          "hasMenu": "https://tokachi-yakiniku-karin.com/menu",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Saturday", "Sunday"],
+              "opens": "17:00",
+              "closes": "23:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/tokachi_yakiniku_karin"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "120"
+          }
+        }
+        </script>
     </head>
     <body class="bg-dark">
         <!-- ナビゲーション -->
