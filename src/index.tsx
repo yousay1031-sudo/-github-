@@ -685,6 +685,25 @@ app.put('/api/admin/page-images/:key', async (c) => {
   return c.json({ success: true })
 })
 
+// ページ画像追加（管理画面用）
+app.post('/api/admin/page-images', async (c) => {
+  const { DB } = c.env
+  const data = await c.req.json()
+  
+  await DB.prepare(`
+    INSERT INTO page_images (image_key, image_url, page_name, section_name, description, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  `).bind(
+    data.image_key,
+    data.image_url,
+    data.page_name,
+    data.section_name || '',
+    data.description || ''
+  ).run()
+  
+  return c.json({ success: true })
+})
+
 // 店舗情報取得
 app.get('/api/store-info', async (c) => {
   const { DB } = c.env
