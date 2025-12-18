@@ -1456,7 +1456,7 @@ app.get('/', (c) => {
                         <p class="text-gray-400 text-xs leading-relaxed mb-4" data-text="home_card3_description">
                             実はよくお肉料理を素晴らしく楽しく食べてきたいと、本当に各種焼き方をお教えいたします。
                         </p>
-                        <a href="https://diomovxr.gensparkspace.com/" target="_blank" rel="noopener noreferrer" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
+                        <a href="/osechi" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
                             詳しく見る →
                         </a>
                     </div>
@@ -4040,6 +4040,80 @@ app.get('/commitment', (c) => {
   `)
 })
 
+// 年末オードブルページ
+app.get('/osechi', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>年末オードブル | TOKACHI YAKINIKU KARIN</title>
+        <meta name="description" content="TOKACHI YAKINIKU KARINの年末特別オードブル。ご予約受付中。">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow: hidden;
+          }
+          
+          .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            border: none;
+          }
+          
+          .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          
+          .back-button:hover {
+            background: rgba(212, 175, 55, 0.9);
+            color: black;
+            transform: translateX(-5px);
+          }
+        </style>
+    </head>
+    <body>
+        <a href="/" class="back-button">
+            <i class="fas fa-arrow-left"></i> トップに戻る
+        </a>
+        
+        <iframe 
+            src="https://diomovxr.gensparkspace.com/" 
+            class="iframe-container"
+            title="年末オードブル"
+            frameborder="0"
+            allowfullscreen>
+        </iframe>
+    </body>
+    </html>
+  `)
+})
 
 // コースページ
 app.get('/course', (c) => {
