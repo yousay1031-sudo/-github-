@@ -1442,21 +1442,21 @@ app.get('/', (c) => {
                     </div>
                 </div>
                 
-                <!-- カード3: 美味しいお肉の焼き方 -->
+                <!-- カード3: 年末オードブル -->
                 <div class="relative overflow-hidden group" style="width: 280px; height: 420px; background: #1a1a1a;">
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" 
-                         alt="美味しいお肉の焼き方" 
+                    <img src="/osechi-oseibo.jpg" 
+                         alt="年末オードブル" 
                          class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                          style="filter: brightness(0.9);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="p-6 bg-gradient-to-b from-transparent to-black/80 absolute bottom-0 left-0 right-0">
                         <h3 class="text-white text-xl font-light mb-3 tracking-wider" style="font-family: 'Noto Serif JP';" data-text="home_card3_title">
-                            美味しい<br>お肉の焼き方
+                            年末<br>オードブル
                         </h3>
                         <p class="text-gray-400 text-xs leading-relaxed mb-4" data-text="home_card3_description">
                             実はよくお肉料理を素晴らしく楽しく食べてきたいと、本当に各種焼き方をお教えいたします。
                         </p>
-                        <a href="/commitment" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
+                        <a href="https://diomovxr.gensparkspace.com/" target="_blank" rel="noopener noreferrer" class="text-yellow-600 text-xs tracking-wider hover:text-yellow-500 transition-colors">
                             詳しく見る →
                         </a>
                     </div>
