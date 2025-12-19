@@ -197,3 +197,4 @@ npx wrangler d1 execute webapp-production --file=seed.sql
 **最終更新**: 2024年12月11日
 **バージョン**: 1.0.0
 **ステータス**: ✅ 開発完了・本番環境デプロイ準備中
+# Cloudflare Pages Deployment
